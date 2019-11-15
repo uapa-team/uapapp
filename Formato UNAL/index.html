@@ -1,12 +1,5 @@
 <!DOCTYPE html>
-<!--[if lt IE 7]> <html class="ie6 oldie"> <![endif]-->
-<!--[if IE 7]> <html class="ie7 oldie"> <![endif]-->
-<!--[if IE 8]> <html class="ie8 oldie"> <![endif]-->
-<!--[if IE 9]> <html class="ie9 oldie"> <![endif]-->
-<!--[if (gt IE 9)|!(IE)]><!-->
 <html>
-	<!--<![endif]-->
-
 	<head>
 		<meta charset="utf-8">
 		<!-- 
@@ -14,8 +7,7 @@
 	 === PLANTILLA DESARROLLADA POR LA OFICINA DE MEDIOS DIGITALES - UNIMEDIOS ===
 	 =============================================================================
 		-->
-
-		<base href="ingenieria.bogota.unal.edu.co/uapapp/">
+		<!-- base href="ingenieria.bogota.unal.edu.co/uapapp/" -->
 		<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
 
 		<meta name="revisit-after" content="1 hour">
@@ -24,7 +16,6 @@
 		<meta name="expires" content="1">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="robots" content="all">
-
 
 		<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" media="all">
 		<link rel="stylesheet" type="text/css" href="css/bootstrap-theme.min.css" media="all">
@@ -36,12 +27,8 @@
 		<link rel="stylesheet" type="text/css" href="css/small.css" media="all">
 		<link rel="stylesheet" type="text/css" href="css/printer.css" media="print">
 
-
 		<script src="js/jquery.js" type="text/javascript"></script>
 		<script src="js/unal.js" type="text/javascript"></script>
-		<!--[if lt IE 9]><script src="js/html5shiv.js" type="text/javascript"></script><![endif]-->
-		<!--[if lt IE 9]><script src="js/respond.js" type="text/javascript"></script><![endif]-->
-
 
 		<title>UAPAPP: Universidad Nacional de Colombia</title>
 	</head>
@@ -70,15 +57,10 @@
 		<header id="unalTop">
 			<div class="logo">
             <a href="http://unal.edu.co">
-					<!--[if (gte IE 9)|!(IE)]><!-->
 					<svg width="93%" height="93%">
 					<image xlink:href="images/escudoUnal.svg" width="100%" height="100%" class="hidden-print"/>
 					</svg>
 
-					<!--<![endif]-->
-					<!--[if lt IE 9]>
-			<img src="images/escudoUnal.png" width="93%" height="auto" class="hidden-print"/> 
-	  <![endif]-->
 					<img src="images/escudoUnal_black.png" class="visible-print" />
             </a>
 			</div>
@@ -113,34 +95,17 @@
 						<a href="http://agenciadenoticias.unal.edu.co/nc/sus/type/rss2.html" target="_blank" class="rss" title="Suscripción a canales de información RSS"></a>
 					</li>
             </ul>
-            <div class="navbar-default">
-					<nav id="profiles">
-						<ul class="nav navbar-nav dropdown-menu">
-							<li class="item_Aspirantes #>"><a href="index.html#">Aspirantes</a></li>
-							<li class="item_Estudiantes #>"><a href="index.html#">Estudiantes</a></li>
-							<li class="item_Egresados #>"><a href="index.html#">Egresados</a></li>
-							<li class="item_Docentes #>"><a href="index.html#">Docentes</a></li>
-							<li class="item_Administrativos #>"><a href="index.html#">Administrativos</a></li>
-						</ul>
-					</nav>
-            </div>
 			</div>
 			<div id="bs-navbar" class="navbar-collapse collapse navigation">
             <div class="site-url">
-					<a href="https://www.ingenieria.bogota.unal.edu.co/uapapp/">ingenieria.bogota.unal.edu.co/uapapp</a>
+					<a href="https://www.ingenieria.bogota.unal.edu.co/uapapp/">ingenieria.bogota.unal.edu.co/uapapp/</a>
             </div>
             <div class="buscador">
 					<div class="gcse-searchbox-only" data-resultsUrl="http://unal.edu.co/resultados-de-la-busqueda/" data-newWindow="true"></div>
             </div>
             <div class="mainMenu">
-					<div class="btn-group">
-						<div class="btn btn-default dropdown-toggle" data-toggle="dropdown">Item menu ejemplo 1<span class="caret"></span></div>
-						<ul class="dropdown-menu">
-							<li><a href="#">Página 1</a></li>
-							<li><a href="#">Página 2</a></li>
-						</ul>
-					</div>
-					<div class="btn-group"><a href="index.html#" class="btn btn-default dropdown-toggle">Item menu ejemplo 2</a><span class="caret-right"></span></div>
+					<div class="btn-group"><a href="index.html#" class="btn btn-default dropdown-toggle">Inicio</a><span class="caret-right"></span></div>
+					<div class="btn-group"><a href="index.html#" class="btn btn-default dropdown-toggle">Contáctenos</a><span class="caret-right"></span></div>
 					<div class="btn-group">
 						<div class="btn btn-default dropdown-toggle" data-toggle="dropdown">Sedes<span class="caret"></span></div>
 						<ul class="dropdown-menu dropItem-16">
@@ -169,7 +134,7 @@
 		</header>
 
 		<main class="detalle">
-			<div class="breadcrumb-class">Está en:<a href="index.html" target="_self" title="Inicio">Inicio</a>/<span>Item menu ejemplo</span></div>
+				<a href="index.html" target="_self" title="Inicio">Inicio</a>
 
 
 		</main>
@@ -201,12 +166,16 @@
 			</nav>
 			<div class="col-md-4 col-lg-4 col-sm-4 col-xs-4 col-xxs-12 footer-info">
             <p class="col-sm-12 col-md-6 contacto">
-					<b>Contacto página web:</b><br/>Carrera 45 # 26-85<br/>Edificio Insignia Julio Garavito Armero (401)<br/> Bogotá D.C., Colombia<br/> (+57 1) 316 5000 Ext. 13578
+					<b>Contacto página web:</b>
+					<br/>Carrera 45 # 26-85
+					<br/>Edificio Insignia Julio Garavito Armero
+					<br/> Bogotá D.C., Colombia
+					<br/>(+57 1) 316 5000 Ext. 13578
             </p>
             <p class="col-sm-12 col-md-6 derechos">
-					&copy; Copyright 2014<br/> Algunos derechos reservados.<br/>
-					<a title="Comuníquese con el administrador de este sitio web" href="mailto:EMAIL@unal.edu.co">EMAIL@unal.edu.co</a><br/>
-					<a href="index.html#">Acerca de este sitio web</a><br/> Actualización:31/05/16
+					&copy; Copyright 2019<br/> Algunos derechos reservados.<br/>
+					<a title="Comuníquese con el administrador de este sitio web" href="mailto:autoevalua_fibo@unal.edu.co">autoevalua_fibo@unal.edu.co</a><br/>
+					<a href="index.html#">Acerca de este sitio web</a><br/> Última actualización: 15/11/2019
             </p>
 			</div>
 
@@ -235,5 +204,4 @@
 			</div>
 		</footer>
 	</body>
-
 </html>
