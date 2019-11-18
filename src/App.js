@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import icnServEmail from './images/icnServEmail.png';
+import Favicon from 'react-favicon';
 import './App.css';
 
 class App extends Component {
@@ -13,7 +13,6 @@ class App extends Component {
 	 =============================================================================
 		*/}
   {/* base href="ingenieria.bogota.unal.edu.co/uapapp/" */}
-  <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
   <meta name="revisit-after" content="1 hour" />
   <meta name="distribution" content="all" />
   <meta
@@ -26,22 +25,22 @@ class App extends Component {
   <link
     rel="stylesheet"
     type="text/css"
-    href="css/bootstrap.min.css"
+    href="./css/bootstrap.min.css"
     media="all"
   />
   <link
     rel="stylesheet"
     type="text/css"
-    href="css/bootstrap-theme.min.css"
+    href="./css/bootstrap-theme.min.css"
     media="all"
   />
-  <link rel="stylesheet" type="text/css" href="css/reset.css" media="all" />
-  <link rel="stylesheet" type="text/css" href="css/unal.css" media="all" />
-  <link rel="stylesheet" type="text/css" href="css/base.css" media="all" />
-  <link rel="stylesheet" type="text/css" href="css/tablet.css" media="all" />
-  <link rel="stylesheet" type="text/css" href="css/phone.css" media="all" />
-  <link rel="stylesheet" type="text/css" href="css/small.css" media="all" />
-  <link rel="stylesheet" type="text/css" href="css/printer.css" media="print" />
+  <link rel="stylesheet" type="text/css" href="./css/reset.css" media="all" />
+  <link rel="stylesheet" type="text/css" href="./css/unal.css" media="all" />
+  <link rel="stylesheet" type="text/css" href="./css/base.css" media="all" />
+  <link rel="stylesheet" type="text/css" href="./css/tablet.css" media="all" />
+  <link rel="stylesheet" type="text/css" href="./css/phone.css" media="all" />
+  <link rel="stylesheet" type="text/css" href="./css/small.css" media="all" />
+  <link rel="stylesheet" type="text/css" href="./css/printer.css" media="print" />
   <title>UAPAPP: Universidad Nacional de Colombia</title>
   <div id="services">
     <div className="indicator hidden-xs" />
