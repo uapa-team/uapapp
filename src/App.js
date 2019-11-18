@@ -384,13 +384,10 @@ class App extends Component {
     <div className="col-md-4 col-lg-4 col-sm-4 col-xs-4 col-xxs-12 footer-info">
       <p className="col-sm-12 col-md-6 contacto">
         <b>Contacto página web:</b>
-        <br />
-        Carrera 45 # 26-85
-        <br />
-        Edificio Insignia Julio Garavito Armero
+        <br />Carrera 45 # 26-85
+        <br />Edificio Insignia Julio Garavito Armero
         <br /> Bogotá D.C., Colombia
-        <br />
-        (+57 1) 316 5000 Ext. 13578
+        <br />(+57 1) 316 5000 Ext. 13578
       </p>
       <p className="col-sm-12 col-md-6 derechos">
         © Copyright 2019
@@ -404,7 +401,7 @@ class App extends Component {
         </a>
         <br />
         <a href="index.html#">Acerca de este sitio web</a>
-        <br /> Última actualización: 15/11/2019
+        <br /> Última actualización: 18/11/2019
       </p>
     </div>
     <div className="col-md-2 col-lg-2 col-sm-2 col-xs-12 logos">
@@ -466,7 +463,7 @@ class App extends Component {
                   src={require("./images/log_contra.png")}
             width={67}
             height={51}
-          />Error: ENOENT: no such file or directory, open '/home/uapa04/uapapp/node_modules/antd/es/_util/type.js'
+          />
         </a>
       </div>
     </div>
