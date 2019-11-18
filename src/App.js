@@ -1,6 +1,14 @@
 import React, { Component } from 'react';
-import Favicon from 'react-favicon';
 import './App.css';
+import './css/base.css';
+import './css/bootstrap.min.css';
+import './css/bootstrap-theme.min.css';
+import './css/phone.css';
+import './css/printer.css';
+import './css/reset.css';
+import './css/small.css';
+import './css/tablet.css';
+import './css/unal.css';
 
 class App extends Component {
   render() {
