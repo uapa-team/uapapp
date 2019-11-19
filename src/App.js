@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import './App.css';
 import './css/base.css';
 import './css/bootstrap.min.css';
 import './css/bootstrap-theme.min.css';
@@ -9,6 +8,9 @@ import './css/reset.css';
 import './css/small.css';
 import './css/tablet.css';
 import './css/unal.css';
+
+import './js/html5shiv.js'
+import './js/jquery.js'
 
 class App extends Component {
   render() {
@@ -54,7 +56,7 @@ class App extends Component {
     <div className="indicator hidden-xs" />
     <ul className="dropdown-menu">
       <li>
-        <a href="http://correo.unal.edu.co" target="_blank">
+        <a href="http://correo.unal.edu.co">
           <img
             src={require("./images/icnServEmail.png")}
             width={32}
@@ -65,7 +67,7 @@ class App extends Component {
         </a>
       </li>
       <li>
-        <a href="https://dninfoa.unal.edu.co" target="_blank">
+        <a href="https://dninfoa.unal.edu.co">
           <img
             src={require("./images/icnServSia.png")}
             width={32}
@@ -76,7 +78,7 @@ class App extends Component {
         </a>
       </li>
       <li>
-        <a href="http://bibliotecas.unal.edu.co" target="_blank">
+        <a href="http://bibliotecas.unal.edu.co">
           <img
             src={require("./images/icnServLibrary.png")}
             width={32}
@@ -87,7 +89,7 @@ class App extends Component {
         </a>
       </li>
       <li>
-        <a href="http://personal.unal.edu.co" target="_blank">
+        <a href="http://personal.unal.edu.co">
           <img
             src={require("./images/icnServCall.png")}
             width={32}
@@ -121,7 +123,10 @@ class App extends Component {
             className="hidden-print"
           />
         </svg>
-              <img src={require("./images/escudoUnal_black.png")} className = "visible-print" />
+              <img
+                src={require("./images/escudoUnal_black.png")}
+                className="visible-print"
+                alt="Escudo de la Universidad Nacional de Colombia."/>
       </a>
     </div>
     <div className="seal">
@@ -171,7 +176,6 @@ class App extends Component {
         <li>
           <a
             href="https://www.facebook.com/UNColombia"
-            target="_blank"
             className="facebook"
             title="Página oficial en Facebook"
           />
@@ -179,7 +183,6 @@ class App extends Component {
         <li>
           <a
             href="https://twitter.com/UNColombia"
-            target="_blank"
             className="twitter"
             title="Cuenta oficial en Twitter"
           />
@@ -187,7 +190,6 @@ class App extends Component {
         <li>
           <a
             href="https://www.youtube.com/channel/UCnE6Zj2llVxcvL5I38B0Ceg"
-            target="_blank"
             className="youtube"
             title="Canal oficial de Youtube"
           />
@@ -195,7 +197,6 @@ class App extends Component {
         <li>
           <a
             href="http://agenciadenoticias.unal.edu.co/nc/sus/type/rss2.html"
-            target="_blank"
             className="rss"
             title="Suscripción a canales de información RSS"
           />
@@ -238,55 +239,55 @@ class App extends Component {
           </div>
           <ul className="dropdown-menu dropItem-16">
             <li>
-              <a href="http://amazonia.unal.edu.co" target="_blank">
+              <a href="http://amazonia.unal.edu.co">
                 Amazonia
               </a>
               <span className="caret-right" />
             </li>
             <li>
-              <a href="http://bogota.unal.edu.co" target="_blank">
+              <a href="http://bogota.unal.edu.co">
                 Bogotá
               </a>
               <span className="caret-right" />
             </li>
             <li>
-              <a href="http://caribe.unal.edu.co" target="_blank">
+              <a href="http://caribe.unal.edu.co">
                 Caribe
               </a>
               <span className="caret-right" />
             </li>
             <li>
-              <a href="http://delapaz.unal.edu.co" target="_blank">
+              <a href="http://delapaz.unal.edu.co">
                 De La Paz
               </a>
               <span className="caret-right" />
             </li>
             <li>
-              <a href="http://www.manizales.unal.edu.co" target="_blank">
+              <a href="http://www.manizales.unal.edu.co">
                 Manizales
               </a>
               <span className="caret-right" />
             </li>
             <li>
-              <a href="http://medellin.unal.edu.co" target="_blank">
+              <a href="http://medellin.unal.edu.co">
                 Medellín
               </a>
               <span className="caret-right" />
             </li>
             <li>
-              <a href="http://orinoquia.unal.edu.co" target="_blank">
+              <a href="http://orinoquia.unal.edu.co">
                 Orinoquia
               </a>
               <span className="caret-right" />
             </li>
             <li>
-              <a href="http://www.palmira.unal.edu.co" target="_blank">
+              <a href="http://www.palmira.unal.edu.co">
                 Palmira
               </a>
               <span className="caret-right" />
             </li>
             <li>
-              <a href="http://tumaco-pacifico.unal.edu.co" target="_blank">
+              <a href="http://tumaco-pacifico.unal.edu.co">
                 Tumaco
               </a>
               <span className="caret-right" />
