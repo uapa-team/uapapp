@@ -49,6 +49,8 @@
  * Date: 2014-01-23T21:02Z
  */
 
+import jQuery from 'jquery'
+
 (function( global, factory ) {
 
 	if ( typeof module === "object" && typeof module.exports === "object" ) {

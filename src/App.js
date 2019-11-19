@@ -9,8 +9,9 @@ import './css/small.css';
 import './css/tablet.css';
 import './css/unal.css';
 
-import './js/html5shiv.js'
-import './js/jquery.js'
+import './js/unal.js'
+//import './js/jquery'
+
 
 class App extends Component {
   render() {
@@ -158,21 +159,8 @@ class App extends Component {
         <span className="icon-bar" />
         <span className="icon-bar" />
       </button>
-      <div className="btn-group languageMenu hidden-xs">
-        <div className="btn btn-default dropdown-toggle" data-toggle="dropdown">
-          es
-          <span className="caret" />
-        </div>
-        <ul className="dropdown-menu">
-          <li>
-            <a href="index.html#">es</a>
-          </li>
-          <li>
-            <a href="index.html#">en</a>
-          </li>
-        </ul>
-      </div>
       <ul className="socialLinks hidden-xs">
+              {/* eslint-disable */}
         <li>
           <a
             href="https://www.facebook.com/UNColombia"
@@ -201,6 +189,7 @@ class App extends Component {
             title="Suscripción a canales de información RSS"
           />
         </li>
+              {/* eslint-enable */}      
       </ul>
     </div>
     <div id="bs-navbar" className="navbar-collapse collapse navigation">
@@ -230,69 +219,7 @@ class App extends Component {
           <span className="caret-right" />
         </div>
         <div className="btn-group">
-          <div
-            className="btn btn-default dropdown-toggle"
-            data-toggle="dropdown"
-          >
-            Sedes
-            <span className="caret" />
-          </div>
-          <ul className="dropdown-menu dropItem-16">
-            <li>
-              <a href="http://amazonia.unal.edu.co">
-                Amazonia
-              </a>
-              <span className="caret-right" />
-            </li>
-            <li>
-              <a href="http://bogota.unal.edu.co">
-                Bogotá
-              </a>
-              <span className="caret-right" />
-            </li>
-            <li>
-              <a href="http://caribe.unal.edu.co">
-                Caribe
-              </a>
-              <span className="caret-right" />
-            </li>
-            <li>
-              <a href="http://delapaz.unal.edu.co">
-                De La Paz
-              </a>
-              <span className="caret-right" />
-            </li>
-            <li>
-              <a href="http://www.manizales.unal.edu.co">
-                Manizales
-              </a>
-              <span className="caret-right" />
-            </li>
-            <li>
-              <a href="http://medellin.unal.edu.co">
-                Medellín
-              </a>
-              <span className="caret-right" />
-            </li>
-            <li>
-              <a href="http://orinoquia.unal.edu.co">
-                Orinoquia
-              </a>
-              <span className="caret-right" />
-            </li>
-            <li>
-              <a href="http://www.palmira.unal.edu.co">
-                Palmira
-              </a>
-              <span className="caret-right" />
-            </li>
-            <li>
-              <a href="http://tumaco-pacifico.unal.edu.co">
-                Tumaco
-              </a>
-              <span className="caret-right" />
-            </li>
-          </ul>
+                {/*Sedes*/}
         </div>
       </div>
       <div className="btn-group hidden-sm hidden-md hidden-lg hidden-print">
