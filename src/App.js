@@ -9,8 +9,9 @@ import './css/small.css';
 import './css/tablet.css';
 import './css/unal.css';
 
-import './js/unal.js'
-//import './js/jquery'
+import './js/unal.js';
+import LoginForm from './js/Components/LoginForm';
+import { Row, Col } from 'antd';
 
 
 class App extends Component {
@@ -251,6 +252,16 @@ class App extends Component {
         Inicio
       </a>
     </div>
+    
+
+    <Row>
+      <Col span={8}></Col>
+      <Col span={8}><LoginForm/></Col>
+      <Col span={8}></Col>
+    </Row>    
+
+
+
   </main>
   <footer className="clear">
     <nav className="col-md-3 col-lg-3 col-sm-3 col-xs-4 col-xxs-6 gobiernoLinea">
