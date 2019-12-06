@@ -1,7 +1,13 @@
-
-  .login-form-forgot {
+.general {
+    margin-top: 1.5em;
+    background-color: white;
+}
+.welcome {
+    text-align: center;
+}
+.login-form-forgot {
     float: right;
-  }
-  .login-form-button {
+}
+.login-form-button {
     width: 100%;
-  }
+}

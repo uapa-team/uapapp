@@ -246,6 +246,7 @@ class App extends Component {
     </div>
   </header>
   <main className="detalle">
+
     <div className="breadcrumb-class">
       Está en:
       <a href="index.html" target="_self" title="Inicio">

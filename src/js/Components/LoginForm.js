@@ -17,6 +17,8 @@ class NormalLoginForm extends React.Component {
   render() {
     const { getFieldDecorator } = this.props.form;
     return (
+      <div className="general">
+      <div className="welcome"><h1>¡Bienvenido a UAPAPP!</h1></div>
       <Form onSubmit={this.handleSubmit} className="login-form">
         <Form.Item>
           {getFieldDecorator('username', {
@@ -53,6 +55,7 @@ class NormalLoginForm extends React.Component {
           ¿No tiene un usuario? - <a href="">Contáctenos</a>
         </Form.Item>
       </Form>
+      </div>
     );
   }
 }

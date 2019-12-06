@@ -31,7 +31,7 @@
 }
 
 body {
-	background-color: #ddd; font-family: "Ancizar sans", Tahoma, Geneva, sans-serif; display: -webkit-box; display: -webkit-flex; display: -moz-flex; display: -ms-flexbox; display: flex; min-height: 100vh; -webkit-box-direction: normal; -webkit-box-orient: vertical; -webkit-flex-direction: column; -moz-flex-direction: column; -ms-flex-direction: column; flex-direction: column; overflow-y: scroll;
+	background-color: #ddd; font-family: "Ancizar sans", Tahoma, Geneva, sans-serif; display: -webkit-box; display: -webkit-flex; display: -moz-flex; display: -ms-flexbox; display: flex; min-height: 100vh; -webkit-box-direction: normal; -webkit-box-orient: vertical; -webkit-flex-direction: column; -moz-flex-direction: column; -ms-flex-direction: column; flex-direction: column; overflow-y: auto;
 }
 
 
@@ -49,7 +49,7 @@ a:hover {
 }
 
 main {
-	-webkit-box-flex: 1; -webkit-flex: 1 0 auto; -moz-box-flex: 1; -moz-flex: 1 0 auto; -ms-flex: 1 0 auto; flex: 1 0 auto; min-height: 30em;
+	-webkit-box-flex: 1; -webkit-flex: 1 0 auto; -moz-box-flex: 1; -moz-flex: 1 0 auto; -ms-flex: 1 0 auto; flex: 1 0 auto;
 }
 
 body>footer:before {
@@ -443,9 +443,10 @@ main.detalle {
 	margin: 0 10% 50px 10%;
 }
 
+
 footer {
 	height: auto; background: #666; font-size: .9em; color: #ddd; padding: 15px 0 25px 0;
-	position:absolute; left:0; 	bottom:0;	right:0;
+	position: absolute; left:0; bottom:0; right:0;
 }
 
 footer div.footer-info p {
@@ -739,7 +740,7 @@ footer .logos a img {
 		padding-bottom: 15px;
 	}
 	#unalTop .navigation.collapse.in {
-		overflow: visible
+		overflow: auto
 	}
 	#unalTop .navigation .site-url {
 		font-size: 1.1em; margin: 10px 0 5px 14px;
