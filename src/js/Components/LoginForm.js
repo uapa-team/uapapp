@@ -18,7 +18,7 @@ class NormalLoginForm extends React.Component {
     const { getFieldDecorator } = this.props.form;
     return (
       <div className="general">
-      <div className="welcome"><h1>¡Bienvenido a UAPAPP!</h1></div>
+      <div className="welcome"><h1>¡Bienvenido a UAPApp!</h1></div>
       <Form onSubmit={this.handleSubmit} className="login-form">
         <Form.Item>
           {getFieldDecorator('username', {
@@ -46,7 +46,7 @@ class NormalLoginForm extends React.Component {
             valuePropName: 'checked',
             initialValue: true,
           })(<Checkbox>Recuérdame</Checkbox>)}
-          <a className="login-form-forgot" href="">
+          <a className="login-form-forgot" href="https://cuenta.unal.edu.co/index.php?p=recoverPassword">
             Olvidé mi contraseña
           </a>
           <Button type="primary" htmlType="submit" className="login-form-button">

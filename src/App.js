@@ -13,7 +13,6 @@ import './js/unal.js';
 import LoginForm from './js/Components/LoginForm';
 import { Row, Col } from 'antd';
 
-
 class App extends Component {
   render() {
     return (
@@ -54,6 +53,7 @@ class App extends Component {
   <link rel="stylesheet" type="text/css" href="./css/small.css" media="all" />
   <link rel="stylesheet" type="text/css" href="./css/printer.css" media="print" />
   <title>UAPAPP: Universidad Nacional de Colombia</title>
+
   <div id="services">
     <div className="indicator hidden-xs" />
     <ul className="dropdown-menu">

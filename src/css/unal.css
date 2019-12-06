@@ -112,7 +112,7 @@ ul, ol {margin-left: 1.2em;}
 #services ul li a {
 	color: white; font-size: .9em; line-height: 32px; white-space: nowrap; display: inline; background: transparent; padding: 0;
 }
-
+footer
 #services ul li a img {
 	display: block; float: left; height: 32px; margin: 0 5px; width: 32px;
 }
@@ -446,7 +446,7 @@ main.detalle {
 
 footer {
 	height: auto; background: #666; font-size: .9em; color: #ddd; padding: 15px 0 25px 0;
-	position: absolute; left:0; bottom:0; right:0;
+	position: absolute; bottom:0; 
 }
 
 footer div.footer-info p {
@@ -694,6 +694,7 @@ footer .logos a img {
 }
 
 @media screen and (max-width:767px) {
+
 	#services,
 	#profiles {
 		margin-left: 1.2em; height: auto!important; width: 90%; position: absolute; -webkit-transition: none; -moz-transition: none; -o-transition: none; transition: none;
