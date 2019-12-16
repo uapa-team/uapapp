@@ -26,7 +26,6 @@ class NormalLoginForm extends React.Component {
       </a>
     </div>
 
-
       <Row>
       <Col xs={4} sm={4} md={6} lg={8} xl={8}></Col>
       <Col xs={16} sm={16} md={12} lg={8} xl={8}>
