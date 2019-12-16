@@ -1,19 +1,17 @@
 import React, { Component } from 'react';
-import '../../css/base.css';
-import '../../css/bootstrap.min.css';
-import '../../css/bootstrap-theme.min.css';
-import '../../css/phone.css';
-import '../../css/printer.css';
-import '../../css/reset.css';
-import '../../css/small.css';
-import '../../css/tablet.css';
-import '../../css/unal.css';
+import './css/base.css';
+import './css/bootstrap.min.css';
+import './css/bootstrap-theme.min.css';
+import './css/phone.css';
+import './css/printer.css';
+import './css/reset.css';
+import './css/small.css';
+import './css/tablet.css';
+import './css/unal.css';
 
-import '../../js/unal.js';
-import LoginForm from './LoginForm';
-import { Row, Col } from 'antd';
+import './js/unal.js';
 
-class LoginFormCanvas extends Component {
+class UnalCanvas extends Component {
   render() {
     return (
       <div>
@@ -36,22 +34,22 @@ class LoginFormCanvas extends Component {
   <link
     rel="stylesheet"
     type="text/css"
-    href="../../css/bootstrap.min.css"
+    href="./css/bootstrap.min.css"
     media="all"
   />
   <link
     rel="stylesheet"
     type="text/css"
-    href="../../css/bootstrap-theme.min.css"
+    href="./css/bootstrap-theme.min.css"
     media="all"
   />
-  <link rel="stylesheet" type="text/css" href="../../css/reset.css" media="all" />
-  <link rel="stylesheet" type="text/css" href="../../css/unal.css" media="all" />
-  <link rel="stylesheet" type="text/css" href="../../css/base.css" media="all" />
-  <link rel="stylesheet" type="text/css" href="../../css/tablet.css" media="all" />
-  <link rel="stylesheet" type="text/css" href="../../css/phone.css" media="all" />
-  <link rel="stylesheet" type="text/css" href="../../css/small.css" media="all" />
-  <link rel="stylesheet" type="text/css" href="../../css/printer.css" media="print" />
+  <link rel="stylesheet" type="text/css" href="./css/reset.css" media="all" />
+  <link rel="stylesheet" type="text/css" href="./css/unal.css" media="all" />
+  <link rel="stylesheet" type="text/css" href="./css/base.css" media="all" />
+  <link rel="stylesheet" type="text/css" href="./css/tablet.css" media="all" />
+  <link rel="stylesheet" type="text/css" href="./css/phone.css" media="all" />
+  <link rel="stylesheet" type="text/css" href="./css/small.css" media="all" />
+  <link rel="stylesheet" type="text/css" href="./css/printer.css" media="print" />
   <title>UAPAPP: Universidad Nacional de Colombia</title>
 
   <div id="services">
@@ -60,7 +58,7 @@ class LoginFormCanvas extends Component {
       <li>
         <a href="http://correo.unal.edu.co">
           <img
-            src={require("../../images/icnServEmail.png")}
+            src={require("./images/icnServEmail.png")}
             width={32}
             height={32}
             alt="Correo Electrónico"
@@ -71,7 +69,7 @@ class LoginFormCanvas extends Component {
       <li>
         <a href="https://dninfoa.unal.edu.co">
           <img
-            src={require("../../images/icnServSia.png")}
+            src={require("./images/icnServSia.png")}
             width={32}
             height={32}
             alt="Dirección Nacional de Información Académica"
@@ -82,7 +80,7 @@ class LoginFormCanvas extends Component {
       <li>
         <a href="http://bibliotecas.unal.edu.co">
           <img
-            src={require("../../images/icnServLibrary.png")}
+            src={require("./images/icnServLibrary.png")}
             width={32}
             height={32}
             alt="Biblioteca"
@@ -93,7 +91,7 @@ class LoginFormCanvas extends Component {
       <li>
         <a href="http://personal.unal.edu.co">
           <img
-            src={require("../../images/icnServCall.png")}
+            src={require("./images/icnServCall.png")}
             width={32}
             height={32}
             alt="Convocatorias"
@@ -104,7 +102,7 @@ class LoginFormCanvas extends Component {
       <li>
         <a href="http://identidad.unal.edu.co">
           <img
-            src={require("../../images/icnServIdentidad.png")}
+            src={require("./images/icnServIdentidad.png")}
             width={32}
             height={32}
             alt="Identidad U.N."
@@ -119,14 +117,14 @@ class LoginFormCanvas extends Component {
       <a href="http://unal.edu.co">
         <svg width="93%" height="93%">
           <image
-                  xlinkHref={require("../../images/escudoUnal.svg")}
+                  xlinkHref={require("./images/escudoUnal.svg")}
             width="100%"
             height="100%"
             className="hidden-print"
           />
         </svg>
               <img
-                src={require("../../images/escudoUnal_black.png")}
+                src={require("./images/escudoUnal_black.png")}
                 className="visible-print"
                 alt="Escudo de la Universidad Nacional de Colombia."/>
       </a>
@@ -135,14 +133,14 @@ class LoginFormCanvas extends Component {
       <img
         className="hidden-print"
         alt="Escudo de la República de Colombia"
-        src={require("../../images/sealColombia.png")}
+        src={require("./images/sealColombia.png")}
         width={66}
         height={66}
       />
       <img
         className="visible-print"
         alt="Escudo de la República de Colombia"
-        src={require("../../images/sealColombia_black.png")}
+        src={require("./images/sealColombia_black.png")}
         width={66}
         height={66}
       />
@@ -208,13 +206,13 @@ class LoginFormCanvas extends Component {
       </div>
       <div className="mainMenu">
         <div className="btn-group">
-          <a href="index.html#" className="btn btn-default dropdown-toggle">
+          <a href="/" className="btn btn-default dropdown-toggle">
             Inicio
           </a>
           <span className="caret-right" />
         </div>
         <div className="btn-group">
-          <a href="index.html#" className="btn btn-default dropdown-toggle">
+          <a href="/contact" className="btn btn-default dropdown-toggle">
             Contáctenos
           </a>
           <span className="caret-right" />
@@ -247,21 +245,8 @@ class LoginFormCanvas extends Component {
   </header>
   <main className="detalle">
 
-    <div className="breadcrumb-class">
-      Está en:
-      <a href="index.html" target="_self" title="Inicio">
-        Inicio
-      </a>
-    </div>
+    {this.props.children}
     
-    <Row>
-      <Col xs={4} sm={4} md={6} lg={8} xl={8}></Col>
-      <Col xs={16} sm={16} md={12} lg={8} xl={8}>
-        <LoginForm/>
-      </Col>
-      <Col xs={4} sm={4} md={6} lg={8} xl={8}></Col>
-    </Row>
-
   </main>
 
   <footer className="clear">
@@ -353,14 +338,14 @@ class LoginFormCanvas extends Component {
           <img
             className="hidden-print"
             alt="Orgullo UN"
-            src={require("../../images/log_orgullo.png")}
+            src={require("./images/log_orgullo.png")}
             width={78}
             height={21}
           />
           <img
             className="visible-print"
             alt="Orgullo UN"
-                  src={require("../../images/log_orgullo_black.png")}
+                  src={require("./images/log_orgullo_black.png")}
             width={94}
             height={37}
           />
@@ -372,14 +357,14 @@ class LoginFormCanvas extends Component {
           <img
             className="hidden-print"
             alt="Agencia de noticias"
-                  src={require("../../images/log_agenc.png")}
+                  src={require("./images/log_agenc.png")}
             width={94}
             height={25}
           />
           <img
             className="visible-print"
             alt="Agencia de noticias"
-                  src={require("../../images/log_agenc_black.png")}
+                  src={require("./images/log_agenc_black.png")}
             width={94}
             height={37}
           />
@@ -392,7 +377,7 @@ class LoginFormCanvas extends Component {
         >
           <img
             alt="Trámites en línea"
-                  src={require("../../images/log_gobiern.png")}
+                  src={require("./images/log_gobiern.png")}
             width={67}
             height={51}
           />
@@ -400,7 +385,7 @@ class LoginFormCanvas extends Component {
         <a className="col-xs-6 col-sm-12" href="http://www.contaduria.gov.co/">
           <img
             alt="Contaduría general de la republica"
-                  src={require("../../images/log_contra.png")}
+                  src={require("./images/log_contra.png")}
             width={67}
             height={51}
           />
@@ -413,4 +398,4 @@ class LoginFormCanvas extends Component {
   }
 }
 
-export default LoginFormCanvas;
+export default UnalCanvas;

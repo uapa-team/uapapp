@@ -1,5 +1,6 @@
 import React from "react";
 import { Form, Icon, Input, Button, Checkbox } from "antd";
+import { Row, Col } from 'antd';
 
 import "./LoginForm.css";
 import "antd/dist/antd.css";
@@ -17,6 +18,18 @@ class NormalLoginForm extends React.Component {
   render() {
     const { getFieldDecorator } = this.props.form;
     return (
+      <div>
+      <div className="breadcrumb-class">
+      Está en:
+      <a href="/" target="_self" title="Inicio">
+        Inicio
+      </a>
+    </div>
+
+
+      <Row>
+      <Col xs={4} sm={4} md={6} lg={8} xl={8}></Col>
+      <Col xs={16} sm={16} md={12} lg={8} xl={8}>
       <div className="general">
       <div className="welcome"><h1>¡Bienvenido a UAPApp!</h1></div>
       <Form onSubmit={this.handleSubmit} className="login-form">
@@ -52,10 +65,14 @@ class NormalLoginForm extends React.Component {
           <Button type="primary" htmlType="submit" className="login-form-button">
             Ingresar
           </Button>
-          ¿No tiene un usuario? - <a href="">Contáctenos</a>
+          ¿No tiene un usuario? - <a href='/contact'>Contáctenos</a>
         </Form.Item>
       </Form>
       </div>
+      </Col>
+      <Col xs={4} sm={4} md={6} lg={8} xl={8}></Col>
+    </Row>
+    </div>
     );
   }
 }
