@@ -2,7 +2,7 @@ import React from "react";
 import { Form, Icon, Input, Button, Checkbox } from "antd";
 import { Row, Col } from 'antd';
 
-import "./LoginForm.css";
+import "./Login.css";
 import "antd/dist/antd.css";
 
 class NormalLoginForm extends React.Component {
@@ -29,8 +29,8 @@ class NormalLoginForm extends React.Component {
       <Row>
       <Col xs={4} sm={4} md={6} lg={8} xl={8}></Col>
       <Col xs={16} sm={16} md={12} lg={8} xl={8}>
-      <div className="general">
-      <div className="welcome"><h1>¡Bienvenido a UAPApp!</h1></div>
+      <div className="login-general">
+      <div className="login-welcome"><h1>¡Bienvenido a UAPApp!</h1></div>
       <Form onSubmit={this.handleSubmit} className="login-form">
         <Form.Item>
           {getFieldDecorator('username', {

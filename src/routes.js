@@ -1,9 +1,9 @@
 import React from 'react'
 import { Switch } from 'react-router-dom'
 
-import LoginForm from "./js/Components/LoginForm";
-import Contact from "./js/Components/Contact";
-import Home from "./js/Components/Home"
+import LoginForm from "./js/Components/Login/Login";
+import Contact from "./js/Components/Contact/Contact";
+import Home from "./js/Components/Home/Home"
 
 import { ProtectedRoute } from './ProtectedRoute'
 import { LoginRoute } from './LoginRoute'
