@@ -320,13 +320,13 @@ class UnalCanvas extends Component {
         <br />
         <a
           title="Comuníquese con el administrador de este sitio web"
-          href="mailto:autoevalua_fibo@unal.edu.co"
+          href="mailto:autoevalua_fibog@unal.edu.co"
         >
-          autoevalua_fibo@unal.edu.co
+          autoevalua_fibog@unal.edu.co
         </a>
         <br />
         <a href="index.html#">Acerca de este sitio web</a>
-        <br /> Última actualización: 18/11/2019
+        <br /> Última actualización: 23/12/2019
       </p>
     </div>
     <div className="col-md-2 col-lg-2 col-sm-2 col-xs-12 logos">
