@@ -54,14 +54,17 @@ class NormalLoginForm extends React.Component {
           )}
         </Form.Item>
         <Form.Item>
-          {getFieldDecorator('remember', {
+          {
+          getFieldDecorator('remember', {
             valuePropName: 'checked',
-            initialValue: true,
-          })(<Checkbox>Recuérdame</Checkbox>)}
+            initialValue: true,           
+          }, '')(<Checkbox>Recuérdame</Checkbox>)}
           <a className="login-form-forgot" href="https://cuenta.unal.edu.co/index.php?p=recoverPassword">
             Olvidé mi contraseña
           </a>
-          <Button type="primary" htmlType="submit" className="login-form-button">
+          <Button type="primary" htmlType="submit" className="login-form-button" 
+          style={{"background-color": "#2d2656", "border-color": "#2d2656"
+          }}>
             Ingresar
           </Button>
           ¿No tiene un usuario? - <a href='/contact'>Contáctenos</a>
