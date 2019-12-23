@@ -62,9 +62,7 @@ class NormalLoginForm extends React.Component {
           <a className="login-form-forgot" href="https://cuenta.unal.edu.co/index.php?p=recoverPassword">
             Olvidé mi contraseña
           </a>
-          <Button type="primary" htmlType="submit" className="login-form-button" 
-          style={{"background-color": "#2d2656", "border-color": "#2d2656"
-          }}>
+          <Button type="primary" htmlType="submit" className="login-form-button">
             Ingresar
           </Button>
           ¿No tiene un usuario? - <a href='/contact'>Contáctenos</a>

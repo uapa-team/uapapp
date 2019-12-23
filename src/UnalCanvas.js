@@ -218,6 +218,12 @@ class UnalCanvas extends Component {
           <span className="caret-right" />
         </div>
         <div className="btn-group">
+          <a href="https://ingenieria.bogota.unal.edu.co/es/dependencias/vicedecanatura-academica/autoevaluacion-y-acreditacion.html" className="btn btn-default dropdown-toggle">
+            ¿Quienes somos?
+          </a>
+          <span className="caret-right" />
+        </div>
+        <div className="btn-group">
                 {/*Sedes*/}
         </div>
       </div>

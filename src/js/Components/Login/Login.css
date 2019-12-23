@@ -16,6 +16,17 @@
     width: 100%;
 }
 
+/* Estilos general (se usan en toda la página): */
+
+.ant-btn-primary {
+    background-color:#2d2656!important; 
+    border-color: #2d2656!important;
+}
+.ant-btn-primary:hover {
+    background-color:#2d2656da!important; 
+    border-color: #2d2656da!important;
+}
+
 .ant-checkbox-checked > .ant-checkbox-inner {
     background: #2d2656!important;
     border-color: #2d2656!important;    
@@ -33,6 +44,7 @@
 
 .ant-input:hover, .ant-input:focus  {
     border-color: #2d2656!important;
-
 }
+
+
 
