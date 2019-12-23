@@ -28,4 +28,8 @@
 
 .ant-radio-button-wrapper:focus-within {
     outline: 3px solid rgba(45,38,86,0.06)!important;
-    }
+}
+
+.ant-form-item-required::before {
+    font-size: 0px!important;
+}

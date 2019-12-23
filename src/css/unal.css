@@ -118,7 +118,7 @@ footer
 }
 
 #services .indicator {
-	background-color: #ec6607; background-image: url(../images/backServices.png); background-position: 0 0; cursor: pointer; height: 126px; left: -34px; position: absolute; top: 150px; width: 34px;
+	background-color: #2d2656; background-image: url(../images/backServices.png); background-position: 0 0; cursor: pointer; height: 126px; left: -34px; position: absolute; top: 150px; width: 34px;
 }
 
 #services .indicator:hover {
@@ -169,7 +169,7 @@ ul.dropdown-menu a:focus {
 }
 
 #unalTop .btn-group .btn .caret {
-	border-top-color: #ec6607; margin-left: 6px;
+	border-top-color: #2d2656; margin-left: 6px;
 }
 
 #unalTop .btn-group:hover,
@@ -387,7 +387,7 @@ ul.dropdown-menu a:focus {
 }
 
 #unalTop .navigation .buscador .gsc-search-button {
-	-webkit-border-radius: 0; -moz-border-radius: 0; -ms-border-radius: 0; -o-border-radius: 0; border-radius: 0; background-color: #ec6607!important; border: 0 none; -webkit-box-shadow: none; -moz-box-shadow: none; -o-box-shadow: none; box-shadow: none; cursor: pointer; float: right; height: 30px; padding: 0; width: 30px; margin-left: 0 !important;
+	-webkit-border-radius: 0; -moz-border-radius: 0; -ms-border-radius: 0; -o-border-radius: 0; border-radius: 0; background-color: #2d2656!important; border: 0 none; -webkit-box-shadow: none; -moz-box-shadow: none; -o-box-shadow: none; box-shadow: none; cursor: pointer; float: right; height: 30px; padding: 0; width: 30px; margin-left: 0 !important;
 }
 
 #unalTop .navigation .buscador .gsc-search-button input.gsc-search-button {
@@ -446,7 +446,7 @@ main.detalle {
 
 footer {
 	height: auto; background: #666; font-size: .9em; color: #ddd; padding: 15px 0 25px 0;
-	position: absolute; bottom:0; 
+	position: absolute; bottom:0;
 }
 
 footer div.footer-info p {

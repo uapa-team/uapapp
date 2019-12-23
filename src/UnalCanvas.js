@@ -248,11 +248,10 @@ class UnalCanvas extends Component {
         </div>
       </div>
     </div>
-  </header>
-  <main className="detalle">
+  </header>  
 
-    {this.props.children}
-    
+  <main className="detalle">
+     {this.props.children} 
   </main>
 
   <footer className="clear">
