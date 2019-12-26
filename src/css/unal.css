@@ -31,7 +31,7 @@
 }
 
 body {
-	background-color: #ddd; font-family: "Ancizar sans", Tahoma, Geneva, sans-serif; display: -webkit-box; display: -webkit-flex; display: -moz-flex; display: -ms-flexbox; display: flex; min-height: 100vh; -webkit-box-direction: normal; -webkit-box-orient: vertical; -webkit-flex-direction: column; -moz-flex-direction: column; -ms-flex-direction: column; flex-direction: column; overflow-y: scroll;
+	background-color: #ddd; font-family: "Ancizar sans", Tahoma, Geneva, sans-serif; display: -webkit-box; display: -webkit-flex; display: -moz-flex; display: -ms-flexbox; display: flex; min-height: 100vh; -webkit-box-direction: normal; -webkit-box-orient: vertical; -webkit-flex-direction: column; -moz-flex-direction: column; -ms-flex-direction: column; flex-direction: column; overflow-y: auto;
 }
 
 
@@ -39,17 +39,16 @@ h1, h2, h3, h4, h5, h6 {
 	font-family: "Ancizar serif", "MS Serif", "New York", serif;
 }
 
-
 a {
-	color: #94b43b;
+	color: #2d2656;
 }
 
 a:hover {
-	text-decoration: underline; color: #333333;
+	text-decoration: underline; color: #ec6607;
 }
 
 main {
-	-webkit-box-flex: 1; -webkit-flex: 1 0 auto; -moz-box-flex: 1; -moz-flex: 1 0 auto; -ms-flex: 1 0 auto; flex: 1 0 auto; min-height: 30em;
+	-webkit-box-flex: 1; -webkit-flex: 1 0 auto; -moz-box-flex: 1; -moz-flex: 1 0 auto; -ms-flex: 1 0 auto; flex: 1 0 auto;
 }
 
 body>footer:before {
@@ -112,13 +111,13 @@ ul, ol {margin-left: 1.2em;}
 #services ul li a {
 	color: white; font-size: .9em; line-height: 32px; white-space: nowrap; display: inline; background: transparent; padding: 0;
 }
-
+footer
 #services ul li a img {
 	display: block; float: left; height: 32px; margin: 0 5px; width: 32px;
 }
 
 #services .indicator {
-	background-color: #94b43b; background-image: url(../images/backServices.png); background-position: 0 0; cursor: pointer; height: 126px; left: -34px; position: absolute; top: 150px; width: 34px;
+	background-color: #2d2656; background-image: url(../images/backServices.png); background-position: 0 0; cursor: pointer; height: 126px; left: -34px; position: absolute; top: 150px; width: 34px;
 }
 
 #services .indicator:hover {
@@ -169,7 +168,7 @@ ul.dropdown-menu a:focus {
 }
 
 #unalTop .btn-group .btn .caret {
-	border-top-color: #94b43b; margin-left: 6px;
+	border-top-color: #2d2656; margin-left: 6px;
 }
 
 #unalTop .btn-group:hover,
@@ -387,7 +386,7 @@ ul.dropdown-menu a:focus {
 }
 
 #unalTop .navigation .buscador .gsc-search-button {
-	-webkit-border-radius: 0; -moz-border-radius: 0; -ms-border-radius: 0; -o-border-radius: 0; border-radius: 0; background-color: #94b43b!important; border: 0 none; -webkit-box-shadow: none; -moz-box-shadow: none; -o-box-shadow: none; box-shadow: none; cursor: pointer; float: right; height: 30px; padding: 0; width: 30px; margin-left: 0 !important;
+	-webkit-border-radius: 0; -moz-border-radius: 0; -ms-border-radius: 0; -o-border-radius: 0; border-radius: 0; background-color: #2d2656!important; border: 0 none; -webkit-box-shadow: none; -moz-box-shadow: none; -o-box-shadow: none; box-shadow: none; cursor: pointer; float: right; height: 30px; padding: 0; width: 30px; margin-left: 0 !important;
 }
 
 #unalTop .navigation .buscador .gsc-search-button input.gsc-search-button {
@@ -415,7 +414,7 @@ table.gsc-completion-container {
 }
 
 #unalTop .navigation .mainMenu .btn-group:last-child .caret {
-	border-top-color: #94b43b!important;
+	border-top-color: #2d2656!important;
 }
 
 #unalTop .navigation .mainMenu .btn-group ul.dropdown-menu {
@@ -432,20 +431,24 @@ main .breadcrumb-class a {
 }
 
 main .breadcrumb-class a {
-	color: #94b43b; font-weight: normal;
+	color: #2d2656; font-weight: normal;
 }
 
 main .breadcrumb-class a:hover {
-	color: #333;
+	color: #ec6607;
 }
 
 main.detalle {
-	margin: 0 10% 50px 10%;
+	margin: 0 10% 0 10%;
+}
+
+#footfix {
+	min-height: 100vh;
 }
 
 footer {
-	height: auto; background: #666; font-size: .9em; color: #ddd; padding: 15px 0 25px 0;
-	position:absolute; left:0; 	bottom:0;	right:0;
+	height: 110px; background: #666; font-size: .9em; color: #ddd; padding: 15px 0 25px 0;
+	margin-top: -110px;
 }
 
 footer div.footer-info p {
@@ -650,45 +653,9 @@ footer .logos a img {
 	body footer .footer-info p.derechos {
 		text-align: left; border-right: 0; padding-left: 20px;
 	}
-}
-
-@media screen and (max-width:480px) {
-	body #unalTop .seal {
-		display: none;
-	}
-	body #unalTop .firstMenu .navbar-toggle {
-		margin-right: 11px;
-	}
-	body main.detalle {
-		margin: 0 2% 50px;
-	}
-	body footer {
-		padding: 15px 0 25px;
-	}
-	body footer .gobiernoLinea a {
-		width: 100%;
-	}
-	body footer .gobiernoLinea:nth-child(2) {
-		text-align: right;
-	}
-	body footer div.footer-info {
-		padding: 10px 15px; margin: 10px auto; font-size: .9em; border-top: solid 1px #555; border-bottom: solid 1px #555;
-	}
-	body footer div.footer-info p.contacto,
-	body footer div.footer-info p.derechos {
-		border: 0; padding: 0; width: 49%;
-	}
-	body footer div.footer-info p.derechos {
-		text-align: right; border-left: none;
-	}
-	body footer .logos {
-		margin-top: 0;
-	}
-	.col-xxs-6 {
-		width: 50%;
-	}
-	.col-xxs-12 {
-		width: 100%;
+	footer {
+		height: 180px;
+		margin-top: -180px;
 	}
 }
 
@@ -739,7 +706,7 @@ footer .logos a img {
 		padding-bottom: 15px;
 	}
 	#unalTop .navigation.collapse.in {
-		overflow: visible
+		overflow: auto
 	}
 	#unalTop .navigation .site-url {
 		font-size: 1.1em; margin: 10px 0 5px 14px;
@@ -777,6 +744,54 @@ footer .logos a img {
 	footer .logos {
 		margin-top: 10px;
 	}
+	footer {
+		height:260px;
+		margin-top: -260px;
+	}
+}
+
+@media screen and (max-width:480px) {
+	body #unalTop .seal {
+		display: none;
+	}
+	body #unalTop .firstMenu .navbar-toggle {
+		margin-right: 11px;
+	}
+	body main.detalle {
+		margin: 0 2% 50px;
+	}
+	body footer {
+		padding: 15px 0 25px;
+	}
+	body footer .gobiernoLinea a {
+		width: 100%;
+	}
+	body footer .gobiernoLinea:nth-child(2) {
+		text-align: right;
+	}
+	body footer div.footer-info {
+		padding: 10px 15px; margin: 10px auto; font-size: .9em; border-top: solid 1px #555; border-bottom: solid 1px #555;
+	}
+	body footer div.footer-info p.contacto,
+	body footer div.footer-info p.derechos {
+		border: 0; padding: 0; width: 49%;
+	}
+	body footer div.footer-info p.derechos {
+		text-align: right; border-left: none;
+	}
+	body footer .logos {
+		margin-top: 0;
+	}
+	.col-xxs-6 {
+		width: 50%;
+	}
+	.col-xxs-12 {
+		width: 100%;
+	}
+	footer {
+		height:350px;
+		margin-top: -350px;
+	}	
 }
 
 @media screen and (min-width:768px) {

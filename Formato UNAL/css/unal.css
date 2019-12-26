@@ -440,11 +440,11 @@ main .breadcrumb-class a:hover {
 }
 
 main.detalle {
-	margin: 0 10% 50px 10%;
+	margin: 0 10% 0 10%;
 }
 
 footer {
-	height: auto; background: #666; font-size: .9em; color: #ddd; padding: 15px 0 25px 0;
+	height: auto; background: red; font-size: .9em; color: #ddd; padding: 15px 0 25px 0;
 }
 
 footer div.footer-info p {
@@ -795,3 +795,4 @@ footer .logos a img {
 		display: block; border: 0; -webkit-border-radius: none; -moz-border-radius: none; -ms-border-radius: none; -o-border-radius: none; border-radius: none; -webkit-box-shadow: none; -moz-box-shadow: none; -o-box-shadow: none; box-shadow: none; position: relative; background-color: transparent; padding: 0;
 	}
 }
+
