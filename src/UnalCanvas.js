@@ -51,7 +51,7 @@ class UnalCanvas extends Component {
   <link rel="stylesheet" type="text/css" href="./css/small.css" media="all" />
   <link rel="stylesheet" type="text/css" href="./css/printer.css" media="print" />
   <title>UAPAPP: Universidad Nacional de Colombia</title>
-
+    <div id="footfix">
   <div id="services">
     <div className="indicator hidden-xs" />
     <ul className="dropdown-menu">
@@ -253,6 +253,7 @@ class UnalCanvas extends Component {
   <main className="detalle">
      {this.props.children} 
   </main>
+  </div>
 
   <footer className="clear">
     <nav className="col-md-3 col-lg-3 col-sm-3 col-xs-4 col-xxs-6 gobiernoLinea">
