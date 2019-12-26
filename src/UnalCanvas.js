@@ -254,7 +254,7 @@ class UnalCanvas extends Component {
      {this.props.children} 
   </main>
   </div>
-
+    
   <footer className="clear">
     <nav className="col-md-3 col-lg-3 col-sm-3 col-xs-4 col-xxs-6 gobiernoLinea">
       <a href="http://www.legal.unal.edu.co" target="_top">
