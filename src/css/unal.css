@@ -790,7 +790,9 @@ footer .logos a img {
 	}
 	footer {
 		height:350px;
-		margin-top: -350px;
+	}
+	#footfix {
+		height: auto;
 	}	
 }
 
