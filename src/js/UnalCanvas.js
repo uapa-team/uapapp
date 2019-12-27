@@ -31,25 +31,15 @@ class UnalCanvas extends Component {
   <meta name="expires" content={1} />
   <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
   <meta name="robots" content="all" />
-  <link
-    rel="stylesheet"
-    type="text/css"
-    href="./css/bootstrap.min.css"
-    media="all"
-  />
-  <link
-    rel="stylesheet"
-    type="text/css"
-    href="./css/bootstrap-theme.min.css"
-    media="all"
-  />
-  <link rel="stylesheet" type="text/css" href=".././css/reset.css" media="all" />
-  <link rel="stylesheet" type="text/css" href=".././css/unal.css" media="all" />
-  <link rel="stylesheet" type="text/css" href=".././css/base.css" media="all" />
-  <link rel="stylesheet" type="text/css" href=".././css/tablet.css" media="all" />
-  <link rel="stylesheet" type="text/css" href=".././css/phone.css" media="all" />
-  <link rel="stylesheet" type="text/css" href=".././css/small.css" media="all" />
-  <link rel="stylesheet" type="text/css" href=".././css/printer.css" media="print" />
+  <link type="text/css" href="./css/bootstrap.min.css" media="all" />
+  <link type="text/css" href="./css/bootstrap-theme.min.css" media="all" />
+  <link type="text/css" href="../css/reset.css" media="all" />
+  <link type="text/css" href="../css/unal.css" media="all" />
+  <link type="text/css" href="../css/base.css" media="all" />
+  <link type="text/css" href="../css/tablet.css" media="all" />
+  <link type="text/css" href="../css/phone.css" media="all" />
+  <link type="text/css" href="../css/small.css" media="all" />
+  <link type="text/css" href="../css/printer.css" media="print" />
   <title>UAPAPP: Universidad Nacional de Colombia</title>
     <div id="footfix">
   <div id="services">
