@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import Routes from './routes'
-import UnalCanvas from './UnalCanvas'
+import Routes from './js/routes'
+import UnalCanvas from './js/UnalCanvas'
 
 class App extends Component {
   render() {
