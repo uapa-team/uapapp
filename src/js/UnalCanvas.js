@@ -10,6 +10,7 @@ import '.././css/tablet.css';
 import '.././css/unal.css';
 
 import './unal.js';
+import './jquery.js';
 
 class UnalCanvas extends Component {
   render() {
