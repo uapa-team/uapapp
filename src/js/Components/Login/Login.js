@@ -2,6 +2,9 @@ import React from "react";
 import { Form, Icon, Input, Button, Checkbox } from "antd";
 import { Row, Col } from 'antd';
 
+import { withRouter } from "react-router-dom"
+import auth from "../../../auth"
+
 import "./Login.css";
 import "antd/dist/antd.css";
 
@@ -11,6 +14,12 @@ class NormalLoginForm extends React.Component {
     this.props.form.validateFields((err, values) => {
       if (!err) {
         console.log('Received values of form: ', values);
+        
+        auth.login(() => {
+          console.log(this.props)
+          this.props.history.push('/home');
+        })
+
       }
     });
   };
@@ -79,4 +88,4 @@ class NormalLoginForm extends React.Component {
 
 const WrappedNormalLoginForm = Form.create({ name: 'normal_login' })(NormalLoginForm);
 
-export default Form.create()(WrappedNormalLoginForm);
+export default withRouter(Form.create()(WrappedNormalLoginForm));

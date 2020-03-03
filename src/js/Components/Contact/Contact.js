@@ -3,6 +3,8 @@ import "./Contact.css";
 import { Form, Icon, Input, Button, Radio } from "antd";
 import { Row, Col } from 'antd';
 
+import { withRouter } from "react-router-dom"
+
 const { TextArea } = Input;
 
 class Contact extends React.Component {
@@ -94,4 +96,4 @@ class Contact extends React.Component {
 
 const WrappedContact = Form.create({ name: 'contact' })(Contact);
 
-export default Form.create()(WrappedContact);
+export default withRouter(Form.create()(WrappedContact));
