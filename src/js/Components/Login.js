@@ -3,7 +3,6 @@ import { Form, Icon, Input, Button, Checkbox } from "antd";
 import { Row, Col } from "antd";
 
 import { withRouter } from "react-router-dom";
-import auth from "../Basics/auth";
 import "antd/dist/antd.css";
 
 class NormalLoginForm extends React.Component {
@@ -11,14 +10,45 @@ class NormalLoginForm extends React.Component {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        console.log("Received values of form: ", values);
-
-        auth.login(() => {
-          console.log(this.props);
-          this.props.history.push("/home");
-        });
+        this.performLogin();
       }
     });
+  };
+
+  performLogin = () => {
+    localStorage.setItem("jwt", "un_token_cualquiera");
+    this.props.history.push("/home");
+    /*
+    const key = "updatable";
+    message.loading({ content: "Iniciando sesión...", key });
+    Backend.sendLogin(this.state.username, this.state.password)
+      .then(async response => {
+        if (response.status === 403) {
+          message.error({ content: "Acceso restringido.", key });
+        } else if (response.status === 404) {
+          message.error({ content: "Contraseña incorrecta.", key });
+        } else if (response.status === 200) {
+          message.success({ content: "Inicio de sesión exitoso.", key });
+          let res = await response.json();
+          localStorage.setItem("jwt", res["token"]);
+          window.location.href = "/home";
+          // this.props.history.push("/home");
+        } else {
+          message.error({
+            content: "Error realizando el login.",
+            key
+          });
+          console.log("Login Error: Backend HTTP code " + response.status);
+        }
+      })
+      .catch(error => {
+        message.error({
+          content: "Error realizando el login.",
+          key
+        });
+        console.log("Login Error: " + error);
+      });
+      */
   };
 
   render() {
