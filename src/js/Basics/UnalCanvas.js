@@ -225,6 +225,27 @@ class UnalCanvas extends Component {
                   </a>
                   <span className="caret-right" />
                 </div>
+                {(() => {
+                  if (localStorage.getItem("jwt")) {
+                    return (
+                      <div className="btn-group">
+                        {/*eslint-disable-next-line*/}
+                        <a
+                          onClick={() => {
+                            //Backend.sendRequest("GET", "logout");
+                            localStorage.removeItem("jwt");
+                            localStorage.removeItem("type");
+                            window.location.reload();
+                          }}
+                          className="btn btn-default dropdown-toggle"
+                        >
+                          Cerrar Sesión
+                        </a>
+                        <span className="caret-right" />
+                      </div>
+                    );
+                  }
+                })()}
                 <div className="btn-group">{/*Sedes*/}</div>
               </div>
               <div className="btn-group hidden-sm hidden-md hidden-lg hidden-print">

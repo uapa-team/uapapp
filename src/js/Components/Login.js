@@ -18,6 +18,7 @@ class NormalLoginForm extends React.Component {
   performLogin = () => {
     localStorage.setItem("jwt", "un_token_cualquiera");
     this.props.history.push("/home");
+    window.location.reload();
     /*
     const key = "updatable";
     message.loading({ content: "Iniciando sesión...", key });
