@@ -44,6 +44,12 @@ code {
     monospace;
 }
 
+.main-row-container {
+  padding: 1em;
+  padding-bottom: 0;
+  margin-top: 1.5em;
+}
+
 /* Estilos de Login */
 .login-general {
   padding: 1em;
@@ -66,12 +72,6 @@ code {
 /* Estilos Contact */
 .contact-welcome {
   text-align: center;
-}
-
-.contact-general {
-  padding: 1em;
-  padding-bottom: 0;
-  margin-top: 1.5em;
 }
 
 .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled):first-child {

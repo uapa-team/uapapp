@@ -28,7 +28,7 @@ class Contact extends React.Component {
     const { getFieldDecorator } = this.props.form;
     const { value } = this.state;
     return (
-      <Row className="contact-general">
+      <Row className="main-row-container">
         <Col xs={4} sm={4} md={6} lg={6} xl={6}></Col>
         <Col xs={16} sm={16} md={12} lg={12} xl={12}>
           <div className="contact-welcome">
