@@ -99,3 +99,20 @@ code {
 .ant-form-item-required::before {
   font-size: 0px !important;
 }
+
+/* Estilos en la tabla de administración de usuarios */
+.ant-table-tbody tr:first-child {
+  background-color: whitesmoke;
+}
+
+.ant-table-tbody tr:nth-child(even) {
+  background-color: whitesmoke;
+}
+
+.ant-table-tbody tr:nth-child(odd) {
+  background-color: white;
+}
+
+.ant-table-tbody tr:last-child {
+  background-color: whitesmoke;
+}

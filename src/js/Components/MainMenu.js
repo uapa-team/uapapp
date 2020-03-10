@@ -8,9 +8,6 @@ import {
 } from '@ant-design/icons';
 import { withRouter } from "react-router-dom";
 
-const { SubMenu } = Menu;
-
-
 class MainMenu extends React.Component {
     state = {
         current: 'admin',
