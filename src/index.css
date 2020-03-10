@@ -74,33 +74,40 @@ code {
   text-align: center;
 }
 
-.ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled):first-child {
-  border-color: #2d2656 !important;
-}
-
-.ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled) {
-  color: #2d2656 !important;
-  border-color: #2d2656 !important;
-  box-shadow: -1px 0 0 0 #2d2656 !important;
+.ant-form-item-required::before {
+  font-size: 0px !important;
 }
 
 .ant-radio-button-wrapper:hover {
   color: #2d2656da !important;
 }
 
-.ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled):hover {
-  border-color: #2d2656 !important;
-}
-
 .ant-radio-button-wrapper:focus-within {
   outline: 3px solid rgba(45, 38, 86, 0.06) !important;
 }
 
-.ant-form-item-required::before {
-  font-size: 0px !important;
+.ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled) {
+  color: white !important;
+  background: #2d2656da !important;
+  box-shadow: -1px 0 0 0 #2d2656 !important;
+  border-color: #2d2656 !important;
+
+}
+
+.ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled):first-child {
+  border-color: #2d2656 !important;
+}
+
+.ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled):hover {
+  border-color: #2d2656 !important;
 }
 
 /* Estilos en la tabla de administración de usuarios */
+
+.ant-table-tbody tr:nth-child(odd) {
+  background-color: white;
+}
+
 .ant-table-tbody tr:first-child {
   background-color: whitesmoke;
 }
@@ -109,10 +116,9 @@ code {
   background-color: whitesmoke;
 }
 
-.ant-table-tbody tr:nth-child(odd) {
-  background-color: white;
-}
-
 .ant-table-tbody tr:last-child {
   background-color: whitesmoke;
 }
+
+
+
