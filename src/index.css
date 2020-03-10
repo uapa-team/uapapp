@@ -3,6 +3,7 @@
   background-color: #2d2656 !important;
   border-color: #2d2656 !important;
 }
+
 .ant-btn-primary:hover {
   background-color: #2d2656da !important;
   border-color: #2d2656da !important;
@@ -69,7 +70,7 @@ code {
   width: 100%;
 }
 
-/* Estilos Contact */
+/* Estilos Contact (radio-button) */
 .contact-welcome {
   text-align: center;
 }
@@ -91,34 +92,20 @@ code {
   background: #2d2656da !important;
   box-shadow: -1px 0 0 0 #2d2656 !important;
   border-color: #2d2656 !important;
-
 }
 
-.ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled):first-child {
+.ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled):first-child,
+.ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled):hover  {
   border-color: #2d2656 !important;
 }
 
-.ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled):hover {
-  border-color: #2d2656 !important;
-}
-
-/* Estilos en la tabla de administración de usuarios */
-
+/* Estilos en tablas (administración de usuarios) */
 .ant-table-tbody tr:nth-child(odd) {
   background-color: white;
 }
 
-.ant-table-tbody tr:first-child {
-  background-color: whitesmoke;
-}
-
+.ant-table-tbody tr:first-child,
+.ant-table-tbody tr:last-child,
 .ant-table-tbody tr:nth-child(even) {
   background-color: whitesmoke;
 }
-
-.ant-table-tbody tr:last-child {
-  background-color: whitesmoke;
-}
-
-
-
