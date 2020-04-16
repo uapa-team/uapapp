@@ -25,7 +25,6 @@ class Contact extends React.Component {
   };
 
   render() {
-    const { getFieldDecorator } = this.props.form;
     const { value } = this.state;
     return (
       <Row className="main-row-container">
@@ -36,37 +35,20 @@ class Contact extends React.Component {
           </div>
 
           <Form onSubmit={this.handleSubmit} className="login-form">
-            <Form.Item label="Nombre completo">
-              {getFieldDecorator("nombre", {
-                rules: [
-                  { required: true, message: "Por favor ingrese su nombre." }
-                ]
-              })(
-                <Input
-                  prefix={
-                    <Icon type="smile" style={{ color: "rgba(0,0,0,.25)" }} />
-                  }
-                  placeholder="Escriba su nombre completo"
-                />
-              )}
+            <Form.Item name="nombre" label="Nombre completo" 
+              rules={[{ required: true, message: "Por favor ingrese su nombre." }]} >
+              <Input prefix={
+                <Icon type="smile" style={{ color: "rgba(0,0,0,.25)" }} />
+              }
+              placeholder="Escriba su nombre completo" />
             </Form.Item>
 
-            <Form.Item label="Correo electrónico">
-              {getFieldDecorator("correo", {
-                rules: [
-                  {
-                    required: true,
-                    message: "Por favor ingrese su correo electrónico."
-                  }
-                ]
-              })(
-                <Input
-                  prefix={
-                    <Icon type="mail" style={{ color: "rgba(0,0,0,.25)" }} />
-                  }
-                  placeholder="Escriba su dirección de correo electrónico"
-                />
-              )}
+            <Form.Item name="correo" label="Correo electrónico"
+              rules={[{ required: true, message: "Por favor ingrese su correo electrónico." }]}>
+              <Input prefix={
+                <Icon type="mail" style={{ color: "rgba(0,0,0,.25)" }} />
+              }
+              placeholder="Escriba su dirección de correo electrónico"/>
             </Form.Item>
 
             <Form.Item label="Tipo de mensaje">
@@ -83,19 +65,15 @@ class Contact extends React.Component {
               </Radio.Group>
             </Form.Item>
 
-            <Form.Item>
-              {getFieldDecorator("mensaje", {
-                rules: [
-                  { required: true, message: "Por favor ingrese su mensaje." }
-                ]
-              })(
+            <Form.Item name="mensaje"
+              rules={[{ required: true, message: "Por favor ingrese su mensaje." }]}
+              placeholder="Escriba aquí su mensaje">
                 <TextArea
                   value={value}
                   onChange={this.onChange}
                   autoSize={{ minRows: 3, maxRows: 5 }}
                   placeholder="Escriba aquí su mensaje"
                 />
-              )}
             </Form.Item>
 
             <Form.Item>

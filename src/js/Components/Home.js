@@ -5,7 +5,6 @@ import { Row, Col } from "antd";
 
 import MainMenu from "./MainMenu";
 import AdminUsers from "./AdminUsers";
-import AdminPrograms from "./AdminPrograms";
 
 class Home extends React.Component {
   render() {

@@ -9,7 +9,16 @@ class AdminUsers extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            dataSource: ['a','b','b','b','b','b','b','b','b'],
+            dataSource: [{
+              key: '1',
+              nombre: 'asdf',
+              correo: 'asdf'
+            },
+            {
+              key: '2',
+              nombre: 'asdf',
+              correo: 'asdf'
+            }],
             searchText: '',
             searchedColumn: '',
         }
@@ -97,6 +106,7 @@ class AdminUsers extends React.Component {
             },
             {
                 title: "Eliminar",
+                key: "delete",
                 width: "14%",
                 render: () => (
                     <span>
@@ -141,7 +151,6 @@ class AdminUsers extends React.Component {
                 </Form.Item>
               </Form>
             )}
-            rowKey="id"
             pagination={{
               defaultPageSize: 10,
               showSizeChanger: true,

@@ -4,9 +4,9 @@
   "private": true,
   "dependencies": {
     "@ant-design/icons": "4.0.0",
-    "antd": "^3.25.1",
+    "antd": "3.26.15",
     "jquery": "^3.4.1",
-    "react": "^16.11.0",
+    "react": "^16.13.1",
     "react-dom": "^16.11.0",
     "react-favicon": "0.0.17",
     "react-highlight-words": "^0.16.0",
