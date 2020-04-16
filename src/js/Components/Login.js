@@ -1,5 +1,8 @@
 import React from "react";
-import { Form, Icon, Input, Button, Checkbox } from "antd";
+import { LockOutlined, UserOutlined } from '@ant-design/icons';
+import { Form } from '@ant-design/compatible';
+import '@ant-design/compatible/assets/index.css';
+import { Input, Button, Checkbox } from "antd";
 import { Row, Col } from "antd";
 
 import { withRouter } from "react-router-dom";
@@ -74,7 +77,7 @@ class NormalLoginForm extends React.Component {
                 rules={[{ required: true, message: "Por favor ingrese su usuario." }]} >
                     <Input
                       prefix={
-                        <Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />
+                        <UserOutlined style={{ color: "rgba(0,0,0,.25)" }} />
                       }
                       placeholder="Usuario SIA"
                     />
@@ -83,7 +86,7 @@ class NormalLoginForm extends React.Component {
                 rules={[{ required: true, message: "Por favor ingrese su contraseña." }]} >
                     <Input
                       prefix={
-                        <Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />
+                        <LockOutlined style={{ color: "rgba(0,0,0,.25)" }} />
                       }
                       type="password"
                       placeholder="Contraseña"

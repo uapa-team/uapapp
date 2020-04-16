@@ -1,6 +1,8 @@
 import React from "react";
 import { withRouter } from "react-router-dom"
-import { Form, Radio, Table, Input, Button } from "antd";
+import { Form } from '@ant-design/compatible';
+import '@ant-design/compatible/assets/index.css';
+import { Radio, Table, Input, Button } from "antd";
 import Highlighter from 'react-highlight-words';
 import { SearchOutlined, UserAddOutlined } from '@ant-design/icons';
 import { Row } from "antd";
@@ -40,7 +42,7 @@ class AdminUsers extends React.Component {
             <Button
               type="primary"
               onClick={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
-              icon={<SearchOutlined />}
+              icon={SearchOutlined}
               size="small"
               style={{ width: 90, marginRight: 8 }}
             >
