@@ -2,7 +2,8 @@ import React from "react";
 import { withRouter } from "react-router-dom"
 import { Form, Radio, Table, Input, Button } from "antd";
 import Highlighter from 'react-highlight-words';
-import { SearchOutlined } from '@ant-design/icons';
+import { SearchOutlined, UserAddOutlined } from '@ant-design/icons';
+import { Row } from "antd";
 
 class AdminUsers extends React.Component {
     constructor(props) {
@@ -84,19 +85,19 @@ class AdminUsers extends React.Component {
                 title: "Nombre",
                 dataIndex: "name",
                 key: "name",
-                width: "40%",
+                width: "43%",
                 ...this.getColumnSearchProps("name", "nombre")
             },
             {
                 title: "Correo",
                 dataIndex: "mail",
                 key: "mail",
-                width: "40%",
+                width: "43%",
                 ...this.getColumnSearchProps("mail", "correo")
             },
             {
                 title: "Eliminar",
-                width: "10%",
+                width: "14%",
                 render: () => (
                     <span>
                       <a href="google.com">Borrar</a>
@@ -106,27 +107,39 @@ class AdminUsers extends React.Component {
         ]
 
       return (
+        <div>
+          <Row className="admin-users-btnctn">
+            <Button type="primary">
+              <UserAddOutlined /> Añadir usuario
+            </Button>
+          </Row>
             <Table
             dataSource={this.state.dataSource}
             columns={columns}
             bordered={true}
             expandedRowRender={record => (
               <Form onSubmit={this.handleSubmit}>
-              <Form.Item label="Tipo de usuario">
-                <Radio.Group
-                  defaultValue="Duda"
-                  buttonStyle="solid"
-                  onChange={this.handleFormLayoutChange}
-                >
-                  <Radio.Button value="NoRol">Sin rol asignado</Radio.Button>
-                  <Radio.Button value="Admin">Administrador</Radio.Button>
-                  <Radio.Button value="Auxil">Auxiliar</Radio.Button>
-                  <Radio.Button value="Coord">Coordinador</Radio.Button>
-                  <Radio.Button value="UAPA">UAPA</Radio.Button>
-                  <Radio.Button value="Depen">Dependencia</Radio.Button>
-                </Radio.Group>
+                <Form.Item label="Tipo de usuario">
+                  <Radio.Group
+                    defaultValue="Duda"
+                    buttonStyle="solid"
+                    onChange={this.handleFormLayoutChange}
+                  >
+                    <Radio.Button value="NoRol">Sin rol asignado</Radio.Button>
+                    <Radio.Button value="Admin">Administrador</Radio.Button>
+                    <Radio.Button value="Auxil">Auxiliar</Radio.Button>
+                    <Radio.Button value="Coord">Coordinador</Radio.Button>
+                    <Radio.Button value="UAPA">UAPA</Radio.Button>
+                    <Radio.Button value="Depen">Dependencia</Radio.Button>
+                  </Radio.Group>
                 </Form.Item>
-                </Form>
+                <Form.Item label="Permisos">
+                  <Radio.Group className="admin-users-radio-container" defaultValue="Pregrado">
+                    <Radio.Button className="admin-users-radio-buttons" value="Preg">Pregrado</Radio.Button>
+                    <Radio.Button className="admin-users-radio-buttons" value="Posg">Posgrado</Radio.Button>
+                  </Radio.Group>
+                </Form.Item>
+              </Form>
             )}
             rowKey="id"
             pagination={{
@@ -139,6 +152,7 @@ class AdminUsers extends React.Component {
               showTotal: showTotal
             }}
           /> 
+          </div>
         );
     }
 }
