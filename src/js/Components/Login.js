@@ -53,7 +53,6 @@ class NormalLoginForm extends React.Component {
   };
 
   render() {
-    const { getFieldDecorator } = this.props.form;
     return (
       <div>
         <div className="breadcrumb-class">
@@ -71,56 +70,27 @@ class NormalLoginForm extends React.Component {
                 <h1>¡Bienvenido a UAPApp!</h1>
               </div>
               <Form onSubmit={this.handleSubmit} className="login-form">
-                <Form.Item>
-                  {getFieldDecorator("username", {
-                    rules: [
-                      {
-                        required: true,
-                        message: "Por favor inserte su usuario."
-                      }
-                    ]
-                  })(
+                <Form.Item name="username"
+                rules={[{ required: true, message: "Por favor ingrese su usuario." }]} >
                     <Input
                       prefix={
-                        <Icon
-                          type="user"
-                          style={{ color: "rgba(0,0,0,.25)" }}
-                        />
+                        <Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />
                       }
                       placeholder="Usuario SIA"
                     />
-                  )}
                 </Form.Item>
-                <Form.Item>
-                  {getFieldDecorator("password", {
-                    rules: [
-                      {
-                        required: true,
-                        message: "Por favor inserte su contraseña."
-                      }
-                    ]
-                  })(
+                <Form.Item name="password"
+                rules={[{ required: true, message: "Por favor ingrese su contraseña." }]} >
                     <Input
                       prefix={
-                        <Icon
-                          type="lock"
-                          style={{ color: "rgba(0,0,0,.25)" }}
-                        />
+                        <Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />
                       }
                       type="password"
                       placeholder="Contraseña"
                     />
-                  )}
                 </Form.Item>
-                <Form.Item>
-                  {getFieldDecorator(
-                    "remember",
-                    {
-                      valuePropName: "checked",
-                      initialValue: true
-                    },
-                    ""
-                  )(<Checkbox>Recuérdame</Checkbox>)}
+                <Form.Item name="remember">
+                  <Checkbox defaultChecked={true}>Recuérdame</Checkbox>
                   <a
                     className="login-form-forgot"
                     href="https://cuenta.unal.edu.co/index.php?p=recoverPassword"
@@ -146,8 +116,4 @@ class NormalLoginForm extends React.Component {
   }
 }
 
-const WrappedNormalLoginForm = Form.create({ name: "normal_login" })(
-  NormalLoginForm
-);
-
-export default withRouter(Form.create()(WrappedNormalLoginForm));
+export default withRouter(NormalLoginForm);

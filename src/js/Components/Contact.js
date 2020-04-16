@@ -93,6 +93,4 @@ class Contact extends React.Component {
   }
 }
 
-const WrappedContact = Form.create({ name: "contact" })(Contact);
-
-export default withRouter(Form.create()(WrappedContact));
+export default withRouter(Contact);
