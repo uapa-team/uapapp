@@ -1,12 +1,11 @@
 import React from "react";
-import { Input, Button, Radio, Form } from "antd";
+import { Input, Button, Radio, Form, Typography } from "antd";
 import { Row, Col } from "antd";
-
 import { SmileOutlined, MailOutlined } from '@ant-design/icons';
-
 import { withRouter } from "react-router-dom";
 
 const { TextArea } = Input;
+const { Title } = Typography;
 
 class Contact extends React.Component {
   onFinish = values => {
@@ -28,7 +27,7 @@ class Contact extends React.Component {
         <Col xs={4} sm={4} md={6} lg={6} xl={6}></Col>
         <Col xs={16} sm={16} md={12} lg={12} xl={12}>
           <div className="contact-welcome">
-            <h1>Contáctenos</h1>
+            <Title>Contáctenos</Title>
           </div>
 
           <Form onFinish={this.onFinish} className="login-form">

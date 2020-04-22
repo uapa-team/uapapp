@@ -1,9 +1,10 @@
 import React from "react";
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
-import { Input, Button, Checkbox, Form } from "antd";
+import { Input, Button, Checkbox, Form, Typography } from "antd";
 import { Row, Col } from "antd";
-
 import { withRouter } from "react-router-dom";
+
+const { Title, Text } = Typography;
 
 class NormalLoginForm extends React.Component {
   onFinish = values => {
@@ -31,7 +32,11 @@ class NormalLoginForm extends React.Component {
           <Col xs={16} sm={16} md={12} lg={8} xl={8}>
             <div className="login-general">
               <div className="login-welcome">
-                <h1>¡Bienvenido a UAPApp!</h1>
+                <Title>Bienvenido a UAPApp</Title>
+                <Text>
+                  Para continuar, por favor ingrese su usuario
+                  y contraseña.
+                </Text>
               </div>
               <Form onFinish={this.onFinish} className="login-form">
                 <Form.Item name="username"
@@ -68,7 +73,7 @@ class NormalLoginForm extends React.Component {
                   >
                     Ingresar
                   </Button>
-                  ¿No tiene un usuario? - <a href="/contact">Contáctenos</a>
+                  <div className="login-form-contact">¿No tiene un usuario? - <a href="/contact">Contáctenos</a></div>
                 </Form.Item>
               </Form>
             </div>
