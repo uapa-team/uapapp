@@ -36,9 +36,6 @@
   border-color: #2d2656 !important;
 }
 
-.ant-input:focus {
-  box-shadow: 0 0 0 1px rgba(18, 15, 34, 0.2) !important;
-}
 
 .ant-input:hover,
 .ant-input:focus {

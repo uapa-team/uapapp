@@ -30,7 +30,7 @@ class Contact extends React.Component {
             <Title>Contáctenos</Title>
           </div>
 
-          <Form onFinish={this.onFinish} className="login-form">
+          <Form onFinish={this.onFinish}>
             <Form.Item name="nombre" label="Nombre completo" 
               rules={[{ required: true, message: "Por favor ingrese su nombre." }]} >
               <Input prefix={
@@ -68,7 +68,7 @@ class Contact extends React.Component {
                   value={value}
                   onChange={this.onChange}
                   autoSize={{ minRows: 3, maxRows: 5 }}
-                  placeholder="Escriba aquí su mensaje"
+                  placeholder="Escriba aquí su mensaje."
                 />
             </Form.Item>
 
