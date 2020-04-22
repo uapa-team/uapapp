@@ -443,7 +443,7 @@ main.detalle {
 }
 
 #footfix {
-	min-height: 100vh;
+	min-height: 92vh;
 	background: #ddd;
 	/* Todo: add background image here */
 }
@@ -640,7 +640,7 @@ footer .logos a img {
 		width: 45px; height: 45px; margin-top: 5px;
 	}
 	main.detalle {
-		margin: 0 5% 50px;
+		margin: 0 5% 0;
 	}
 	main .breadcrumb-class {
 		margin-top: 15px;
@@ -731,7 +731,7 @@ footer .logos a img {
 		width: 100%;
 	}
 	main.detalle {
-		margin: 0 5% 50px;
+		margin: 0 5% 0;
 	}
 	main .breadcrumb-class {
 		margin-top: 10px;
@@ -762,7 +762,7 @@ footer .logos a img {
 		margin-right: 11px;
 	}
 	body main.detalle {
-		margin: 0 2% 50px;
+		margin: 0 2% 0;
 	}
 	body footer {
 		padding: 15px 0 25px;

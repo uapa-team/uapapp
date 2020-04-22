@@ -1,8 +1,6 @@
 import React from "react";
 import { withRouter } from "react-router-dom"
-import { Form } from '@ant-design/compatible';
-import '@ant-design/compatible/assets/index.css';
-import { Radio, Table, Input, Button } from "antd";
+import { Radio, Table, Input, Button, Form } from "antd";
 import Highlighter from 'react-highlight-words';
 import { SearchOutlined, UserAddOutlined } from '@ant-design/icons';
 import { Row } from "antd";
@@ -25,6 +23,10 @@ class AdminUsers extends React.Component {
             searchedColumn: '',
         }
     }
+
+    onFinish = values => {
+      console.log(values);
+    };
 
     getColumnSearchProps = (dataIndex, searchTerm) => ({
         filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
@@ -130,7 +132,7 @@ class AdminUsers extends React.Component {
             columns={columns}
             bordered={true}
             expandedRowRender={record => (
-              <Form onSubmit={this.handleSubmit}>
+              <Form onFinish={this.onFinish}>
                 <Form.Item label="Tipo de usuario">
                   <Radio.Group
                     defaultValue="Duda"
