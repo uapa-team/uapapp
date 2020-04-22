@@ -1,61 +1,22 @@
 import React from "react";
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
-import { Form } from '@ant-design/compatible';
-import '@ant-design/compatible/assets/index.css';
-import { Input, Button, Checkbox } from "antd";
+import { Input, Button, Checkbox, Form } from "antd";
 import { Row, Col } from "antd";
 
 import { withRouter } from "react-router-dom";
-import "antd/dist/antd.css";
 
 class NormalLoginForm extends React.Component {
-  handleSubmit = e => {
-    e.preventDefault();
-    this.props.form.validateFields((err, values) => {
-      if (!err) {
-        this.performLogin();
-      }
-    });
+  onFinish = values => {
+    this.performLogin();
   };
 
   performLogin = () => {
     localStorage.setItem("jwt", "un_token_cualquiera");
     this.props.history.push("/home");
     window.location.reload();
-    /*
-    const key = "updatable";
-    message.loading({ content: "Iniciando sesión...", key });
-    Backend.sendLogin(this.state.username, this.state.password)
-      .then(async response => {
-        if (response.status === 403) {
-          message.error({ content: "Acceso restringido.", key });
-        } else if (response.status === 404) {
-          message.error({ content: "Contraseña incorrecta.", key });
-        } else if (response.status === 200) {
-          message.success({ content: "Inicio de sesión exitoso.", key });
-          let res = await response.json();
-          localStorage.setItem("jwt", res["token"]);
-          window.location.href = "/home";
-          // this.props.history.push("/home");
-        } else {
-          message.error({
-            content: "Error realizando el login.",
-            key
-          });
-          console.log("Login Error: Backend HTTP code " + response.status);
-        }
-      })
-      .catch(error => {
-        message.error({
-          content: "Error realizando el login.",
-          key
-        });
-        console.log("Login Error: " + error);
-      });
-      */
   };
 
-  render() {
+  render(){
     return (
       <div>
         <div className="breadcrumb-class">
@@ -72,7 +33,7 @@ class NormalLoginForm extends React.Component {
               <div className="login-welcome">
                 <h1>¡Bienvenido a UAPApp!</h1>
               </div>
-              <Form onSubmit={this.handleSubmit} className="login-form">
+              <Form onFinish={this.onFinish} className="login-form">
                 <Form.Item name="username"
                 rules={[{ required: true, message: "Por favor ingrese su usuario." }]} >
                     <Input

@@ -1,7 +1,5 @@
 import React from "react";
-import { Form } from '@ant-design/compatible';
-import '@ant-design/compatible/assets/index.css';
-import { Input, Button, Radio } from "antd";
+import { Input, Button, Radio, Form } from "antd";
 import { Row, Col } from "antd";
 
 import { SmileOutlined, MailOutlined } from '@ant-design/icons';
@@ -11,13 +9,8 @@ import { withRouter } from "react-router-dom";
 const { TextArea } = Input;
 
 class Contact extends React.Component {
-  handleSubmit = e => {
-    e.preventDefault();
-    this.props.form.validateFields((err, values) => {
-      if (!err) {
+  onFinish = values => {
         console.log("Received values of form: ", values);
-      }
-    });
   };
 
   state = {
@@ -38,7 +31,7 @@ class Contact extends React.Component {
             <h1>Contáctenos</h1>
           </div>
 
-          <Form onSubmit={this.handleSubmit} className="login-form">
+          <Form onFinish={this.onFinish} className="login-form">
             <Form.Item name="nombre" label="Nombre completo" 
               rules={[{ required: true, message: "Por favor ingrese su nombre." }]} >
               <Input prefix={
