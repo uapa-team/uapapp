@@ -1,4 +1,6 @@
 /* Estilos general (se usan en toda la página): */
+@import '~antd/dist/antd.css';
+
 @font-face {
   font-family: "Ancizar sans";
   font-weight: normal;
