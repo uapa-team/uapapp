@@ -1,19 +1,19 @@
 import React from "react";
 import { Input, Button, Radio, Form, Typography } from "antd";
 import { Row, Col } from "antd";
-import { SmileOutlined, MailOutlined } from '@ant-design/icons';
+import { SmileOutlined, MailOutlined } from "@ant-design/icons";
 import { withRouter } from "react-router-dom";
 
 const { TextArea } = Input;
 const { Title } = Typography;
 
 class Contact extends React.Component {
-  onFinish = values => {
+  onFinish = (values) => {
     console.log("Received values of form: ", values);
   };
 
   state = {
-    value: ""
+    value: "",
   };
 
   onChange = ({ target: { value } }) => {
@@ -31,20 +31,31 @@ class Contact extends React.Component {
           </div>
 
           <Form onFinish={this.onFinish}>
-            <Form.Item label="Nombre completo"
-              rules={[{ required: true, message: "Por favor ingrese su nombre." }]} >
-              <Input prefix={
-                <SmileOutlined style={{ color: "rgba(0,0,0,.25)" }} />
-              }
-                placeholder="Escriba su nombre completo" />
+            <Form.Item
+              label="Nombre completo"
+              rules={[
+                { required: true, message: "Por favor ingrese su nombre." },
+              ]}
+            >
+              <Input
+                prefix={<SmileOutlined style={{ color: "rgba(0,0,0,.25)" }} />}
+                placeholder="Escriba su nombre completo"
+              />
             </Form.Item>
 
-            <Form.Item label="Correo electrónico"
-              rules={[{ required: true, message: "Por favor ingrese su correo electrónico." }]}>
-              <Input prefix={
-                <MailOutlined style={{ color: "rgba(0,0,0,.25)" }} />
-              }
-                placeholder="Escriba su dirección de correo electrónico" />
+            <Form.Item
+              label="Correo electrónico"
+              rules={[
+                {
+                  required: true,
+                  message: "Por favor ingrese su correo electrónico.",
+                },
+              ]}
+            >
+              <Input
+                prefix={<MailOutlined style={{ color: "rgba(0,0,0,.25)" }} />}
+                placeholder="Escriba su dirección de correo electrónico"
+              />
             </Form.Item>
 
             <Form.Item label="Tipo de mensaje">
@@ -62,8 +73,11 @@ class Contact extends React.Component {
             </Form.Item>
 
             <Form.Item
-              rules={[{ required: true, message: "Por favor ingrese su mensaje." }]}
-              placeholder="Escriba aquí su mensaje">
+              rules={[
+                { required: true, message: "Por favor ingrese su mensaje." },
+              ]}
+              placeholder="Escriba aquí su mensaje"
+            >
               <TextArea
                 value={value}
                 onChange={this.onChange}

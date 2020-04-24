@@ -1,13 +1,10 @@
 import React from "react";
-import { withRouter } from "react-router-dom"
+import { withRouter } from "react-router-dom";
 
 class AdminPrograms extends React.Component {
-
-    render() {
-        return (
-            <div></div>
-        );
-    }
+  render() {
+    return <div></div>;
+  }
 }
 
-export default withRouter(AdminPrograms)
+export default withRouter(AdminPrograms);
