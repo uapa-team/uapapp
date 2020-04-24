@@ -17,7 +17,7 @@ class NormalLoginForm extends React.Component {
     window.location.reload();
   };
 
-  render(){
+  render() {
     return (
       <div>
         <div className="breadcrumb-class">
@@ -39,26 +39,26 @@ class NormalLoginForm extends React.Component {
                 </Text>
               </div>
               <Form onFinish={this.onFinish} className="login-form">
-                <Form.Item name="username"
-                rules={[{ required: true, message: "Por favor ingrese su usuario." }]} >
-                    <Input
-                      prefix={
-                        <UserOutlined style={{ color: "rgba(0,0,0,.25)" }} />
-                      }
-                      placeholder="Usuario SIA"
-                    />
+                <Form.Item
+                  rules={[{ required: true, message: "Por favor ingrese su usuario." }]} >
+                  <Input
+                    prefix={
+                      <UserOutlined style={{ color: "rgba(0,0,0,.25)" }} />
+                    }
+                    placeholder="Usuario SIA"
+                  />
                 </Form.Item>
-                <Form.Item name="password"
-                rules={[{ required: true, message: "Por favor ingrese su contraseña." }]} >
-                    <Input
-                      prefix={
-                        <LockOutlined style={{ color: "rgba(0,0,0,.25)" }} />
-                      }
-                      type="password"
-                      placeholder="Contraseña"
-                    />
+                <Form.Item
+                  rules={[{ required: true, message: "Por favor ingrese su contraseña." }]} >
+                  <Input
+                    prefix={
+                      <LockOutlined style={{ color: "rgba(0,0,0,.25)" }} />
+                    }
+                    type="password"
+                    placeholder="Contraseña"
+                  />
                 </Form.Item>
-                <Form.Item name="remember">
+                <Form.Item>
                   <Checkbox defaultChecked={true}>Recuérdame</Checkbox>
                   <a
                     className="login-form-forgot"
