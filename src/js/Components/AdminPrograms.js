@@ -1,22 +1,26 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
-import { TreeSelect } from "antd";
+import { TreeSelect, Radio } from "antd";
 
-var found = false; // Variable según si se encuentran programas asignados.
 const { TreeNode } = TreeSelect;
 
 class AdminPrograms extends React.Component {
   state = {
     value: undefined,
+    found: false, //Variable según si se encuentran programas asignados.
+    select: false, //Variable según si ya se eligió programa.
   };
 
   onChange = (value) => {
     console.log(value);
+    if (value !== null) {
+      this.setState({ select: true });
+    }
     this.setState({ value });
   };
 
   render() {
-    return found ? (
+    return this.state.found ? (
       <div className="not-found-programs-div">
         <h4>
           No se le ha asignado ningún programa. Contacte a un administrador si
@@ -50,6 +54,24 @@ class AdminPrograms extends React.Component {
             ></TreeNode>
           </TreeNode>
         </TreeSelect>
+
+        {this.state.select ? (
+          <div className="admin-programs-below-select">
+            <Radio.Group className="admin-programs-radio-container">
+              <Radio.Button className="admin-programs-radio-buttons" value="1">
+                Profesores
+              </Radio.Button>
+              <Radio.Button className="admin-programs-radio-buttons" value="2">
+                Asignaturas
+              </Radio.Button>
+              <Radio.Button className="admin-programs-radio-buttons" value="3">
+                Grupos de Investigación
+              </Radio.Button>
+            </Radio.Group>
+          </div>
+        ) : (
+          <div></div>
+        )}
       </div>
     );
   }
