@@ -176,14 +176,20 @@ code {
 .generate-report-div,
 .rec-format-div {
   margin-top: 1em;
-  margin-bottom: 1em;
+  margin-bottom: 1.5em;
   width: 50%;
   text-align: center;
 }
 
 .generate-report-formitem,
-.rec-format-formitem {
+.rec-format-formitem,
+.rec-format-radio {
   width: 50%;
+}
+
+.rec-format-radiogroup {
+  width: 100%;
+  text-align: center;
 }
 
 .generate-report-formitem-button,

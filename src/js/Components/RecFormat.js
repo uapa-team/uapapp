@@ -1,6 +1,6 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
-import { Form, Select, Button } from "antd";
+import { Form, Select, Button, Radio } from "antd";
 import { DownloadOutlined } from "@ant-design/icons";
 
 const { Option } = Select;
@@ -13,6 +13,20 @@ class RecFormat extends React.Component {
           <h2>Formato de recolección</h2>
         </div>
         <Form onFinish={this.onFinish} layout="vertical">
+          <Form.Item className="rec-format-formitem">
+            <Radio.Group
+              defaultValue="Duda"
+              onChange={this.handleFormLayoutChange}
+              className="rec-format-radiogroup"
+            >
+              <Radio.Button value="Descripción" className="rec-format-radio">
+                Descripción
+              </Radio.Button>
+              <Radio.Button value="Carga" className="rec-format-radio">
+                Carga
+              </Radio.Button>
+            </Radio.Group>
+          </Form.Item>
           <Form.Item label="Nivel" className="rec-format-formitem">
             <Select
               placeholder="Seleccione el nivel"
