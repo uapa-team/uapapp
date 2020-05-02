@@ -4,7 +4,7 @@ import { withRouter } from "react-router-dom";
 import { Row, Col } from "antd";
 
 import MainMenu from "./MainMenu";
-import AdminPrograms from "./AdminPrograms";
+import GenerateReport from "./GenerateReport";
 
 class Home extends React.Component {
   render() {
@@ -13,7 +13,7 @@ class Home extends React.Component {
         <Col xs={2} sm={2} md={4} lg={4} xl={4}></Col>
         <Col xs={20} sm={20} md={16} lg={16} xl={16}>
           <MainMenu />
-          <AdminPrograms />
+          <GenerateReport />
         </Col>
         <Col xs={2} sm={2} md={4} lg={4} xl={4}></Col>
       </Row>

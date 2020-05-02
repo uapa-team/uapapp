@@ -171,3 +171,20 @@ code {
   width: 33.333%;
   text-align: center;
 }
+
+/* Estilos GenerateReport */
+.generate-report-div {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  width: 50%;
+  text-align: center;
+}
+
+.generate-report-formitem {
+  width: 50%;
+}
+
+.generate-report-formitem-button {
+  width: 50%;
+  text-align: center;
+}

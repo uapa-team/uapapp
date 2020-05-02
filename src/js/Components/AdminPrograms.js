@@ -13,8 +13,10 @@ class AdminPrograms extends React.Component {
 
   onChange = (value) => {
     console.log(value);
-    if (value !== null) {
+    if (value !== undefined) {
       this.setState({ select: true });
+    } else {
+      this.setState({ select: false });
     }
     this.setState({ value });
   };
