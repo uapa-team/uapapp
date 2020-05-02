@@ -1,23 +1,19 @@
 import React from "react";
-import { Form, Icon, Input, Button, Radio } from "antd";
+import { Input, Button, Radio, Form, Typography } from "antd";
 import { Row, Col } from "antd";
-
+import { SmileOutlined, MailOutlined } from "@ant-design/icons";
 import { withRouter } from "react-router-dom";
 
 const { TextArea } = Input;
+const { Title } = Typography;
 
 class Contact extends React.Component {
-  handleSubmit = e => {
-    e.preventDefault();
-    this.props.form.validateFields((err, values) => {
-      if (!err) {
-        console.log("Received values of form: ", values);
-      }
-    });
+  onFinish = (values) => {
+    console.log("Received values of form: ", values);
   };
 
   state = {
-    value: ""
+    value: "",
   };
 
   onChange = ({ target: { value } }) => {
@@ -25,48 +21,41 @@ class Contact extends React.Component {
   };
 
   render() {
-    const { getFieldDecorator } = this.props.form;
     const { value } = this.state;
     return (
       <Row className="main-row-container">
         <Col xs={4} sm={4} md={6} lg={6} xl={6}></Col>
         <Col xs={16} sm={16} md={12} lg={12} xl={12}>
           <div className="contact-welcome">
-            <h1>Contáctenos</h1>
+            <Title>Contáctenos</Title>
           </div>
 
-          <Form onSubmit={this.handleSubmit} className="login-form">
-            <Form.Item label="Nombre completo">
-              {getFieldDecorator("nombre", {
-                rules: [
-                  { required: true, message: "Por favor ingrese su nombre." }
-                ]
-              })(
-                <Input
-                  prefix={
-                    <Icon type="smile" style={{ color: "rgba(0,0,0,.25)" }} />
-                  }
-                  placeholder="Escriba su nombre completo"
-                />
-              )}
+          <Form onFinish={this.onFinish}>
+            <Form.Item
+              label="Nombre completo"
+              rules={[
+                { required: true, message: "Por favor ingrese su nombre." },
+              ]}
+            >
+              <Input
+                prefix={<SmileOutlined style={{ color: "rgba(0,0,0,.25)" }} />}
+                placeholder="Escriba su nombre completo"
+              />
             </Form.Item>
 
-            <Form.Item label="Correo electrónico">
-              {getFieldDecorator("correo", {
-                rules: [
-                  {
-                    required: true,
-                    message: "Por favor ingrese su correo electrónico."
-                  }
-                ]
-              })(
-                <Input
-                  prefix={
-                    <Icon type="mail" style={{ color: "rgba(0,0,0,.25)" }} />
-                  }
-                  placeholder="Escriba su dirección de correo electrónico"
-                />
-              )}
+            <Form.Item
+              label="Correo electrónico"
+              rules={[
+                {
+                  required: true,
+                  message: "Por favor ingrese su correo electrónico.",
+                },
+              ]}
+            >
+              <Input
+                prefix={<MailOutlined style={{ color: "rgba(0,0,0,.25)" }} />}
+                placeholder="Escriba su dirección de correo electrónico"
+              />
             </Form.Item>
 
             <Form.Item label="Tipo de mensaje">
@@ -83,19 +72,18 @@ class Contact extends React.Component {
               </Radio.Group>
             </Form.Item>
 
-            <Form.Item>
-              {getFieldDecorator("mensaje", {
-                rules: [
-                  { required: true, message: "Por favor ingrese su mensaje." }
-                ]
-              })(
-                <TextArea
-                  value={value}
-                  onChange={this.onChange}
-                  autoSize={{ minRows: 3, maxRows: 5 }}
-                  placeholder="Escriba aquí su mensaje"
-                />
-              )}
+            <Form.Item
+              rules={[
+                { required: true, message: "Por favor ingrese su mensaje." },
+              ]}
+              placeholder="Escriba aquí su mensaje"
+            >
+              <TextArea
+                value={value}
+                onChange={this.onChange}
+                autoSize={{ minRows: 3, maxRows: 5 }}
+                placeholder="Escriba aquí su mensaje."
+              />
             </Form.Item>
 
             <Form.Item>
@@ -115,6 +103,4 @@ class Contact extends React.Component {
   }
 }
 
-const WrappedContact = Form.create({ name: "contact" })(Contact);
-
-export default withRouter(Form.create()(WrappedContact));
+export default withRouter(Contact);
