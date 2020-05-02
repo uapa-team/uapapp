@@ -172,19 +172,22 @@ code {
   text-align: center;
 }
 
-/* Estilos GenerateReport */
-.generate-report-div {
+/* Estilos GenerateReport y RecFormat */
+.generate-report-div,
+.rec-format-div {
   margin-top: 1em;
   margin-bottom: 1em;
   width: 50%;
   text-align: center;
 }
 
-.generate-report-formitem {
+.generate-report-formitem,
+.rec-format-formitem {
   width: 50%;
 }
 
-.generate-report-formitem-button {
+.generate-report-formitem-button,
+.rec-format-formitem-button {
   width: 50%;
   text-align: center;
 }
