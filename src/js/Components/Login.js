@@ -9,11 +9,15 @@ const { Title, Text } = Typography;
 class NormalLoginForm extends React.Component {
   onFinish = (values) => {
     this.performLogin();
+    console.log(values);
+  };
+
+  onFinishFailed = (errorInfo) => {
+    console.log("Failed:", errorInfo);
   };
 
   performLogin = () => {
     localStorage.setItem("jwt", "un_token_cualquiera");
-    this.props.history.push("/home");
     window.location.reload();
   };
 
@@ -37,8 +41,16 @@ class NormalLoginForm extends React.Component {
                   Para continuar, por favor ingrese su usuario y contraseña.
                 </Text>
               </div>
-              <Form onFinish={this.onFinish} className="login-form">
+              <Form
+                onFinish={this.onFinish}
+                onFinishFailed={this.onFinishFailed}
+                className="login-form"
+                initialValues={{
+                  remember: true,
+                }}
+              >
                 <Form.Item
+                  name="username"
                   rules={[
                     {
                       required: true,
@@ -54,6 +66,7 @@ class NormalLoginForm extends React.Component {
                   />
                 </Form.Item>
                 <Form.Item
+                  name="password"
                   rules={[
                     {
                       required: true,
@@ -61,22 +74,23 @@ class NormalLoginForm extends React.Component {
                     },
                   ]}
                 >
-                  <Input
+                  <Input.Password
                     prefix={
                       <LockOutlined style={{ color: "rgba(0,0,0,.25)" }} />
                     }
-                    type="password"
                     placeholder="Contraseña"
                   />
                 </Form.Item>
-                <Form.Item>
+                <Form.Item name="remember" className="login-form-remember">
                   <Checkbox defaultChecked={true}>Recuérdame</Checkbox>
-                  <a
-                    className="login-form-forgot"
-                    href="https://cuenta.unal.edu.co/index.php?p=recoverPassword"
-                  >
-                    Olvidé mi contraseña
-                  </a>
+                </Form.Item>
+                <a
+                  className="login-form-forgot"
+                  href="https://cuenta.unal.edu.co/index.php?p=recoverPassword"
+                >
+                  Olvidé mi contraseña
+                </a>
+                <Form.Item>
                   <Button
                     type="primary"
                     htmlType="submit"

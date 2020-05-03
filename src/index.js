@@ -17,7 +17,7 @@ import UnalCanvas from "./js/Basics/UnalCanvas";
 const PrivateRoute = ({ component: Component, ...rest }) => (
   <Route
     {...rest}
-    render={props =>
+    render={(props) =>
       localStorage.getItem("jwt") != null ? (
         <Component {...props} />
       ) : (
@@ -30,7 +30,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
 const LoginRoute = ({ component: Component, ...rest }) => (
   <Route
     {...rest}
-    render={props =>
+    render={(props) =>
       localStorage.getItem("jwt") == null ? (
         <Component {...props} />
       ) : (
@@ -61,8 +61,7 @@ ReactDOM.render(
           ) : (
             <Redirect to="/" />
           )}
-        </Route>{" "}
-        />
+        </Route>
       </Switch>
     </UnalCanvas>
   </BrowserRouter>,
