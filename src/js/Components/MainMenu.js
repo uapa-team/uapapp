@@ -9,15 +9,19 @@ import {
 import { withRouter } from "react-router-dom";
 
 class MainMenu extends React.Component {
-  state = {
-    current: "admin",
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      current: "au",
+    };
+  }
 
   handleClick = (e) => {
-    console.log("click ", e);
+    console.log("click ", e.key);
     this.setState({
       current: e.key,
     });
+    this.props.callbackFromParent(e.key);
   };
 
   render() {
@@ -27,21 +31,21 @@ class MainMenu extends React.Component {
         selectedKeys={[this.state.current]}
         mode="horizontal"
       >
-        <Menu.Item key="admin">
+        <Menu.Item key="au">
           <ScheduleOutlined />
           Administración
         </Menu.Item>
-        <Menu.Item key="adminpro">
+        <Menu.Item key="ap">
           <AppstoreOutlined />
           Administración - Programas
         </Menu.Item>
-        <Menu.Item key="generate">
+        <Menu.Item key="gr">
           <AuditOutlined />
           Generar Reporte
         </Menu.Item>
-        <Menu.Item key="format">
+        <Menu.Item key="fr">
           <BookOutlined />
-          Formato Recolección
+          Formatos Recolección
         </Menu.Item>
       </Menu>
     );

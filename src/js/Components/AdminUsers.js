@@ -137,6 +137,7 @@ class AdminUsers extends React.Component {
     return (
       <div>
         <Row className="admin-users-btnctn">
+          <h2>Administración de usuarios</h2>
           <Button type="primary">
             <UserAddOutlined /> Añadir usuario
           </Button>

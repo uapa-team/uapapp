@@ -12,6 +12,10 @@ class Contact extends React.Component {
     console.log("Received values of form: ", values);
   };
 
+  onFinishFailed = (errorInfo) => {
+    console.log("Failed:", errorInfo);
+  };
+
   state = {
     value: "",
   };
@@ -32,6 +36,7 @@ class Contact extends React.Component {
 
           <Form onFinish={this.onFinish}>
             <Form.Item
+              name="name"
               label="Nombre completo"
               rules={[
                 { required: true, message: "Por favor ingrese su nombre." },
@@ -44,6 +49,7 @@ class Contact extends React.Component {
             </Form.Item>
 
             <Form.Item
+              name="mail"
               label="Correo electrónico"
               rules={[
                 {
@@ -58,7 +64,7 @@ class Contact extends React.Component {
               />
             </Form.Item>
 
-            <Form.Item label="Tipo de mensaje">
+            <Form.Item name="type" label="Tipo de mensaje">
               <Radio.Group
                 defaultValue="Duda"
                 onChange={this.handleFormLayoutChange}
@@ -73,6 +79,7 @@ class Contact extends React.Component {
             </Form.Item>
 
             <Form.Item
+              name="message"
               rules={[
                 { required: true, message: "Por favor ingrese su mensaje." },
               ]}
