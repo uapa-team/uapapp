@@ -18,7 +18,7 @@ class GenerateReport extends React.Component {
     return (
       <div>
         <div className="generate-report-div">
-          <h2>Generar reporte</h2>
+          <h2>Generador de reportes</h2>
         </div>
         <Form onFinish={this.onFinish} layout="vertical">
           <Form.Item label="Nivel" className="generate-report-formitem">

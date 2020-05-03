@@ -27,7 +27,6 @@ class Home extends React.Component {
   };
 
   renderContent = () => {
-    console.log(componentOf[this.state.tab]);
     return componentOf[this.state.tab];
   };
 

@@ -10,7 +10,7 @@ class RecFormat extends React.Component {
     return (
       <div>
         <div className="rec-format-div">
-          <h2>Formato de recolección</h2>
+          <h2>Formatos de recolección</h2>
         </div>
         <Form onFinish={this.onFinish} layout="vertical">
           <Form.Item className="rec-format-formitem">

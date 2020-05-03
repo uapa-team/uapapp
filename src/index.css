@@ -132,9 +132,10 @@ code {
 }
 
 .admin-users-btnctn {
-  margin-top: 2%;
-  margin-bottom: 2%;
-  text-align: center;
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+  width: 100%;
+  justify-content: space-evenly;
 }
 
 .admin-users-radio-container {
@@ -149,13 +150,17 @@ code {
 
 /* Estilos AdminPrograms */
 
+.select-programs-div {
+  text-align: center;
+}
+
 .not-found-programs-div {
   margin-top: 1em;
 }
 
 .select-programs-div {
-  margin-top: 1em;
-  margin-bottom: 1em;
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
 }
 
 .admin-programs-below-select {
@@ -175,7 +180,7 @@ code {
 /* Estilos GenerateReport y RecFormat */
 .generate-report-div,
 .rec-format-div {
-  margin-top: 1em;
+  margin-top: 1.5em;
   margin-bottom: 1.5em;
   width: 50%;
   text-align: center;

@@ -32,7 +32,7 @@ class AdminPrograms extends React.Component {
     ) : (
       <div>
         <div className="select-programs-div">
-          <h2>Seleccione un programa: </h2>
+          <h2>Administración de programas</h2>
         </div>
         <TreeSelect
           showSearch
@@ -41,6 +41,7 @@ class AdminPrograms extends React.Component {
           dropdownStyle={{ maxHeight: 400, overflow: "auto" }}
           placeholder="Por favor busque o seleccione un programa."
           allowClear
+          treeDefaultExpandAll
           onChange={this.onChange}
         >
           <TreeNode selectable={false} value="Pregrado" title="Pregrado">

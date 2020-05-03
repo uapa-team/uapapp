@@ -45,7 +45,7 @@ class MainMenu extends React.Component {
         </Menu.Item>
         <Menu.Item key="fr">
           <BookOutlined />
-          Formato Recolección
+          Formatos Recolección
         </Menu.Item>
       </Menu>
     );
