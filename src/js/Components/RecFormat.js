@@ -1,16 +1,17 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
-import { Form, Select, Button, Radio } from "antd";
+import { Form, Select, Button, Radio, Typography } from "antd";
 import { DownloadOutlined } from "@ant-design/icons";
 
 const { Option } = Select;
+const { Title } = Typography;
 
 class RecFormat extends React.Component {
   render() {
     return (
       <div>
         <div className="rec-format-div">
-          <h2>Formatos de recolección</h2>
+          <Title level={2}>Formatos de recolección</Title>
         </div>
         <Form onFinish={this.onFinish} layout="vertical">
           <Form.Item className="rec-format-formitem">

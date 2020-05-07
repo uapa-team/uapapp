@@ -1,8 +1,9 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
-import { TreeSelect, Radio } from "antd";
+import { TreeSelect, Radio, Typography } from "antd";
 
 const { TreeNode } = TreeSelect;
+const { Title } = Typography;
 
 class AdminPrograms extends React.Component {
   state = {
@@ -32,7 +33,7 @@ class AdminPrograms extends React.Component {
     ) : (
       <div>
         <div className="select-programs-div">
-          <h2>Administración de programas</h2>
+          <Title level={2}>Administración de programas</Title>
         </div>
         <TreeSelect
           showSearch

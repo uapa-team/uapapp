@@ -1,9 +1,11 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
-import { Radio, Table, Input, Button, Form } from "antd";
+import { Radio, Table, Input, Button, Form, Typography, Space } from "antd";
 import Highlighter from "react-highlight-words";
 import { SearchOutlined, UserAddOutlined } from "@ant-design/icons";
 import { Row } from "antd";
+
+const { Title } = Typography;
 
 class AdminUsers extends React.Component {
   constructor(props) {
@@ -12,13 +14,13 @@ class AdminUsers extends React.Component {
       dataSource: [
         {
           key: "1",
-          nombre: "asdf",
-          correo: "asdf",
+          nombre: "Nicolás Gómez",
+          correo: "nigomezgu@unal.edu.co",
         },
         {
           key: "2",
-          nombre: "asdf",
-          correo: "asdf",
+          nombre: "Angel Corredor",
+          correo: "adcorredorm@unal.edu.co",
         },
       ],
       searchText: "",
@@ -30,7 +32,7 @@ class AdminUsers extends React.Component {
     console.log(values);
   };
 
-  getColumnSearchProps = (dataIndex, searchTerm) => ({
+  getColumnSearchProps = (dataIndex) => ({
     filterDropdown: ({
       setSelectedKeys,
       selectedKeys,
@@ -42,7 +44,7 @@ class AdminUsers extends React.Component {
           ref={(node) => {
             this.searchInput = node;
           }}
-          placeholder={`Buscar por ${searchTerm}`}
+          placeholder={`Buscar por ${dataIndex}`}
           value={selectedKeys[0]}
           onChange={(e) =>
             setSelectedKeys(e.target.value ? [e.target.value] : [])
@@ -52,22 +54,24 @@ class AdminUsers extends React.Component {
           }
           style={{ width: 188, marginBottom: 8, display: "block" }}
         />
-        <Button
-          type="primary"
-          onClick={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
-          icon={SearchOutlined}
-          size="small"
-          style={{ width: 90, marginRight: 8 }}
-        >
-          Buscar
-        </Button>
-        <Button
-          onClick={() => this.handleReset(clearFilters)}
-          size="small"
-          style={{ width: 90 }}
-        >
-          Limpiar
-        </Button>
+        <Space>
+          <Button
+            type="primary"
+            onClick={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
+            icon={<SearchOutlined />}
+            size="small"
+            style={{ width: 90 }}
+          >
+            Buscar
+          </Button>
+          <Button
+            onClick={() => this.handleReset(clearFilters)}
+            size="small"
+            style={{ width: 90 }}
+          >
+            Limpiar
+          </Button>
+        </Space>
       </div>
     ),
     filterIcon: (filtered) => (
@@ -110,17 +114,17 @@ class AdminUsers extends React.Component {
     var columns = [
       {
         title: "Nombre",
-        dataIndex: "name",
+        dataIndex: "nombre",
         key: "name",
         width: "43%",
-        ...this.getColumnSearchProps("name", "nombre"),
+        ...this.getColumnSearchProps("nombre"),
       },
       {
         title: "Correo",
-        dataIndex: "mail",
+        dataIndex: "correo",
         key: "mail",
         width: "43%",
-        ...this.getColumnSearchProps("mail", "correo"),
+        ...this.getColumnSearchProps("correo"),
       },
       {
         title: "Eliminar",
@@ -137,7 +141,7 @@ class AdminUsers extends React.Component {
     return (
       <div>
         <Row className="admin-users-btnctn">
-          <h2>Administración de usuarios</h2>
+          <Title level={2}>Administración de usuarios</Title>
           <Button type="primary">
             <UserAddOutlined /> Añadir usuario
           </Button>

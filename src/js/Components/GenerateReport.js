@@ -1,9 +1,10 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
-import { Form, Select, Button } from "antd";
+import { Form, Select, Button, Typography } from "antd";
 import { DownloadOutlined } from "@ant-design/icons";
 
 const { Option } = Select;
+const { Title } = Typography;
 
 class GenerateReport extends React.Component {
   onFinish = (values) => {
@@ -18,7 +19,7 @@ class GenerateReport extends React.Component {
     return (
       <div>
         <div className="generate-report-div">
-          <h2>Generador de reportes</h2>
+          <Title level={2}>Generador de reportes</Title>
         </div>
         <Form onFinish={this.onFinish} layout="vertical">
           <Form.Item label="Nivel" className="generate-report-formitem">

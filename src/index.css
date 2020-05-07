@@ -52,6 +52,7 @@ code {
 }
 .login-form-remember {
   margin-bottom: 0em !important;
+  width: 50%;
 }
 .login-form-button {
   width: 100%;
