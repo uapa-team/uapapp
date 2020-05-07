@@ -1,17 +1,105 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
-import { Radio, Table, Input, Button, Form, Typography, Space } from "antd";
+import {
+  Radio,
+  Table,
+  Input,
+  Button,
+  Form,
+  Typography,
+  Space,
+  Popconfirm,
+  TreeSelect,
+} from "antd";
 import Highlighter from "react-highlight-words";
-import { SearchOutlined, UserAddOutlined } from "@ant-design/icons";
+import {
+  SearchOutlined,
+  UserAddOutlined,
+  DeleteOutlined,
+} from "@ant-design/icons";
 import { Row } from "antd";
 
 const { Title } = Typography;
+
+const ProgramsPre = [
+  {
+    title: "Node1",
+    value: "0-0",
+    key: "0-0",
+    children: [
+      {
+        title: "Child Node1",
+        value: "0-0-0",
+        key: "0-0-0",
+      },
+    ],
+  },
+  {
+    title: "Node2",
+    value: "0-1",
+    key: "0-1",
+    children: [
+      {
+        title: "Child Node3",
+        value: "0-1-0",
+        key: "0-1-0",
+      },
+      {
+        title: "Child Node4",
+        value: "0-1-1",
+        key: "0-1-1",
+      },
+      {
+        title: "Child Node5",
+        value: "0-1-2",
+        key: "0-1-2",
+      },
+    ],
+  },
+];
+
+const ProgramsPos = [
+  {
+    title: "Node1",
+    value: "0-0",
+    key: "0-0",
+    children: [
+      {
+        title: "Child Node1",
+        value: "0-0-0",
+        key: "0-0-0",
+      },
+    ],
+  },
+  {
+    title: "Node2",
+    value: "0-1",
+    key: "0-1",
+    children: [
+      {
+        title: "Child Node3",
+        value: "0-1-0",
+        key: "0-1-0",
+      },
+      {
+        title: "Child Node4",
+        value: "0-1-1",
+        key: "0-1-1",
+      },
+      {
+        title: "Child Node5",
+        value: "0-1-2",
+        key: "0-1-2",
+      },
+    ],
+  },
+];
 
 class AdminUsers extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      dataSource: [
+      dataSourceUsers: [
         {
           key: "1",
           nombre: "Nicolás Gómez",
@@ -23,6 +111,8 @@ class AdminUsers extends React.Component {
           correo: "adcorredorm@unal.edu.co",
         },
       ],
+      programasPreSelected: ["0-0-0"],
+      programasPosSelected: ["0-0-0"],
       searchText: "",
       searchedColumn: "",
     };
@@ -110,30 +200,46 @@ class AdminUsers extends React.Component {
     this.setState({ searchText: "" });
   };
 
+  onChangePre = (value) => {
+    console.log("onChangePre ", value);
+    this.setState({ programasPreSelected: value });
+  };
+
+  onChangePos = (value) => {
+    console.log("onChangePos ", value);
+    this.setState({ programasPosSelected: value });
+  };
+
   render() {
     var columns = [
       {
         title: "Nombre",
         dataIndex: "nombre",
         key: "name",
-        width: "43%",
+        width: "45%",
         ...this.getColumnSearchProps("nombre"),
       },
       {
         title: "Correo",
         dataIndex: "correo",
         key: "mail",
-        width: "43%",
+        width: "45%",
         ...this.getColumnSearchProps("correo"),
       },
       {
         title: "Eliminar",
         key: "delete",
-        width: "14%",
-        render: () => (
-          <span>
-            <a href="google.com">Borrar</a>
-          </span>
+        width: "10%",
+        render: (record) => (
+          <Popconfirm
+            title="¿Está seguro que desea eliminar este usuario?"
+            onConfirm={() => console.log(record.correo)}
+            okText="Sí"
+            cancelText="No"
+            placement="top"
+          >
+            <Button icon={<DeleteOutlined />} type="link"></Button>
+          </Popconfirm>
         ),
       },
     ];
@@ -147,12 +253,12 @@ class AdminUsers extends React.Component {
           </Button>
         </Row>
         <Table
-          dataSource={this.state.dataSource}
+          dataSource={this.state.dataSourceUsers}
           columns={columns}
           bordered={true}
           expandedRowRender={(record) => (
             <Form onFinish={this.onFinish}>
-              <Form.Item label="Tipo de usuario">
+              <Form.Item name="userType" label="Tipo de usuario">
                 <Radio.Group
                   defaultValue="Duda"
                   buttonStyle="solid"
@@ -166,25 +272,33 @@ class AdminUsers extends React.Component {
                   <Radio.Button value="Depen">Dependencia</Radio.Button>
                 </Radio.Group>
               </Form.Item>
-              <Form.Item label="Permisos">
-                <Radio.Group
-                  className="admin-users-radio-container"
-                  defaultValue="Pregrado"
-                >
-                  <Radio.Button
-                    className="admin-users-radio-buttons"
-                    value="Preg"
-                  >
-                    Pregrado
-                  </Radio.Button>
-                  <Radio.Button
-                    className="admin-users-radio-buttons"
-                    value="Posg"
-                  >
-                    Posgrado
-                  </Radio.Button>
-                </Radio.Group>
+              <Form.Item name="programsPre" label="Permisos de pregrado">
+                <TreeSelect
+                  treeData={ProgramsPre}
+                  value={this.state.programasPreSelected}
+                  onChange={this.onChangePre}
+                  treeCheckable={true}
+                  showCheckedStrategy={"SHOW_PARENT"}
+                  placeholder="Por favor seleccione programas."
+                />
               </Form.Item>
+              <Form.Item name="programsPos" label="Permisos de posgrado">
+                <TreeSelect
+                  treeData={ProgramsPos}
+                  value={this.state.programasPosSelected}
+                  onChange={this.onChangePos}
+                  treeCheckable={true}
+                  showCheckedStrategy={"SHOW_PARENT"}
+                  placeholder="Por favor seleccione programas."
+                />
+              </Form.Item>
+              <Button
+                type="primary"
+                htmlType="submit"
+                className="admin-users-btnfinish"
+              >
+                Guardar cambios
+              </Button>
             </Form>
           )}
           pagination={{

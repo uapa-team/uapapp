@@ -100,18 +100,11 @@ code {
   justify-content: space-evenly;
 }
 
-.admin-users-radio-container {
-  flex: 1;
+.admin-users-btnfinish {
   width: 100%;
 }
 
-.admin-users-radio-buttons {
-  width: 50%;
-  text-align: center;
-}
-
 /* Estilos AdminPrograms */
-
 .select-programs-div {
   text-align: center;
 }
