@@ -10,6 +10,9 @@ import {
   Space,
   Popconfirm,
   TreeSelect,
+  Modal,
+  Row,
+  Col,
 } from "antd";
 import Highlighter from "react-highlight-words";
 import {
@@ -17,7 +20,6 @@ import {
   UserAddOutlined,
   DeleteOutlined,
 } from "@ant-design/icons";
-import { Row } from "antd";
 
 const { Title } = Typography;
 
@@ -115,6 +117,7 @@ class AdminUsers extends React.Component {
       programasPosSelected: ["0-0-0"],
       searchText: "",
       searchedColumn: "",
+      visibleModal: false,
     };
   }
 
@@ -210,6 +213,24 @@ class AdminUsers extends React.Component {
     this.setState({ programasPosSelected: value });
   };
 
+  showModal = () => {
+    this.setState({
+      visibleModal: true,
+    });
+  };
+
+  handleNewUser = () => {
+    this.setState({
+      visibleModal: false,
+    });
+  };
+
+  handleCancel = () => {
+    this.setState({
+      visibleModal: false,
+    });
+  };
+
   render() {
     var columns = [
       {
@@ -248,7 +269,7 @@ class AdminUsers extends React.Component {
       <div>
         <Row className="admin-users-btnctn">
           <Title level={2}>Administración de usuarios</Title>
-          <Button type="primary">
+          <Button type="primary" onClick={this.showModal}>
             <UserAddOutlined /> Añadir usuario
           </Button>
         </Row>
@@ -311,6 +332,75 @@ class AdminUsers extends React.Component {
             showTotal: showTotal,
           }}
         />
+
+        <Modal
+          title="Crear un nuevo usuario"
+          visible={this.state.visibleModal}
+          onOk={this.handleNewUser}
+          onCancel={this.handleCancel}
+          width={800}
+        >
+          <Form onFinish={this.handleNewUser}>
+            <Row gutter={16}>
+              <Col span={12}>
+                <Form.Item label="Nombres" name="names">
+                  <Input placeholder="Nombres" />
+                </Form.Item>
+              </Col>
+              <Col span={12}>
+                <Form.Item label="Usuario UNAL" name="usernameUN">
+                  <Input placeholder="Usuario institucional" />
+                </Form.Item>
+              </Col>
+            </Row>
+            <Row gutter={16}>
+              <Col span={12}>
+                <Form.Item label="Apellidos" name="lastnames">
+                  <Input placeholder="Apellidos" />
+                </Form.Item>
+              </Col>
+              <Col span={12}>
+                <Form.Item label="Usuario UAPA" name="usernameUAPA">
+                  <Input placeholder="Nombre de usuario (UAPA)" />
+                </Form.Item>
+              </Col>
+            </Row>
+            <Form.Item name="userType" label="Tipo de usuario">
+              <Radio.Group
+                defaultValue="Duda"
+                buttonStyle="solid"
+                onChange={this.handleFormLayoutChange}
+              >
+                <Radio.Button value="NoRol">Sin rol asignado</Radio.Button>
+                <Radio.Button value="Admin">Administrador</Radio.Button>
+                <Radio.Button value="Auxil">Auxiliar</Radio.Button>
+                <Radio.Button value="Coord">Coordinador</Radio.Button>
+                <Radio.Button value="UAPA">UAPA</Radio.Button>
+                <Radio.Button value="Depen">Dependencia</Radio.Button>
+              </Radio.Group>
+            </Form.Item>
+            <Form.Item name="programsPre" label="Permisos de pregrado">
+              <TreeSelect
+                treeData={ProgramsPre}
+                value={this.state.programasPreSelected}
+                onChange={this.onChangePre}
+                treeCheckable={true}
+                showCheckedStrategy={"SHOW_PARENT"}
+                placeholder="Por favor seleccione programas."
+              />
+            </Form.Item>
+            <Form.Item name="programsPos" label="Permisos de posgrado">
+              <TreeSelect
+                treeData={ProgramsPos}
+                value={this.state.programasPosSelected}
+                onChange={this.onChangePos}
+                treeCheckable={true}
+                showCheckedStrategy={"SHOW_PARENT"}
+                placeholder="Por favor seleccione programas."
+              />
+            </Form.Item>
+          </Form>
+        </Modal>
       </div>
     );
   }
