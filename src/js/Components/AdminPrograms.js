@@ -6,15 +6,15 @@ import AdminProgramsAsigna from "./AdminProgramsAsigna";
 import AdminProgramsGrupos from "./AdminProgramsGrupos";
 
 const { TreeNode } = TreeSelect;
-const { Title } = Typography;
+const { Title, Text } = Typography;
 
 class AdminPrograms extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       value: undefined,
-      found: false, //Variable según si se encuentran programas asignados.
-      select: false, //Variable según si ya se eligió programa.
+      programsFound: false, //Variable según si se encuentran programas asignados.
+      visibleMenu: false,
       visibleProfes: false,
       visibleAsigna: false,
       visibleGrupos: false,
@@ -27,9 +27,9 @@ class AdminPrograms extends React.Component {
   onChangeSelect = (value) => {
     console.log(value);
     if (value !== undefined) {
-      this.setState({ select: true });
+      this.setState({ visibleMenu: true });
     } else {
-      this.setState({ select: false });
+      this.setState({ visibleMenu: false });
     }
     this.setState({ value });
   };
@@ -54,20 +54,22 @@ class AdminPrograms extends React.Component {
         visibleGrupos: true,
       });
     }
-    console.log(e.target.value);
   };
 
   render() {
-    return this.state.found ? (
-      <div className="not-found-programs-div">
-        <h4>
+    return !this.state.programsFound ? (
+      <div className="admin-programs-not-found-div">
+        <div className="admin-programs-title-div">
+          <Title level={2}>Administración de programas</Title>
+        </div>
+        <Text>
           No se le ha asignado ningún programa. Contacte a un administrador si
           considera que es un error.
-        </h4>
+        </Text>
       </div>
     ) : (
       <div>
-        <div className="select-programs-div">
+        <div className="admin-programs-title-div">
           <Title level={2}>Administración de programas</Title>
         </div>
         <TreeSelect
@@ -94,7 +96,7 @@ class AdminPrograms extends React.Component {
           </TreeNode>
         </TreeSelect>
 
-        {this.state.select ? (
+        {this.state.visibleMenu ? (
           <div className="admin-programs-below-select">
             <Radio.Group
               onChange={this.displayAdminProgram}
@@ -123,9 +125,7 @@ class AdminPrograms extends React.Component {
             {this.state.visibleAsigna ? <AdminProgramsAsigna /> : null}
             {this.state.visibleGrupos ? <AdminProgramsGrupos /> : null}
           </div>
-        ) : (
-          <div></div>
-        )}
+        ) : null}
       </div>
     );
   }

@@ -34,40 +34,7 @@ code {
   margin-top: 1.5em;
 }
 
-/* Estilos de Login */
-.login-general {
-  padding: 1em;
-  padding-bottom: 0;
-  margin-top: 1.5em;
-  background-color: lightgrey;
-  border-radius: 15px;
-}
-.login-welcome {
-  text-align: center;
-  margin-bottom: 1.5em;
-}
-.login-form-forgot {
-  float: right;
-  margin-top: -2em;
-}
-.login-form-remember {
-  margin-bottom: 0em !important;
-  width: 50%;
-}
-.login-form-button {
-  width: 100%;
-  margin-bottom: 1em;
-  margin-top: 1em;
-}
-.login-form-contact {
-  margin-bottom: 0.5em;
-}
-
-/* Estilos Contact (radio-button) */
-.contact-welcome {
-  text-align: center;
-}
-
+/* Sobre-escribiendo estilos de AntD */
 .ant-form-item-required::before {
   font-size: 0px !important;
 }
@@ -82,7 +49,6 @@ code {
   box-shadow: -1px 0 0 0 #2d2656 !important;
 }
 
-/* Estilos en tablas (administración de usuarios) */
 .ant-table-tbody tr:nth-child(odd) {
   background-color: white;
 }
@@ -93,6 +59,46 @@ code {
   background-color: whitesmoke;
 }
 
+/* Estilos de Login */
+.login-general {
+  padding: 1em;
+  padding-bottom: 0;
+  margin-top: 1.5em;
+  background-color: lightgrey;
+  border-radius: 15px;
+}
+
+.login-welcome {
+  text-align: center;
+  margin-bottom: 1.5em;
+}
+
+.login-form-forgot {
+  float: right;
+  margin-top: -2em;
+}
+
+.login-form-remember {
+  margin-bottom: 0em !important;
+  width: 50%;
+}
+
+.login-form-button {
+  width: 100%;
+  margin-bottom: 1em;
+  margin-top: 1em;
+}
+
+.login-form-contact {
+  margin-bottom: 0.5em;
+}
+
+/* Estilos Contact (radio-button) */
+.contact-welcome {
+  text-align: center;
+}
+
+/* Estilos AdminUsers */
 .admin-users-btnctn {
   margin-top: 1.5em;
   margin-bottom: 1.5em;
@@ -105,17 +111,14 @@ code {
 }
 
 /* Estilos AdminPrograms */
-.select-programs-div {
+.admin-programs-title-div {
   text-align: center;
-}
-
-.not-found-programs-div {
-  margin-top: 1em;
-}
-
-.select-programs-div {
   margin-top: 1.5em;
   margin-bottom: 1.5em;
+}
+
+.admin-programs-not-found-div {
+  margin-top: 1em;
 }
 
 .admin-programs-below-select {
@@ -132,6 +135,12 @@ code {
   text-align: center;
 }
 
+.admin-users-add-finish-btn {
+  width: 100%;
+  text-align: center;
+  margin-bottom: -1em !important;
+}
+
 /* Estilos GenerateReport y RecFormat */
 .generate-report-div,
 .rec-format-div {
@@ -141,26 +150,22 @@ code {
   text-align: center;
 }
 
-.rec-format-formitem {
-  width: 100%;
-}
-
-.rec-format-formitem-button {
-  width: 100%;
-  text-align: center;
-}
-
 .generate-report-formitem,
 .rec-format-radio {
   width: 50%;
 }
 
-.rec-format-radiogroup {
+.rec-format-formitem {
   width: 100%;
-  text-align: center;
 }
 
 .generate-report-formitem-button {
   width: 50%;
+  text-align: center;
+}
+
+.rec-format-formitem-button,
+.rec-format-radiogroup {
+  width: 100%;
   text-align: center;
 }

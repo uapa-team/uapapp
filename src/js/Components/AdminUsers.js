@@ -25,36 +25,34 @@ const { Title } = Typography;
 
 const ProgramsPre = [
   {
-    title: "Node1",
-    value: "0-0",
-    key: "0-0",
+    title: "Departamento de Sistemas e Industrial",
+    value: "Departamento de Sistemas e Industrial",
     children: [
       {
-        title: "Child Node1",
-        value: "0-0-0",
-        key: "0-0-0",
+        title: "Ingeniería de Sistemas y Computación",
+        value: "Ingeniería de Sistemas y Computación",
+      },
+      {
+        title: "Ingeniería Industrial",
+        value: "Ingeniería Industrial",
       },
     ],
   },
   {
-    title: "Node2",
+    title: "Departamento Ejemplo",
     value: "0-1",
-    key: "0-1",
     children: [
       {
-        title: "Child Node3",
-        value: "0-1-0",
-        key: "0-1-0",
+        title: "Ingeniería Agrícola",
+        value: "Ingeniería Agrícola",
       },
       {
-        title: "Child Node4",
-        value: "0-1-1",
-        key: "0-1-1",
+        title: "Ingeniería Química",
+        value: "Ingeniería Química",
       },
       {
-        title: "Child Node5",
-        value: "0-1-2",
-        key: "0-1-2",
+        title: "Ingeniería Civil",
+        value: "Ingeniería Civil",
       },
     ],
   },
@@ -62,36 +60,34 @@ const ProgramsPre = [
 
 const ProgramsPos = [
   {
-    title: "Node1",
-    value: "0-0",
-    key: "0-0",
+    title: "Departamento de Sistemas e Industrial",
+    value: "Departamento de Sistemas e Industrial",
     children: [
       {
-        title: "Child Node1",
-        value: "0-0-0",
-        key: "0-0-0",
+        title: "Maestría en Ingeniería de Sistemas y Computación",
+        value: "Maestría en Ingeniería de Sistemas y Computación",
+      },
+      {
+        title: "Doctorado en Ingeniería Industrial",
+        value: "Doctorado en Ingeniería Industrial",
       },
     ],
   },
   {
-    title: "Node2",
+    title: "Departamento Ejemplo",
     value: "0-1",
-    key: "0-1",
     children: [
       {
-        title: "Child Node3",
-        value: "0-1-0",
-        key: "0-1-0",
+        title: "Doctorado en Ingeniería Agrícola",
+        value: "Doctorado en Ingeniería Agrícola",
       },
       {
-        title: "Child Node4",
-        value: "0-1-1",
-        key: "0-1-1",
+        title: "Maestría en Ingeniería Química",
+        value: "Maestría en Ingeniería Química",
       },
       {
-        title: "Child Node5",
-        value: "0-1-2",
-        key: "0-1-2",
+        title: "Especialización en Ingeniería Civil",
+        value: "Especialización en Ingeniería Civil",
       },
     ],
   },
@@ -113,15 +109,20 @@ class AdminUsers extends React.Component {
           correo: "adcorredorm@unal.edu.co",
         },
       ],
-      programasPreSelected: ["0-0-0"],
-      programasPosSelected: ["0-0-0"],
+      programasPreSelected: ["Ingeniería de Sistemas y Computación"],
+      programasPosSelected: ["Maestría en Ingeniería Química"],
       searchText: "",
       searchedColumn: "",
       visibleModal: false,
     };
   }
 
-  onFinish = (values) => {
+  onFinishEditUser = (record, values) => {
+    console.log(record);
+    console.log(values);
+  };
+
+  onFinishEditUserFailed = (values) => {
     console.log(values);
   };
 
@@ -219,7 +220,8 @@ class AdminUsers extends React.Component {
     });
   };
 
-  handleNewUser = () => {
+  handleNewUser = (values) => {
+    console.log(values);
     this.setState({
       visibleModal: false,
     });
@@ -278,10 +280,16 @@ class AdminUsers extends React.Component {
           columns={columns}
           bordered={true}
           expandedRowRender={(record) => (
-            <Form onFinish={this.onFinish}>
+            <Form
+              onFinish={(values) => this.onFinishEditUser(record, values)}
+              onFinishFailed={this.onFinishEditUserFailed}
+              initialValues={{
+                programsPre: this.state.programasPreSelected,
+                programsPos: this.state.programasPosSelected,
+              }}
+            >
               <Form.Item name="userType" label="Tipo de usuario">
                 <Radio.Group
-                  defaultValue="Duda"
                   buttonStyle="solid"
                   onChange={this.handleFormLayoutChange}
                 >
@@ -313,13 +321,15 @@ class AdminUsers extends React.Component {
                   placeholder="Por favor seleccione programas."
                 />
               </Form.Item>
-              <Button
-                type="primary"
-                htmlType="submit"
-                className="admin-users-btnfinish"
-              >
-                Guardar cambios
-              </Button>
+              <Form.Item>
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  className="admin-users-btnfinish"
+                >
+                  Guardar cambios
+                </Button>
+              </Form.Item>
             </Form>
           )}
           pagination={{
@@ -335,8 +345,8 @@ class AdminUsers extends React.Component {
         <Modal
           title="Crear un nuevo usuario"
           visible={this.state.visibleModal}
-          onOk={this.handleNewUser}
           onCancel={this.handleCancel}
+          footer={null}
           width={800}
         >
           <Form onFinish={this.handleNewUser}>
@@ -366,7 +376,6 @@ class AdminUsers extends React.Component {
             </Row>
             <Form.Item name="userType" label="Tipo de usuario">
               <Radio.Group
-                defaultValue="Duda"
                 buttonStyle="solid"
                 onChange={this.handleFormLayoutChange}
               >
@@ -398,6 +407,13 @@ class AdminUsers extends React.Component {
                 placeholder="Por favor seleccione programas."
               />
             </Form.Item>
+            <Button
+              type="primary"
+              htmlType="submit"
+              className="admin-users-add-finish-btn"
+            >
+              Crear usuario
+            </Button>
           </Form>
         </Modal>
       </div>
