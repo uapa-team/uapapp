@@ -332,7 +332,6 @@ class AdminUsers extends React.Component {
             showTotal: showTotal,
           }}
         />
-
         <Modal
           title="Crear un nuevo usuario"
           visible={this.state.visibleModal}

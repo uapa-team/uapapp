@@ -1,18 +1,30 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
 import { TreeSelect, Radio, Typography } from "antd";
+import AdminProgramsProfes from "./AdminProgramsProfes";
+import AdminProgramsAsigna from "./AdminProgramsAsigna";
+import AdminProgramsGrupos from "./AdminProgramsGrupos";
 
 const { TreeNode } = TreeSelect;
 const { Title } = Typography;
 
 class AdminPrograms extends React.Component {
-  state = {
-    value: undefined,
-    found: false, //Variable según si se encuentran programas asignados.
-    select: false, //Variable según si ya se eligió programa.
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      value: undefined,
+      found: false, //Variable según si se encuentran programas asignados.
+      select: false, //Variable según si ya se eligió programa.
+      visibleProfes: false,
+      visibleAsigna: false,
+      visibleGrupos: false,
+      visibleModalProfes: false,
+      visibleModalAsigna: false,
+      visibleModalGrupos: false,
+    };
+  }
 
-  onChange = (value) => {
+  onChangeSelect = (value) => {
     console.log(value);
     if (value !== undefined) {
       this.setState({ select: true });
@@ -20,6 +32,29 @@ class AdminPrograms extends React.Component {
       this.setState({ select: false });
     }
     this.setState({ value });
+  };
+
+  displayAdminProgram = (e) => {
+    if (e.target.value === "Profesores") {
+      this.setState({
+        visibleProfes: true,
+        visibleAsigna: false,
+        visibleGrupos: false,
+      });
+    } else if (e.target.value === "Asignaturas") {
+      this.setState({
+        visibleProfes: false,
+        visibleAsigna: true,
+        visibleGrupos: false,
+      });
+    } else if (e.target.value === "Grupos") {
+      this.setState({
+        visibleProfes: false,
+        visibleAsigna: false,
+        visibleGrupos: true,
+      });
+    }
+    console.log(e.target.value);
   };
 
   render() {
@@ -43,7 +78,7 @@ class AdminPrograms extends React.Component {
           placeholder="Por favor busque o seleccione un programa."
           allowClear
           treeDefaultExpandAll
-          onChange={this.onChange}
+          onChange={this.onChangeSelect}
         >
           <TreeNode selectable={false} value="Pregrado" title="Pregrado">
             <TreeNode
@@ -61,17 +96,32 @@ class AdminPrograms extends React.Component {
 
         {this.state.select ? (
           <div className="admin-programs-below-select">
-            <Radio.Group className="admin-programs-radio-container">
-              <Radio.Button className="admin-programs-radio-buttons" value="1">
+            <Radio.Group
+              onChange={this.displayAdminProgram}
+              className="admin-programs-radio-container"
+            >
+              <Radio.Button
+                className="admin-programs-radio-buttons"
+                value="Profesores"
+              >
                 Profesores
               </Radio.Button>
-              <Radio.Button className="admin-programs-radio-buttons" value="2">
+              <Radio.Button
+                className="admin-programs-radio-buttons"
+                value="Asignaturas"
+              >
                 Asignaturas
               </Radio.Button>
-              <Radio.Button className="admin-programs-radio-buttons" value="3">
+              <Radio.Button
+                className="admin-programs-radio-buttons"
+                value="Grupos"
+              >
                 Grupos de Investigación
               </Radio.Button>
             </Radio.Group>
+            {this.state.visibleProfes ? <AdminProgramsProfes /> : null}
+            {this.state.visibleAsigna ? <AdminProgramsAsigna /> : null}
+            {this.state.visibleGrupos ? <AdminProgramsGrupos /> : null}
           </div>
         ) : (
           <div></div>
