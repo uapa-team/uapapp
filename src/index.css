@@ -141,8 +141,16 @@ code {
   text-align: center;
 }
 
+.rec-format-formitem {
+  width: 100%;
+}
+
+.rec-format-formitem-button {
+  width: 100%;
+  text-align: center;
+}
+
 .generate-report-formitem,
-.rec-format-formitem,
 .rec-format-radio {
   width: 50%;
 }
@@ -152,8 +160,7 @@ code {
   text-align: center;
 }
 
-.generate-report-formitem-button,
-.rec-format-formitem-button {
+.generate-report-formitem-button {
   width: 50%;
   text-align: center;
 }
