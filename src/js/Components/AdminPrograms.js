@@ -57,7 +57,7 @@ class AdminPrograms extends React.Component {
   };
 
   render() {
-    return !this.state.programsFound ? (
+    return this.state.programsFound ? (
       <div className="admin-programs-not-found-div">
         <div className="admin-programs-title-div">
           <Title level={2}>Administración de programas</Title>
