@@ -10,6 +10,8 @@ import {
   Space,
   Row,
   Typography,
+  Modal,
+  Col,
 } from "antd";
 import Highlighter from "react-highlight-words";
 import {
@@ -46,6 +48,7 @@ class AdminProgramsProfes extends React.Component {
         },
       ],
       periodsSelected: [],
+      visibleModal: false,
     };
   }
 
@@ -114,6 +117,36 @@ class AdminProgramsProfes extends React.Component {
       ),
   });
 
+  showModal = () => {
+    this.setState({
+      visibleModal: true,
+    });
+  };
+
+  handleNewProfe = (values) => {
+    console.log(values);
+    this.setState({
+      visibleModal: false,
+    });
+  };
+
+  handleCancel = () => {
+    this.setState({
+      visibleModal: false,
+    });
+  };
+
+  onFinishPeriods = (record, values) => {
+    console.log(record);
+    console.log(values);
+  };
+
+  addProfe = () => {
+    this.setState({
+      visibleModal: false,
+    });
+  };
+
   render() {
     var columns = [
       {
@@ -143,7 +176,7 @@ class AdminProgramsProfes extends React.Component {
 
     return (
       <div>
-        <Row className="admin-users-btnctn">
+        <Row className="admin-programs-subtitle">
           <Title level={2}>Administración de profesores</Title>
           <Button type="primary" onClick={this.showModal}>
             <UserAddOutlined /> Añadir profesor
@@ -155,7 +188,7 @@ class AdminProgramsProfes extends React.Component {
           bordered={true}
           expandedRowRender={(record) => (
             <Form
-              onFinish={(values) => this.onFinishEditUser(record, values)}
+              onFinish={(values) => this.onFinishPeriods(record, values)}
               onFinishFailed={this.onFinishEditUserFailed}
               initialValues={{
                 periods: this.state.periodsSelected,
@@ -192,6 +225,61 @@ class AdminProgramsProfes extends React.Component {
             showTotal: showTotal,
           }}
         />
+        <Modal
+          title="Añadir un nuevo profesor"
+          visible={this.state.visibleModal}
+          onCancel={this.handleCancel}
+          footer={null}
+          width={800}
+        >
+          <Form onFinish={this.searchByName}>
+            <Row gutter={16}>
+              <Col span={12}>
+                <Form.Item label="Nombre" name="names">
+                  <Input placeholder="Nombres" />
+                </Form.Item>
+              </Col>
+              <Col span={12}>
+                <Button
+                  ghost
+                  icon={<SearchOutlined />}
+                  type="primary"
+                  htmlType="submit"
+                  className="admin-users-add-finish-btn"
+                >
+                  Buscar por nombre
+                </Button>
+              </Col>
+            </Row>
+          </Form>
+          <Form onFinish={this.searchByMail}>
+            <Row gutter={16}>
+              <Col span={12}>
+                <Form.Item label="Correo" name="mail">
+                  <Input placeholder="Correo" />
+                </Form.Item>
+              </Col>
+              <Col span={12}>
+                <Button
+                  ghost
+                  icon={<SearchOutlined />}
+                  type="primary"
+                  htmlType="submit"
+                  className="admin-users-add-finish-btn"
+                >
+                  Buscar por correo
+                </Button>
+              </Col>
+            </Row>
+          </Form>
+          <Button
+            type="primary"
+            onClick={this.addProfe}
+            className="admin-users-add-finish-btn"
+          >
+            Añadir profesor
+          </Button>
+        </Modal>
       </div>
     );
   }

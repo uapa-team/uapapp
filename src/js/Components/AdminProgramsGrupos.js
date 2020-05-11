@@ -1,6 +1,17 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
-import { Row, Button, Table, Popconfirm, Typography, Input, Space } from "antd";
+import {
+  Row,
+  Button,
+  Table,
+  Popconfirm,
+  Typography,
+  Input,
+  Space,
+  Modal,
+  Form,
+  Col,
+} from "antd";
 import {
   UsergroupAddOutlined,
   DeleteOutlined,
@@ -17,16 +28,35 @@ class AdminProgramsGrupos extends React.Component {
       dataSourceGrupos: [
         {
           key: "1",
-          nombre: "Nicolás Gómez",
+          código: "102",
+          nombre: "Grupo de Investigación Y",
         },
         {
           key: "2",
-          nombre: "Angel Corredor",
+          código: "123",
+          nombre: "Grupo de Investigación X",
         },
       ],
-      periodsSelected: [],
     };
   }
+
+  showModal = () => {
+    this.setState({
+      visibleModal: true,
+    });
+  };
+
+  handleCancel = () => {
+    this.setState({
+      visibleModal: false,
+    });
+  };
+
+  addGrupo = () => {
+    this.setState({
+      visibleModal: false,
+    });
+  };
 
   getColumnSearchProps = (dataIndex) => ({
     filterDropdown: ({
@@ -128,7 +158,7 @@ class AdminProgramsGrupos extends React.Component {
     ];
     return (
       <div>
-        <Row className="admin-users-btnctn">
+        <Row className="admin-programs-subtitle">
           <Title level={2}>Administración de grupos de investigación</Title>
           <Button type="primary" onClick={this.showModal}>
             <UsergroupAddOutlined /> Añadir grupo
@@ -148,6 +178,61 @@ class AdminProgramsGrupos extends React.Component {
             showTotal: showTotal,
           }}
         />
+        <Modal
+          title="Añadir un nuevo grupo de investigación"
+          visible={this.state.visibleModal}
+          onCancel={this.handleCancel}
+          footer={null}
+          width={800}
+        >
+          <Form onFinish={this.searchByName}>
+            <Row gutter={16}>
+              <Col span={12}>
+                <Form.Item label="Nombre" name="names">
+                  <Input placeholder="Nombres" />
+                </Form.Item>
+              </Col>
+              <Col span={12}>
+                <Button
+                  ghost
+                  icon={<SearchOutlined />}
+                  type="primary"
+                  htmlType="submit"
+                  className="admin-users-add-finish-btn"
+                >
+                  Buscar por nombre
+                </Button>
+              </Col>
+            </Row>
+          </Form>
+          <Form onFinish={this.searchByMail}>
+            <Row gutter={16}>
+              <Col span={12}>
+                <Form.Item label="Código" name="code">
+                  <Input placeholder="Código Hermes" />
+                </Form.Item>
+              </Col>
+              <Col span={12}>
+                <Button
+                  ghost
+                  icon={<SearchOutlined />}
+                  type="primary"
+                  htmlType="submit"
+                  className="admin-users-add-finish-btn"
+                >
+                  Buscar por código
+                </Button>
+              </Col>
+            </Row>
+          </Form>
+          <Button
+            type="primary"
+            onClick={this.addGrupo}
+            className="admin-users-add-finish-btn"
+          >
+            Añadir grupo
+          </Button>
+        </Modal>
       </div>
     );
   }

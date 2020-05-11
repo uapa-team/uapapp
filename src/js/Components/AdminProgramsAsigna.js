@@ -1,6 +1,17 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
-import { Row, Button, Table, Popconfirm, Typography, Input, Space } from "antd";
+import {
+  Row,
+  Button,
+  Table,
+  Popconfirm,
+  Typography,
+  Input,
+  Space,
+  Modal,
+  Form,
+  Col,
+} from "antd";
 import {
   AppstoreAddOutlined,
   DeleteOutlined,
@@ -17,14 +28,15 @@ class AdminProgramsAsigna extends React.Component {
       dataSourceAsigna: [
         {
           key: "1",
-          nombre: "Nicolás Gómez",
+          código: "102102",
+          nombre: "Cálculo Diferencial",
         },
         {
           key: "2",
-          nombre: "Angel Corredor",
+          código: "102123",
+          nombre: "Cálculo Integral",
         },
       ],
-      periodsSelected: [],
     };
   }
 
@@ -93,6 +105,24 @@ class AdminProgramsAsigna extends React.Component {
       ),
   });
 
+  showModal = () => {
+    this.setState({
+      visibleModal: true,
+    });
+  };
+
+  handleCancel = () => {
+    this.setState({
+      visibleModal: false,
+    });
+  };
+
+  addAsigna = () => {
+    this.setState({
+      visibleModal: false,
+    });
+  };
+
   render() {
     var columns = [
       {
@@ -128,7 +158,7 @@ class AdminProgramsAsigna extends React.Component {
     ];
     return (
       <div>
-        <Row className="admin-users-btnctn">
+        <Row className="admin-programs-subtitle">
           <Title level={2}>Administración de asignaturas</Title>
           <Button type="primary" onClick={this.showModal}>
             <AppstoreAddOutlined />
@@ -149,6 +179,61 @@ class AdminProgramsAsigna extends React.Component {
             showTotal: showTotal,
           }}
         />
+        <Modal
+          title="Añadir una nueva asignatura"
+          visible={this.state.visibleModal}
+          onCancel={this.handleCancel}
+          footer={null}
+          width={800}
+        >
+          <Form onFinish={this.searchByName}>
+            <Row gutter={16}>
+              <Col span={12}>
+                <Form.Item label="Nombre" name="names">
+                  <Input placeholder="Nombres" />
+                </Form.Item>
+              </Col>
+              <Col span={12}>
+                <Button
+                  ghost
+                  icon={<SearchOutlined />}
+                  type="primary"
+                  htmlType="submit"
+                  className="admin-users-add-finish-btn"
+                >
+                  Buscar por nombre
+                </Button>
+              </Col>
+            </Row>
+          </Form>
+          <Form onFinish={this.searchByMail}>
+            <Row gutter={16}>
+              <Col span={12}>
+                <Form.Item label="Código" name="code">
+                  <Input placeholder="Código de la asignatura" />
+                </Form.Item>
+              </Col>
+              <Col span={12}>
+                <Button
+                  ghost
+                  icon={<SearchOutlined />}
+                  type="primary"
+                  htmlType="submit"
+                  className="admin-users-add-finish-btn"
+                >
+                  Buscar por código
+                </Button>
+              </Col>
+            </Row>
+          </Form>
+          <Button
+            type="primary"
+            onClick={this.addAsigna}
+            className="admin-users-add-finish-btn"
+          >
+            Añadir asignatura
+          </Button>
+        </Modal>
       </div>
     );
   }

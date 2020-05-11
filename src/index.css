@@ -99,7 +99,8 @@ code {
 }
 
 /* Estilos AdminUsers */
-.admin-users-btnctn {
+.admin-users-btnctn,
+.admin-programs-subtitle {
   margin-top: 1.5em;
   margin-bottom: 1.5em;
   width: 100%;
