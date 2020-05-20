@@ -252,16 +252,6 @@ class UnalCanvas extends Component {
                   Servicios<span className="caret"> </span>
                 </div>
               </div>
-              <div className="btn-group hidden-sm hidden-md hidden-lg hidden-print">
-                <div
-                  className="btn btn-default dropdown-toggle"
-                  data-toggle="dropdown"
-                  id="unalOpenMenuPerfiles"
-                  data-target="#profiles"
-                >
-                  Perfiles<span className="caret"> </span>
-                </div>
-              </div>
             </div>
           </header>
 
@@ -278,7 +268,7 @@ class UnalCanvas extends Component {
           style={{
             marginTop: "0px",
             lineHeight: "normal",
-            overflow: "hidden"
+            overflow: "hidden",
           }}
         >
           <nav className="col-md-3 col-lg-3 col-sm-3 col-xs-4 col-xxs-6 gobiernoLinea">

@@ -9,21 +9,24 @@ const { Title, Text } = Typography;
 
 class NormalLoginForm extends React.Component {
   onFinish = (values) => {
-    //console.log(values);
+    console.log(values);
+    this.performLogin(values);
+  };
+
+  performLogin = (values) => {
     const key = "updatable";
     message.loading({ content: "Iniciando sesión...", key });
     Backend.sendLogin(values.username, values.password)
       .then(async (response) => {
-        if (response.status === 403) {
+        let res = await response.json();
+        if (res.status === 403) {
           message.error({ content: "Acceso restringido.", key });
-        } else if (response.status === 404) {
+        } else if (res.status === 404) {
           message.error({ content: "Contraseña incorrecta.", key });
-        } else if (response.status === 200) {
+        } else if (res.status === 200) {
           message.success({ content: "Inicio de sesión exitoso.", key });
-          let res = await response.json();
-          console.log(res);
-          localStorage.setItem("jwt", res["token"]);
-          localStorage.setItem("type", res["group"]);
+          //localStorage.setItem("jwt", res["token"]);
+          //localStorage.setItem("type", res["group"]);
           localStorage.setItem("jwt", "un_token_cualquiera");
           window.location.reload();
         } else {
@@ -31,7 +34,7 @@ class NormalLoginForm extends React.Component {
             content: "Error realizando el login.",
             key,
           });
-          console.log("Login Error: Backend HTTP code " + response.status);
+          console.log("Login Error: Backend HTTP code " + res.status);
         }
       })
       .catch((error) => {
