@@ -1,24 +1,50 @@
 import React from "react";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
-import { Input, Button, Checkbox, Form, Typography } from "antd";
+import { Input, Button, Checkbox, Form, Typography, message } from "antd";
 import { Row, Col } from "antd";
 import { withRouter } from "react-router-dom";
+import Backend from "../Basics/Backend";
 
 const { Title, Text } = Typography;
 
 class NormalLoginForm extends React.Component {
   onFinish = (values) => {
-    this.performLogin();
-    console.log(values);
+    //console.log(values);
+    const key = "updatable";
+    message.loading({ content: "Iniciando sesión...", key });
+    Backend.sendLogin(values.username, values.password)
+      .then(async (response) => {
+        if (response.status === 403) {
+          message.error({ content: "Acceso restringido.", key });
+        } else if (response.status === 404) {
+          message.error({ content: "Contraseña incorrecta.", key });
+        } else if (response.status === 200) {
+          message.success({ content: "Inicio de sesión exitoso.", key });
+          let res = await response.json();
+          console.log(res);
+          localStorage.setItem("jwt", res["token"]);
+          localStorage.setItem("type", res["group"]);
+          localStorage.setItem("jwt", "un_token_cualquiera");
+          window.location.reload();
+        } else {
+          message.error({
+            content: "Error realizando el login.",
+            key,
+          });
+          console.log("Login Error: Backend HTTP code " + response.status);
+        }
+      })
+      .catch((error) => {
+        message.error({
+          content: "Error realizando el login.",
+          key,
+        });
+        console.log("Login Error: " + error);
+      });
   };
 
   onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
-  };
-
-  performLogin = () => {
-    localStorage.setItem("jwt", "un_token_cualquiera");
-    window.location.reload();
   };
 
   render() {
