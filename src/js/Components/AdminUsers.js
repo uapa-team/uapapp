@@ -13,6 +13,7 @@ import {
   Modal,
   Row,
   Col,
+  message,
 } from "antd";
 import Highlighter from "react-highlight-words";
 import {
@@ -101,13 +102,8 @@ class AdminUsers extends React.Component {
       dataSourceUsers: [
         {
           key: "1",
-          nombre: "Nicolás Gómez",
-          correo: "nigomezgu@unal.edu.co",
-        },
-        {
-          key: "2",
-          nombre: "Angel Corredor",
-          correo: "adcorredorm@unal.edu.co",
+          nombre: "Cargando...",
+          correo: "Cargando...",
         },
       ],
       programasPreSelected: ["Ingeniería de Sistemas y Computación"],
@@ -222,7 +218,29 @@ class AdminUsers extends React.Component {
   };
 
   handleNewUser = (values) => {
-    console.log(values);
+    //console.log(values);
+    const key = "updatable";
+    message.loading({ content: "Creando usuario...", key });
+    Backend.sendRequest("POST", "user_create", {
+      username: values["usernameUN"],
+      first_name: values["names"],
+      last_name: values["lastnames"],
+      role: values["userType"],
+    }).then(async (response) => {
+      let res = await response.json();
+      console.log(res);
+      if (res.status === 200) {
+        message.success({ content: "Usuario creado correctamente.", key });
+      } else if (res.status === 204) {
+        message.warning({ content: "El usuario ingresado ya existe.", key });
+      } else {
+        message.error({
+          content:
+            "Ha ocurrido un error creando el usuario. Por favor revise los campos.",
+          key,
+        });
+      }
+    });
     this.setState({
       visibleModal: false,
     });
@@ -396,12 +414,12 @@ class AdminUsers extends React.Component {
                 buttonStyle="solid"
                 onChange={this.handleFormLayoutChange}
               >
-                <Radio.Button value="NoRol">Sin rol asignado</Radio.Button>
-                <Radio.Button value="Admin">Administrador</Radio.Button>
-                <Radio.Button value="Auxil">Auxiliar</Radio.Button>
-                <Radio.Button value="Coord">Coordinador</Radio.Button>
-                <Radio.Button value="UAPA">UAPA</Radio.Button>
-                <Radio.Button value="Depen">Dependencia</Radio.Button>
+                <Radio.Button value="0">Sin rol asignado</Radio.Button>
+                <Radio.Button value="1">Administrador</Radio.Button>
+                <Radio.Button value="2">Auxiliar</Radio.Button>
+                <Radio.Button value="3">Coordinador</Radio.Button>
+                <Radio.Button value="4">UAPA</Radio.Button>
+                <Radio.Button value="5">Dependencia</Radio.Button>
               </Radio.Group>
             </Form.Item>
             <Form.Item name="programsPre" label="Permisos de pregrado">

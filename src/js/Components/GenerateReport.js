@@ -1,7 +1,8 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
-import { Form, Select, Button, Typography, TreeSelect } from "antd";
+import { Form, Select, Button, Typography, TreeSelect, message } from "antd";
 import { DownloadOutlined } from "@ant-design/icons";
+import Backend from "../Basics/Backend";
 
 const { Option } = Select;
 const { Title } = Typography;
@@ -42,16 +43,6 @@ const programs = [
         value: "0-1-0",
         key: "0-1-0",
       },
-      {
-        title: "Child Node4",
-        value: "0-1-1",
-        key: "0-1-1",
-      },
-      {
-        title: "Child Node5",
-        value: "0-1-2",
-        key: "0-1-2",
-      },
     ],
   },
 ];
@@ -67,6 +58,24 @@ class GenerateReport extends React.Component {
 
   onFinish = (values) => {
     console.log(values);
+    const key = "updatable";
+    message.loading({ content: "Descargando reporte...", key });
+    Backend.sendRequest("POST", values.report, {
+      periodos: values["periods"],
+      programas: values["programs"],
+    }).then(async (response) => {
+      let res = await response.json();
+      console.log(res);
+      if (res.status === 200) {
+        message.success({ content: "Reporte creado correctamente.", key });
+      } else {
+        message.error({
+          content:
+            "Ha ocurrido un error creando el reporte. Por favor contáctenos.",
+          key,
+        });
+      }
+    });
   };
 
   handleChange(value) {
@@ -90,7 +99,11 @@ class GenerateReport extends React.Component {
           <Title level={2}>Generador de reportes</Title>
         </div>
         <Form onFinish={this.onFinish} layout="vertical">
-          <Form.Item label="Nivel" className="generate-report-formitem">
+          <Form.Item
+            name="level"
+            label="Nivel"
+            className="generate-report-formitem"
+          >
             <Select
               placeholder="Seleccione el nivel"
               onChange={this.handleChange}
@@ -99,7 +112,11 @@ class GenerateReport extends React.Component {
               <Option value="posgrado">Posgrado</Option>
             </Select>
           </Form.Item>
-          <Form.Item label="Reporte" className="generate-report-formitem">
+          <Form.Item
+            name="report"
+            label="Reporte"
+            className="generate-report-formitem"
+          >
             <Select
               placeholder="Seleccione el reporte"
               onChange={this.handleChange}
@@ -108,7 +125,11 @@ class GenerateReport extends React.Component {
               <Option value="posgrado">Posgrado</Option>
             </Select>
           </Form.Item>
-          <Form.Item label="Periodo" className="generate-report-formitem">
+          <Form.Item
+            name="periods"
+            label="Periodo"
+            className="generate-report-formitem"
+          >
             <TreeSelect
               treeData={periods}
               value={this.state.periodsSelected}
@@ -120,7 +141,11 @@ class GenerateReport extends React.Component {
               <Option value="posgrado">Posgrado</Option>
             </TreeSelect>
           </Form.Item>
-          <Form.Item label="Programa" className="generate-report-formitem">
+          <Form.Item
+            name="program"
+            label="Programa"
+            className="generate-report-formitem"
+          >
             <TreeSelect
               treeData={programs}
               value={this.state.programsSelected}
