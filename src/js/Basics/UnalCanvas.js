@@ -12,6 +12,8 @@ import "../../css/unal.css";
 import "./unal.js";
 import "./jquery.js";
 
+import Backend from "./Backend";
+
 class UnalCanvas extends Component {
   render() {
     return (
@@ -226,7 +228,10 @@ class UnalCanvas extends Component {
                         {/*eslint-disable-next-line*/}
                         <a
                           onClick={() => {
-                            //Backend.sendRequest("GET", "logout");
+                            Backend.sendRequest(
+                              "POST",
+                              "logout"
+                            ).then((response) => console.log(response));
                             localStorage.removeItem("jwt");
                             localStorage.removeItem("type");
                             window.location.reload();

@@ -65,10 +65,7 @@ class Contact extends React.Component {
             </Form.Item>
 
             <Form.Item name="type" label="Tipo de mensaje">
-              <Radio.Group
-                defaultValue="Duda"
-                onChange={this.handleFormLayoutChange}
-              >
+              <Radio.Group onChange={this.handleFormLayoutChange}>
                 <Radio.Button value="Duda">Duda</Radio.Button>
                 <Radio.Button value="Sugerencia">Sugerencia</Radio.Button>
                 <Radio.Button value="Petición">Petición</Radio.Button>

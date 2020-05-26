@@ -20,6 +20,7 @@ import {
   UserAddOutlined,
   DeleteOutlined,
 } from "@ant-design/icons";
+import Backend from "../Basics/Backend";
 
 const { Title } = Typography;
 
@@ -232,6 +233,22 @@ class AdminUsers extends React.Component {
       visibleModal: false,
     });
   };
+
+  componentDidMount() {
+    Backend.sendRequest("GET", "users").then(async (response) => {
+      let res = await response.json();
+      console.log(res);
+      let users = [];
+      for (let i = 0; i < res.length; i++) {
+        let user = {};
+        user["key"] = i;
+        user["nombre"] = res[i].data["full_name"];
+        user["correo"] = res[i].data["username"] + "@unal.edu.co";
+        users.push(user);
+      }
+      this.setState({ dataSourceUsers: users });
+    });
+  }
 
   render() {
     var columns = [

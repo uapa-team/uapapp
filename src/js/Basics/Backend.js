@@ -13,7 +13,7 @@ export default class Backend {
       {
         Accept: "application/json",
         "Content-Type": "application/json",
-        Authorization: "Token " + localStorage.getItem("jwt"),
+        Authorization: "Bearer " + localStorage.getItem("jwt"),
       },
       body
     );

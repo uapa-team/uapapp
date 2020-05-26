@@ -78,7 +78,6 @@ class RecFormat extends React.Component {
             <Form layout="vertical">
               <Form.Item label="Tutoriales">
                 <Radio.Group
-                  defaultValue="Duda"
                   onChange={this.handleFormLayoutChange}
                   className="rec-format-radiogroup"
                 >

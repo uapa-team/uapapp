@@ -8,6 +8,13 @@ import Backend from "../Basics/Backend";
 const { Title, Text } = Typography;
 
 class NormalLoginForm extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      checked: false,
+    };
+  }
+
   onFinish = (values) => {
     console.log(values);
     this.performLogin(values);
@@ -19,15 +26,15 @@ class NormalLoginForm extends React.Component {
     Backend.sendLogin(values.username, values.password)
       .then(async (response) => {
         let res = await response.json();
+        console.log(res);
         if (res.status === 403) {
           message.error({ content: "Acceso restringido.", key });
         } else if (res.status === 404) {
           message.error({ content: "Contraseña incorrecta.", key });
         } else if (res.status === 200) {
           message.success({ content: "Inicio de sesión exitoso.", key });
-          //localStorage.setItem("jwt", res["token"]);
-          //localStorage.setItem("type", res["group"]);
-          localStorage.setItem("jwt", "un_token_cualquiera");
+          localStorage.setItem("jwt", res.user.data["auth_token"]);
+          localStorage.setItem("type", res.user.data["role"]);
           window.location.reload();
         } else {
           message.error({
@@ -48,6 +55,10 @@ class NormalLoginForm extends React.Component {
 
   onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
+  };
+
+  checkChanged = () => {
+    this.setState({ checked: !this.state.checked });
   };
 
   render() {
@@ -74,9 +85,6 @@ class NormalLoginForm extends React.Component {
                 onFinish={this.onFinish}
                 onFinishFailed={this.onFinishFailed}
                 className="login-form"
-                initialValues={{
-                  remember: true,
-                }}
               >
                 <Form.Item
                   name="username"
@@ -111,7 +119,12 @@ class NormalLoginForm extends React.Component {
                   />
                 </Form.Item>
                 <Form.Item name="remember" className="login-form-remember">
-                  <Checkbox defaultChecked={true}>Recuérdame</Checkbox>
+                  <Checkbox
+                    checked={this.state.checked}
+                    onClick={this.checkChanged}
+                  >
+                    Recuérdame
+                  </Checkbox>
                 </Form.Item>
                 <a
                   className="login-form-forgot"
