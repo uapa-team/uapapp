@@ -228,7 +228,6 @@ class AdminUsers extends React.Component {
       role: values["userType"],
     }).then(async (response) => {
       let res = await response.json();
-      console.log(res);
       if (res.status === 200) {
         message.success({ content: "Usuario creado correctamente.", key });
       } else if (res.status === 204) {
@@ -255,7 +254,6 @@ class AdminUsers extends React.Component {
   componentDidMount() {
     Backend.sendRequest("GET", "users").then(async (response) => {
       let res = await response.json();
-      console.log(res);
       let users = [];
       for (let i = 0; i < res.length; i++) {
         let user = {};

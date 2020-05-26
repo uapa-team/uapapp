@@ -26,7 +26,6 @@ class NormalLoginForm extends React.Component {
     Backend.sendLogin(values.username, values.password)
       .then(async (response) => {
         let res = await response.json();
-        console.log(res);
         if (res.status === 403) {
           message.error({ content: "Acceso restringido.", key });
         } else if (res.status === 404) {

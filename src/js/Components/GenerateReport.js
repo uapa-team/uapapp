@@ -57,7 +57,6 @@ class GenerateReport extends React.Component {
   }
 
   onFinish = (values) => {
-    console.log(values);
     const key = "updatable";
     message.loading({ content: "Descargando reporte...", key });
     Backend.sendRequest("POST", values.report, {
@@ -65,7 +64,6 @@ class GenerateReport extends React.Component {
       programas: values["programs"],
     }).then(async (response) => {
       let res = await response.json();
-      console.log(res);
       if (res.status === 200) {
         message.success({ content: "Reporte creado correctamente.", key });
       } else {

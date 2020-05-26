@@ -228,10 +228,7 @@ class UnalCanvas extends Component {
                         {/*eslint-disable-next-line*/}
                         <a
                           onClick={() => {
-                            Backend.sendRequest(
-                              "POST",
-                              "logout"
-                            ).then((response) => console.log(response));
+                            Backend.sendRequest("POST", "logout");
                             localStorage.removeItem("jwt");
                             localStorage.removeItem("type");
                             window.location.reload();
