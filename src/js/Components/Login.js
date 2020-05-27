@@ -32,6 +32,7 @@ class NormalLoginForm extends React.Component {
           message.error({ content: "Contraseña incorrecta.", key });
         } else if (res.status === 200) {
           message.success({ content: "Inicio de sesión exitoso.", key });
+          localStorage.setItem("username", res.user.data["username"]);
           localStorage.setItem("jwt", res.user.data["auth_token"]);
           localStorage.setItem("type", res.user.data["role"]);
           window.location.reload();

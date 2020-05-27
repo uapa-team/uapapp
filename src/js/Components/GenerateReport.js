@@ -7,53 +7,50 @@ import Backend from "../Basics/Backend";
 const { Option } = Select;
 const { Title } = Typography;
 
-const periods = [
-  {
-    title: "Node1",
-    value: "0-0",
-    key: "0-0",
-  },
-  {
-    title: "Node2",
-    value: "0-1",
-    key: "0-1",
-  },
-];
-
-const programs = [
-  {
-    title: "Node1",
-    value: "0-0",
-    key: "0-0",
-    children: [
-      {
-        title: "Child Node1",
-        value: "0-0-0",
-        key: "0-0-0",
-      },
-    ],
-  },
-  {
-    title: "Node2",
-    value: "0-1",
-    key: "0-1",
-    children: [
-      {
-        title: "Child Node3",
-        value: "0-1-0",
-        key: "0-1-0",
-      },
-    ],
-  },
-];
-
 class GenerateReport extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      levelsOptions: [],
+      reportOptions: [],
+      selectedReport: undefined,
+      selectedLevel: undefined,
       programsSelected: [],
+      programsAvailable: [],
+      periodsAvailable: [],
       periodsSelected: [],
     };
+  }
+
+  componentDidMount() {
+    Backend.sendRequest("GET", "reports_info").then(async (response) => {
+      let res = await response.json();
+      let loadedOptions = [];
+      for (let i = 0; i < res.length; i++) {
+        loadedOptions.push(
+          <Option key={res[i].data["report_name"]}>
+            {res[i].data["report_name"]}
+          </Option>
+        );
+      }
+      this.setState({
+        reportOptions: loadedOptions,
+      });
+    });
+
+    Backend.sendRequest("POST", "FR_levels", {
+      username: localStorage.getItem("username"),
+    }).then(async (response) => {
+      let res = await response.json();
+      console.log(res);
+      let loadedOptions = [];
+      for (let i = 0; i < res.length; i++) {
+        loadedOptions.push(<Option key={res[i]}>{res[i]}</Option>);
+      }
+      this.setState({
+        levelsOptions: loadedOptions,
+      });
+    });
   }
 
   onFinish = (values) => {
@@ -76,9 +73,54 @@ class GenerateReport extends React.Component {
     });
   };
 
-  handleChange(value) {
-    console.log(`selected ${value}`);
-  }
+  handleChangeLevel = (value) => {
+    if (value !== undefined) {
+      console.log(value);
+      Backend.sendRequest("POST", "app_user_programs_levels", {
+        level: value,
+        username: localStorage.getItem("username"),
+      }).then(async (response) => {
+        let res = await response.json();
+        console.log(res);
+        let loadedPrograms = [];
+        for (let i = 0; i < res.length; i++) {
+          let program = {
+            title: res[i].data["programa"],
+            value: res[i].data["programa"],
+            key: res[i].data["programa"],
+          };
+          loadedPrograms.push(program);
+        }
+        this.setState({
+          programsAvailable: loadedPrograms,
+        });
+      });
+    }
+  };
+
+  handleChangeReport = (value) => {
+    if (value !== undefined) {
+      console.log(value);
+      Backend.sendRequest("POST", "reports_periods", {
+        report_name: value,
+      }).then(async (response) => {
+        let res = await response.json();
+        console.log(res);
+        let loadedPeriods = [];
+        for (let i = 0; i < res.length; i++) {
+          let period = {
+            title: res[i].data["periodo"],
+            value: res[i].data["periodo"],
+            key: res[i].data["periodo"],
+          };
+          loadedPeriods.push(period);
+        }
+        this.setState({
+          periodsAvailable: loadedPeriods,
+        });
+      });
+    }
+  };
 
   onChangePrograms = (value) => {
     console.log("onChangePre ", value);
@@ -104,10 +146,9 @@ class GenerateReport extends React.Component {
           >
             <Select
               placeholder="Seleccione el nivel"
-              onChange={this.handleChange}
+              onChange={this.handleChangeLevel}
             >
-              <Option value="pregrado">Pregrado</Option>
-              <Option value="posgrado">Posgrado</Option>
+              {this.state.levelsOptions}
             </Select>
           </Form.Item>
           <Form.Item
@@ -117,10 +158,9 @@ class GenerateReport extends React.Component {
           >
             <Select
               placeholder="Seleccione el reporte"
-              onChange={this.handleChange}
+              onChange={this.handleChangeReport}
             >
-              <Option value="pregrado">Pregrado</Option>
-              <Option value="posgrado">Posgrado</Option>
+              {this.state.reportOptions}
             </Select>
           </Form.Item>
           <Form.Item
@@ -129,15 +169,12 @@ class GenerateReport extends React.Component {
             className="generate-report-formitem"
           >
             <TreeSelect
-              treeData={periods}
+              treeData={this.state.periodsAvailable}
               value={this.state.periodsSelected}
               placeholder="Seleccione el periodo"
               treeCheckable={true}
               onChange={this.onChangePeriod}
-            >
-              <Option value="pregrado">Pregrado</Option>
-              <Option value="posgrado">Posgrado</Option>
-            </TreeSelect>
+            ></TreeSelect>
           </Form.Item>
           <Form.Item
             name="program"
@@ -145,16 +182,13 @@ class GenerateReport extends React.Component {
             className="generate-report-formitem"
           >
             <TreeSelect
-              treeData={programs}
+              treeData={this.state.programsAvailable}
               value={this.state.programsSelected}
               placeholder="Seleccione el programa"
               treeCheckable={true}
               onChange={this.onChangePrograms}
               showCheckedStrategy={"SHOW_PARENT"}
-            >
-              <Option value="pregrado">Pregrado</Option>
-              <Option value="posgrado">Posgrado</Option>
-            </TreeSelect>
+            ></TreeSelect>
           </Form.Item>
           <Form.Item className="generate-report-formitem-button">
             <Button block type="primary" htmlType="submit">
