@@ -32,11 +32,11 @@ const ProgramsPre = [
     children: [
       {
         title: "Ingeniería de Sistemas y Computación",
-        value: "Ingeniería de Sistemas y Computación",
+        value: "2879",
       },
       {
         title: "Ingeniería Industrial",
-        value: "Ingeniería Industrial",
+        value: "2546",
       },
     ],
   },
@@ -67,11 +67,11 @@ const ProgramsPos = [
     children: [
       {
         title: "Maestría en Ingeniería de Sistemas y Computación",
-        value: "Maestría en Ingeniería de Sistemas y Computación",
+        value: "2702",
       },
       {
-        title: "Doctorado en Ingeniería Industrial",
-        value: "Doctorado en Ingeniería Industrial",
+        title: "Maestría en Ingenieria Industrial",
+        value: "2708",
       },
     ],
   },
@@ -106,8 +106,8 @@ class AdminUsers extends React.Component {
           correo: "Cargando...",
         },
       ],
-      programasPreSelected: ["Ingeniería de Sistemas y Computación"],
-      programasPosSelected: ["Maestría en Ingeniería Química"],
+      programasPreSelected: ["2879", "2546"],
+      programasPosSelected: ["2708", "2702"],
       searchText: "",
       searchedColumn: "",
       visibleModal: false,
@@ -115,8 +115,25 @@ class AdminUsers extends React.Component {
   }
 
   onFinishEditUser = (record, values) => {
-    console.log(record);
-    console.log(values);
+    let username = record['username'];
+    let programs = values['programsPos'].concat(values['programsPre']);
+
+    const key = "updatable";
+    Backend.sendRequest("POST", "app_user_programs/add_programs_with_delete", {
+      username: username,
+      programs: programs,
+    }).then(async (response) => {
+      if (response.status === 200) {
+        message.success({ content: "Permisos de usuario actualizados correctamente.", key });
+      } else {
+        message.error({
+          content: "Ha ocurrido un error actualizando los permisos. Por favor contáctenos.",
+          key,
+        });
+      }
+    });
+    console.log(username);
+    console.log(programs);
   };
 
   onFinishEditUserFailed = (values) => {
@@ -260,6 +277,7 @@ class AdminUsers extends React.Component {
         user["key"] = i;
         user["nombre"] = res[i].data["full_name"];
         user["correo"] = res[i].data["username"] + "@unal.edu.co";
+        user["username"] = res[i].data["username"];
         users.push(user);
       }
       this.setState({ dataSourceUsers: users });
