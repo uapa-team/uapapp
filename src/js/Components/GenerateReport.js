@@ -30,7 +30,6 @@ class GenerateReport extends React.Component {
       let routesRecieved = {};
       for (let i = 0; i < res.length; i++) {
         routesRecieved[res[i].data["report_name"]] = res[i].data["ruta_back"];
-        console.log(routesRecieved);
         loadedOptions.push(
           <Option key={res[i].data["report_name"]}>
             {res[i].data["report_name"]}
@@ -60,12 +59,10 @@ class GenerateReport extends React.Component {
   onFinish = (values) => {
     const key = "updatable";
     message.loading({ content: "Descargando reporte...", key });
-    console.log("Post enviado con: " + this.state.rutasBack[values.report]);
     Backend.sendRequest("POST", this.state.rutasBack[values.report], {
       periodos: values["periods"],
       programas: values["programs"],
     }).then(async (response) => {
-      await response.json();
       if (response.status === 200) {
         message.success({ content: "Reporte creado correctamente.", key });
       } else {
@@ -76,6 +73,10 @@ class GenerateReport extends React.Component {
         });
       }
     });
+  };
+
+  onFinishFailed = (errorInfo) => {
+    console.log("Failed:", errorInfo);
   };
 
   handleChangeLevel = (value) => {
@@ -139,11 +140,21 @@ class GenerateReport extends React.Component {
         <div className="generate-report-div">
           <Title level={2}>Generador de reportes</Title>
         </div>
-        <Form onFinish={this.onFinish} layout="vertical">
+        <Form
+          onFinish={this.onFinish}
+          onFinishFailed={this.onFinishFailed}
+          layout="vertical"
+        >
           <Form.Item
             name="level"
             label="Nivel"
             className="generate-report-formitem"
+            rules={[
+              {
+                required: true,
+                message: "Por favor seleccione un nivel.",
+              },
+            ]}
           >
             <Select
               placeholder="Seleccione el nivel"
@@ -156,6 +167,12 @@ class GenerateReport extends React.Component {
             name="report"
             label="Reporte"
             className="generate-report-formitem"
+            rules={[
+              {
+                required: true,
+                message: "Por favor seleccione un reporte.",
+              },
+            ]}
           >
             <Select
               placeholder="Seleccione el reporte"
@@ -168,15 +185,21 @@ class GenerateReport extends React.Component {
             name="periods"
             label="Periodo"
             className="generate-report-formitem"
+            rules={[
+              {
+                required: true,
+                message: "Por favor seleccione uno o varios periodos.",
+              },
+            ]}
           >
             <TreeSelect
               treeData={this.state.periodsAvailable}
-              value={this.state.periodsSelected}
+              value={this.state.selectedPeriods}
               placeholder="Seleccione el periodo"
               treeCheckable={true}
               onChange={this.onChangePeriod}
               disabled={
-                this.state.selectedLevel === undefined &&
+                this.state.selectedLevel === undefined ||
                 this.state.selectedReport === undefined
               }
             ></TreeSelect>
@@ -185,16 +208,22 @@ class GenerateReport extends React.Component {
             name="programs"
             label="Programa"
             className="generate-report-formitem"
+            rules={[
+              {
+                required: true,
+                message: "Por favor seleccione uno o varios programas.",
+              },
+            ]}
           >
             <TreeSelect
               treeData={this.state.programsAvailable}
-              value={this.state.programsSelected}
+              value={this.state.selectedPrograms}
               placeholder="Seleccione el programa"
               treeCheckable={true}
               onChange={this.onChangePrograms}
               showCheckedStrategy={"SHOW_PARENT"}
               disabled={
-                this.state.selectedLevel === undefined &&
+                this.state.selectedLevel === undefined ||
                 this.state.selectedReport === undefined
               }
             ></TreeSelect>
