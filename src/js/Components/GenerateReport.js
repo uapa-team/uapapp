@@ -15,10 +15,11 @@ class GenerateReport extends React.Component {
       reportOptions: [],
       selectedReport: undefined,
       selectedLevel: undefined,
-      programsSelected: [],
+      selectedPrograms: [],
+      selectedPeriods: [],
       programsAvailable: [],
       periodsAvailable: [],
-      periodsSelected: [],
+      rutasBack: {},
     };
   }
 
@@ -26,7 +27,10 @@ class GenerateReport extends React.Component {
     Backend.sendRequest("GET", "reports_info").then(async (response) => {
       let res = await response.json();
       let loadedOptions = [];
+      let routesRecieved = {};
       for (let i = 0; i < res.length; i++) {
+        routesRecieved[res[i].data["report_name"]] = res[i].data["ruta_back"];
+        console.log(routesRecieved);
         loadedOptions.push(
           <Option key={res[i].data["report_name"]}>
             {res[i].data["report_name"]}
@@ -35,6 +39,7 @@ class GenerateReport extends React.Component {
       }
       this.setState({
         reportOptions: loadedOptions,
+        rutasBack: routesRecieved,
       });
     });
 
@@ -42,7 +47,6 @@ class GenerateReport extends React.Component {
       username: localStorage.getItem("username"),
     }).then(async (response) => {
       let res = await response.json();
-      console.log(res);
       let loadedOptions = [];
       for (let i = 0; i < res.length; i++) {
         loadedOptions.push(<Option key={res[i]}>{res[i]}</Option>);
@@ -56,12 +60,13 @@ class GenerateReport extends React.Component {
   onFinish = (values) => {
     const key = "updatable";
     message.loading({ content: "Descargando reporte...", key });
-    Backend.sendRequest("POST", values.report, {
+    console.log("Post enviado con: " + this.state.rutasBack[values.report]);
+    Backend.sendRequest("POST", this.state.rutasBack[values.report], {
       periodos: values["periods"],
       programas: values["programs"],
     }).then(async (response) => {
-      let res = await response.json();
-      if (res.status === 200) {
+      await response.json();
+      if (response.status === 200) {
         message.success({ content: "Reporte creado correctamente.", key });
       } else {
         message.error({
@@ -75,13 +80,11 @@ class GenerateReport extends React.Component {
 
   handleChangeLevel = (value) => {
     if (value !== undefined) {
-      console.log(value);
       Backend.sendRequest("POST", "app_user_programs_levels", {
         level: value,
         username: localStorage.getItem("username"),
       }).then(async (response) => {
         let res = await response.json();
-        console.log(res);
         let loadedPrograms = [];
         for (let i = 0; i < res.length; i++) {
           let program = {
@@ -92,6 +95,7 @@ class GenerateReport extends React.Component {
           loadedPrograms.push(program);
         }
         this.setState({
+          selectedLevel: value,
           programsAvailable: loadedPrograms,
         });
       });
@@ -100,12 +104,10 @@ class GenerateReport extends React.Component {
 
   handleChangeReport = (value) => {
     if (value !== undefined) {
-      console.log(value);
       Backend.sendRequest("POST", "reports_periods", {
         report_name: value,
       }).then(async (response) => {
         let res = await response.json();
-        console.log(res);
         let loadedPeriods = [];
         for (let i = 0; i < res.length; i++) {
           let period = {
@@ -116,6 +118,7 @@ class GenerateReport extends React.Component {
           loadedPeriods.push(period);
         }
         this.setState({
+          selectedReport: value,
           periodsAvailable: loadedPeriods,
         });
       });
@@ -123,13 +126,11 @@ class GenerateReport extends React.Component {
   };
 
   onChangePrograms = (value) => {
-    console.log("onChangePre ", value);
-    this.setState({ programsSelected: value });
+    this.setState({ selectedPrograms: value });
   };
 
   onChangePeriod = (value) => {
-    console.log("onChangePos ", value);
-    this.setState({ periodsSelected: value });
+    this.setState({ selectedPeriods: value });
   };
 
   render() {
@@ -174,10 +175,14 @@ class GenerateReport extends React.Component {
               placeholder="Seleccione el periodo"
               treeCheckable={true}
               onChange={this.onChangePeriod}
+              disabled={
+                this.state.selectedLevel === undefined &&
+                this.state.selectedReport === undefined
+              }
             ></TreeSelect>
           </Form.Item>
           <Form.Item
-            name="program"
+            name="programs"
             label="Programa"
             className="generate-report-formitem"
           >
@@ -188,6 +193,10 @@ class GenerateReport extends React.Component {
               treeCheckable={true}
               onChange={this.onChangePrograms}
               showCheckedStrategy={"SHOW_PARENT"}
+              disabled={
+                this.state.selectedLevel === undefined &&
+                this.state.selectedReport === undefined
+              }
             ></TreeSelect>
           </Form.Item>
           <Form.Item className="generate-report-formitem-button">
