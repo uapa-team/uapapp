@@ -62,17 +62,33 @@ class GenerateReport extends React.Component {
     Backend.sendRequest("POST", this.state.rutasBack[values.report], {
       periodos: values["periods"],
       programas: values["programs"],
-    }).then(async (response) => {
-      if (response.status === 200) {
-        message.success({ content: "Reporte creado correctamente.", key });
-      } else {
-        message.error({
-          content:
-            "Ha ocurrido un error creando el reporte. Por favor contáctenos.",
-          key,
-        });
-      }
-    });
+    })
+      .then(async (response) => {
+        if (response.status === 200) {
+          message.success({ content: "Reporte creado correctamente.", key });
+          return response.blob();
+        } else {
+          message.error({
+            content:
+              "Ha ocurrido un error creando el reporte. Por favor contáctenos.",
+            key,
+          });
+          return null;
+        }
+      })
+      .then((blob) => {
+        const href = window.URL.createObjectURL(blob);
+        const a = this.linkRef.current;
+        a.download =
+          "reporte" +
+          this.state.selectedLevel +
+          this.state.selectedReport +
+          ".xls";
+        a.href = href;
+        a.click();
+        a.href = "";
+      })
+      .catch((err) => console.error(err));
   };
 
   onFinishFailed = (errorInfo) => {
@@ -133,6 +149,8 @@ class GenerateReport extends React.Component {
   onChangePeriod = (value) => {
     this.setState({ selectedPeriods: value });
   };
+
+  linkRef = React.createRef();
 
   render() {
     return (
@@ -234,6 +252,9 @@ class GenerateReport extends React.Component {
             </Button>
           </Form.Item>
         </Form>
+        <a href="null" ref={this.linkRef} style={{ visibility: "hidden" }}>
+          .
+        </a>
       </div>
     );
   }

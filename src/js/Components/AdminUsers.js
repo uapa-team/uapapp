@@ -115,8 +115,8 @@ class AdminUsers extends React.Component {
   }
 
   onFinishEditUser = (record, values) => {
-    let username = record['username'];
-    let programs = values['programsPos'].concat(values['programsPre']);
+    let username = record["username"];
+    let programs = values["programsPos"].concat(values["programsPre"]);
 
     const key = "updatable";
     Backend.sendRequest("POST", "app_user_programs/add_programs_with_delete", {
@@ -124,10 +124,14 @@ class AdminUsers extends React.Component {
       programs: programs,
     }).then(async (response) => {
       if (response.status === 200) {
-        message.success({ content: "Permisos de usuario actualizados correctamente.", key });
+        message.success({
+          content: "Permisos de usuario actualizados correctamente.",
+          key,
+        });
       } else {
         message.error({
-          content: "Ha ocurrido un error actualizando los permisos. Por favor contáctenos.",
+          content:
+            "Ha ocurrido un error actualizando los permisos. Por favor contáctenos.",
           key,
         });
       }
@@ -219,12 +223,10 @@ class AdminUsers extends React.Component {
   };
 
   onChangePre = (value) => {
-    console.log("onChangePre ", value);
     this.setState({ programasPreSelected: value });
   };
 
   onChangePos = (value) => {
-    console.log("onChangePos ", value);
     this.setState({ programasPosSelected: value });
   };
 
