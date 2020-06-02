@@ -27,7 +27,7 @@ const { Title } = Typography;
 
 const ProgramsPre = [
   {
-    title: "Departamente de Ingeniería Civil y Agrícola",
+    title: "Departamento de Ingeniería Civil y Agrícola",
     value: ["2541", "2542"],
     children: [
       {
@@ -38,7 +38,7 @@ const ProgramsPre = [
         title: "Ingeniería Civil",
         value: "2542",
       },
-    ]
+    ],
   },
   {
     title: "Departamento de Sistemas e Industrial",
@@ -90,14 +90,28 @@ const ProgramsPre = [
         title: "Ingeniería Química",
         value: "2549",
       },
-    ]
+    ],
   },
 ];
 
 const ProgramsPos = [
   {
-    title: "Departamente de Ingeniería Civil y Agrícola",
-    value: ["2217", "2278", "2492", "2696", "2285", "2886", "2699", "2700", "2701", "2705", "2706", "2683", "2887"],
+    title: "Departamento de Ingeniería Civil y Agrícola",
+    value: [
+      "2217",
+      "2278",
+      "2492",
+      "2696",
+      "2285",
+      "2886",
+      "2699",
+      "2700",
+      "2701",
+      "2705",
+      "2706",
+      "2683",
+      "2887",
+    ],
     children: [
       {
         title: "Especialización en Geotecnia",
@@ -108,7 +122,8 @@ const ProgramsPos = [
         value: "2278",
       },
       {
-        title: "Especialización en Ingeniería - Tránsito, Diseño y Seguridad Vial",
+        title:
+          "Especialización en Ingeniería - Tránsito, Diseño y Seguridad Vial",
         value: "2492",
       },
       {
@@ -151,11 +166,21 @@ const ProgramsPos = [
         title: "Doctorado en Ingeniería - Ingeniería Civil",
         value: "2887",
       },
-    ]
+    ],
   },
   {
     title: "Departamento de Sistemas e Industrial",
-    value: ["2896", "2702", "2707", "2708", "2856", "2882", "2928", "2684", "2838"],
+    value: [
+      "2896",
+      "2702",
+      "2707",
+      "2708",
+      "2856",
+      "2882",
+      "2928",
+      "2684",
+      "2838",
+    ],
     children: [
       {
         title: "Especialización en Gobierno Electrónico",
@@ -174,7 +199,8 @@ const ProgramsPos = [
         value: "2708",
       },
       {
-        title: "Maestría en Ingeniería - Ingeniería de Sistemas y Computación - Conv UPC",
+        title:
+          "Maestría en Ingeniería - Ingeniería de Sistemas y Computación - Conv UPC",
         value: "2856",
       },
       {
@@ -182,7 +208,8 @@ const ProgramsPos = [
         value: "2882",
       },
       {
-        title: "Maestría en Ingeniería - Ingeniería de Sistemas y Computación - Conv Unillanos",
+        title:
+          "Maestría en Ingeniería - Ingeniería de Sistemas y Computación - Conv Unillanos",
         value: "2928",
       },
       {
@@ -197,7 +224,17 @@ const ProgramsPos = [
   },
   {
     title: "Departamento de Ingeniería Electrica y Electrónica",
-    value: ["2064", "2113", "2687", "2691", "2698", "2703", "2794", "2865", "2685"],
+    value: [
+      "2064",
+      "2113",
+      "2687",
+      "2691",
+      "2698",
+      "2703",
+      "2794",
+      "2865",
+      "2685",
+    ],
     children: [
       {
         title: "Especialización en Calidad de la Energía",
@@ -224,7 +261,8 @@ const ProgramsPos = [
         value: "2703",
       },
       {
-        title: "Maestría en Ingeniería - Ingeniería Eléctrica Convenio Sede Manizales",
+        title:
+          "Maestría en Ingeniería - Ingeniería Eléctrica Convenio Sede Manizales",
         value: "2794",
       },
       {
@@ -279,12 +317,11 @@ const ProgramsPos = [
         title: "Doctorado en Ingeniería - Ingeniería Química",
         value: "2686",
       },
-    ]
+    ],
   },
 ];
 
 class AdminUsers extends React.Component {
-
   formRef = React.createRef();
 
   constructor(props) {
@@ -306,13 +343,13 @@ class AdminUsers extends React.Component {
   }
 
   onFinishEditUser = (record, values) => {
-    let username = record['username'];
+    let username = record["username"];
     let programs = [];
-    
-    values['programsPre'].forEach(element => {
+
+    values["programsPre"].forEach((element) => {
       programs = programs.concat(element);
     });
-    values['programsPos'].forEach(element => {
+    values["programsPos"].forEach((element) => {
       programs = programs.concat(element);
     });
     programs = Array.from(new Set(programs));
@@ -335,17 +372,16 @@ class AdminUsers extends React.Component {
         });
       }
     });
-    
   };
 
   getRecord = (record) => {
     let users = this.state.dataSourceUsers;
-    users.forEach((user)=>{
-      if(user['username'] === record['username']){
+    users.forEach((user) => {
+      if (user["username"] === record["username"]) {
         return user;
       }
-    })
-  }
+    });
+  };
 
   onFinishEditUserFailed = (values) => {
     console.log(values);
@@ -484,7 +520,18 @@ class AdminUsers extends React.Component {
       this.setState({ dataSourceUsers: users });
     });
   }
-  renderForm = (record)=> {
+
+  filterTreeNode = (input, child) => {
+    let words = child.props.title.split(" ");
+    for (let i = 0; i < words.length; i++) {
+      if (words[i].toLowerCase().indexOf(input.toLowerCase()) === 0) {
+        return true;
+      }
+    }
+    return false;
+  };
+
+  renderForm = (record) => {
     let form = (
       <Form
         ref={this.formRef}
@@ -511,10 +558,11 @@ class AdminUsers extends React.Component {
         <Form.Item name="programsPre" label="Permisos de pregrado">
           <TreeSelect
             treeData={ProgramsPre}
-            value={record['programasPre']}
+            value={record["programasPre"]}
             treeCheckable={true}
             showCheckedStrategy={"SHOW_PARENT"}
             placeholder="Por favor seleccione programas."
+            filterTreeNode={this.filterTreeNode}
           />
         </Form.Item>
         <Form.Item name="programsPos" label="Permisos de posgrado">
@@ -524,6 +572,7 @@ class AdminUsers extends React.Component {
             treeCheckable={true}
             showCheckedStrategy={"SHOW_PARENT"}
             placeholder="Por favor seleccione programas."
+            filterTreeNode={this.filterTreeNode}
           />
         </Form.Item>
         <Form.Item>
@@ -537,22 +586,26 @@ class AdminUsers extends React.Component {
         </Form.Item>
       </Form>
     );
-    let username = record['username'];
+    let username = record["username"];
     Backend.sendRequest("POST", "app_user_programs", {
-      username: username
+      username: username,
     }).then(async (response) => {
-      response.json().then( async (response) => {
-        let programasPre = response.filter(data=>data['data']['cod_nivel'] === 1).map(data => data['data']['cod_programa'])
-        let programasPos = response.filter(data=>data['data']['cod_nivel'] !== 1).map(data => data['data']['cod_programa'])
-        console.log(this.formRef)
+      response.json().then(async (response) => {
+        let programasPre = response
+          .filter((data) => data["data"]["cod_nivel"] === 1)
+          .map((data) => data["data"]["cod_programa"]);
+        let programasPos = response
+          .filter((data) => data["data"]["cod_nivel"] !== 1)
+          .map((data) => data["data"]["cod_programa"]);
+        console.log(this.formRef);
         this.formRef.current.setFieldsValue({
           programsPre: programasPre,
           programsPos: programasPos,
         });
-      })
+      });
     });
     return form;
-  }
+  };
 
   render() {
     var columns = [
