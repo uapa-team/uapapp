@@ -323,10 +323,14 @@ class AdminUsers extends React.Component {
       programs: programs,
     }).then(async (response) => {
       if (response.status === 200) {
-        message.success({ content: "Permisos de usuario actualizados correctamente.", key });
+        message.success({
+          content: "Permisos de usuario actualizados correctamente.",
+          key,
+        });
       } else {
         message.error({
-          content: "Ha ocurrido un error actualizando los permisos. Por favor contáctenos.",
+          content:
+            "Ha ocurrido un error actualizando los permisos. Por favor contáctenos.",
           key,
         });
       }

@@ -15,10 +15,11 @@ class GenerateReport extends React.Component {
       reportOptions: [],
       selectedReport: undefined,
       selectedLevel: undefined,
-      programsSelected: [],
+      selectedPrograms: [],
+      selectedPeriods: [],
       programsAvailable: [],
       periodsAvailable: [],
-      periodsSelected: [],
+      rutasBack: {},
     };
   }
 
@@ -26,7 +27,9 @@ class GenerateReport extends React.Component {
     Backend.sendRequest("GET", "reports_info").then(async (response) => {
       let res = await response.json();
       let loadedOptions = [];
+      let routesRecieved = {};
       for (let i = 0; i < res.length; i++) {
+        routesRecieved[res[i].data["report_name"]] = res[i].data["ruta_back"];
         loadedOptions.push(
           <Option key={res[i].data["report_name"]}>
             {res[i].data["report_name"]}
@@ -35,6 +38,7 @@ class GenerateReport extends React.Component {
       }
       this.setState({
         reportOptions: loadedOptions,
+        rutasBack: routesRecieved,
       });
     });
 
@@ -42,7 +46,6 @@ class GenerateReport extends React.Component {
       username: localStorage.getItem("username"),
     }).then(async (response) => {
       let res = await response.json();
-      console.log(res);
       let loadedOptions = [];
       for (let i = 0; i < res.length; i++) {
         loadedOptions.push(<Option key={res[i]}>{res[i]}</Option>);
@@ -56,32 +59,49 @@ class GenerateReport extends React.Component {
   onFinish = (values) => {
     const key = "updatable";
     message.loading({ content: "Descargando reporte...", key });
-    Backend.sendRequest("POST", values.report, {
+    Backend.sendRequest("POST", this.state.rutasBack[values.report], {
       periodos: values["periods"],
       programas: values["programs"],
-    }).then(async (response) => {
-      let res = await response.json();
-      if (res.status === 200) {
-        message.success({ content: "Reporte creado correctamente.", key });
-      } else {
-        message.error({
-          content:
-            "Ha ocurrido un error creando el reporte. Por favor contáctenos.",
-          key,
-        });
-      }
-    });
+    })
+      .then(async (response) => {
+        if (response.status === 200) {
+          message.success({ content: "Reporte creado correctamente.", key });
+          return response.blob();
+        } else {
+          message.error({
+            content:
+              "Ha ocurrido un error creando el reporte. Por favor contáctenos.",
+            key,
+          });
+          return null;
+        }
+      })
+      .then((blob) => {
+        const href = window.URL.createObjectURL(blob);
+        const a = this.linkRef.current;
+        a.download =
+          "reporte" +
+          this.state.selectedLevel +
+          this.state.selectedReport +
+          ".xls";
+        a.href = href;
+        a.click();
+        a.href = "";
+      })
+      .catch((err) => console.error(err));
+  };
+
+  onFinishFailed = (errorInfo) => {
+    console.log("Failed:", errorInfo);
   };
 
   handleChangeLevel = (value) => {
     if (value !== undefined) {
-      console.log(value);
       Backend.sendRequest("POST", "app_user_programs_levels", {
         level: value,
         username: localStorage.getItem("username"),
       }).then(async (response) => {
         let res = await response.json();
-        console.log(res);
         let loadedPrograms = [];
         for (let i = 0; i < res.length; i++) {
           let program = {
@@ -92,6 +112,7 @@ class GenerateReport extends React.Component {
           loadedPrograms.push(program);
         }
         this.setState({
+          selectedLevel: value,
           programsAvailable: loadedPrograms,
         });
       });
@@ -100,12 +121,10 @@ class GenerateReport extends React.Component {
 
   handleChangeReport = (value) => {
     if (value !== undefined) {
-      console.log(value);
       Backend.sendRequest("POST", "reports_periods", {
         report_name: value,
       }).then(async (response) => {
         let res = await response.json();
-        console.log(res);
         let loadedPeriods = [];
         for (let i = 0; i < res.length; i++) {
           let period = {
@@ -116,6 +135,7 @@ class GenerateReport extends React.Component {
           loadedPeriods.push(period);
         }
         this.setState({
+          selectedReport: value,
           periodsAvailable: loadedPeriods,
         });
       });
@@ -123,14 +143,14 @@ class GenerateReport extends React.Component {
   };
 
   onChangePrograms = (value) => {
-    console.log("onChangePre ", value);
-    this.setState({ programsSelected: value });
+    this.setState({ selectedPrograms: value });
   };
 
   onChangePeriod = (value) => {
-    console.log("onChangePos ", value);
-    this.setState({ periodsSelected: value });
+    this.setState({ selectedPeriods: value });
   };
+
+  linkRef = React.createRef();
 
   render() {
     return (
@@ -138,11 +158,21 @@ class GenerateReport extends React.Component {
         <div className="generate-report-div">
           <Title level={2}>Generador de reportes</Title>
         </div>
-        <Form onFinish={this.onFinish} layout="vertical">
+        <Form
+          onFinish={this.onFinish}
+          onFinishFailed={this.onFinishFailed}
+          layout="vertical"
+        >
           <Form.Item
             name="level"
             label="Nivel"
             className="generate-report-formitem"
+            rules={[
+              {
+                required: true,
+                message: "Por favor seleccione un nivel.",
+              },
+            ]}
           >
             <Select
               placeholder="Seleccione el nivel"
@@ -155,6 +185,12 @@ class GenerateReport extends React.Component {
             name="report"
             label="Reporte"
             className="generate-report-formitem"
+            rules={[
+              {
+                required: true,
+                message: "Por favor seleccione un reporte.",
+              },
+            ]}
           >
             <Select
               placeholder="Seleccione el reporte"
@@ -167,27 +203,47 @@ class GenerateReport extends React.Component {
             name="periods"
             label="Periodo"
             className="generate-report-formitem"
+            rules={[
+              {
+                required: true,
+                message: "Por favor seleccione uno o varios periodos.",
+              },
+            ]}
           >
             <TreeSelect
               treeData={this.state.periodsAvailable}
-              value={this.state.periodsSelected}
+              value={this.state.selectedPeriods}
               placeholder="Seleccione el periodo"
               treeCheckable={true}
               onChange={this.onChangePeriod}
+              disabled={
+                this.state.selectedLevel === undefined ||
+                this.state.selectedReport === undefined
+              }
             ></TreeSelect>
           </Form.Item>
           <Form.Item
-            name="program"
+            name="programs"
             label="Programa"
             className="generate-report-formitem"
+            rules={[
+              {
+                required: true,
+                message: "Por favor seleccione uno o varios programas.",
+              },
+            ]}
           >
             <TreeSelect
               treeData={this.state.programsAvailable}
-              value={this.state.programsSelected}
+              value={this.state.selectedPrograms}
               placeholder="Seleccione el programa"
               treeCheckable={true}
               onChange={this.onChangePrograms}
               showCheckedStrategy={"SHOW_PARENT"}
+              disabled={
+                this.state.selectedLevel === undefined ||
+                this.state.selectedReport === undefined
+              }
             ></TreeSelect>
           </Form.Item>
           <Form.Item className="generate-report-formitem-button">
@@ -196,6 +252,9 @@ class GenerateReport extends React.Component {
             </Button>
           </Form.Item>
         </Form>
+        <a href="null" ref={this.linkRef} style={{ visibility: "hidden" }}>
+          .
+        </a>
       </div>
     );
   }

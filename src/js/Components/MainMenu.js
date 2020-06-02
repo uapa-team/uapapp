@@ -17,7 +17,6 @@ class MainMenu extends React.Component {
   }
 
   handleClick = (e) => {
-    console.log("click ", e.key);
     this.setState({
       current: e.key,
     });
