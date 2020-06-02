@@ -27,8 +27,22 @@ const { Title } = Typography;
 
 const ProgramsPre = [
   {
+    title: "Departamente de Ingeniería Civil y Agrícola",
+    value: ["2541", "2542"],
+    children: [
+      {
+        title: "Ingeniería Agrícola",
+        value: "2541",
+      },
+      {
+        title: "Ingeniería Civil",
+        value: "2542",
+      },
+    ]
+  },
+  {
     title: "Departamento de Sistemas e Industrial",
-    value: "Departamento de Sistemas e Industrial",
+    value: ["2879", "2546"],
     children: [
       {
         title: "Ingeniería de Sistemas y Computación",
@@ -41,61 +55,238 @@ const ProgramsPre = [
     ],
   },
   {
-    title: "Departamento Ejemplo",
-    value: "0-1",
+    title: "Departamento de Ingeniería Electrica y Electrónica",
+    value: ["2544", "2545"],
     children: [
       {
-        title: "Ingeniería Agrícola",
-        value: "Ingeniería Agrícola",
+        title: "Ingeniería Electrica",
+        value: "2544",
       },
       {
-        title: "Ingeniería Química",
-        value: "Ingeniería Química",
-      },
-      {
-        title: "Ingeniería Civil",
-        value: "Ingeniería Civil",
+        title: "Ingeniería Electrónica",
+        value: "2545",
       },
     ],
+  },
+  {
+    title: "Departamento de Ingeniería Mecánica y Mecatrónica",
+    value: ["2547", "2548"],
+    children: [
+      {
+        title: "Ingeniería Mecánica",
+        value: "2547",
+      },
+      {
+        title: "Ingeniería Mecatrónica",
+        value: "2548",
+      },
+    ],
+  },
+  {
+    title: "Departamento de Química y Ambiental",
+    value: ["2549", "2549"],
+    children: [
+      {
+        title: "Ingeniería Química",
+        value: "2549",
+      },
+    ]
   },
 ];
 
 const ProgramsPos = [
   {
-    title: "Departamento de Sistemas e Industrial",
-    value: "Departamento de Sistemas e Industrial",
+    title: "Departamente de Ingeniería Civil y Agrícola",
+    value: ["2217", "2278", "2492", "2696", "2285", "2886", "2699", "2700", "2701", "2705", "2706", "2683", "2887"],
     children: [
       {
-        title: "Maestría en Ingeniería de Sistemas y Computación",
+        title: "Especialización en Geotecnia",
+        value: "2217",
+      },
+      {
+        title: "Especialización en Recursos Hidráulicos",
+        value: "2278",
+      },
+      {
+        title: "Especialización en Ingeniería - Tránsito, Diseño y Seguridad Vial",
+        value: "2492",
+      },
+      {
+        title: "Especialización en Transito, Diseño y Seguridad Vial",
+        value: "2696",
+      },
+      {
+        title: "Especialización en Transporte",
+        value: "2285",
+      },
+      {
+        title: "Especialización en Estructuras",
+        value: "2886",
+      },
+      {
+        title: "Maestría en Ingeniería - Estructuras",
+        value: "2699",
+      },
+      {
+        title: "Maestría en Ingeniería - Geotecnia",
+        value: "2700",
+      },
+      {
+        title: "Maestría en Ingeniería - Ingeniería Agrícola",
+        value: "2701",
+      },
+      {
+        title: "Maestría en Ingeniería - Recursos Hidráulicos",
+        value: "2705",
+      },
+      {
+        title: "Maestría en Ingeniería - Transporte",
+        value: "2706",
+      },
+      {
+        title: "Doctorado en Ingeniería - Geotecnia",
+        value: "2683",
+      },
+      {
+        title: "Doctorado en Ingeniería - Ingeniería Civil",
+        value: "2887",
+      },
+    ]
+  },
+  {
+    title: "Departamento de Sistemas e Industrial",
+    value: ["2896", "2702", "2707", "2708", "2856", "2882", "2928", "2684", "2838"],
+    children: [
+      {
+        title: "Especialización en Gobierno Electrónico",
+        value: "2896",
+      },
+      {
+        title: "Maestría en Ingeniería - Ingeniería de Sistemas y Computación",
         value: "2702",
+      },
+      {
+        title: "Maestría en Ingeniería - Telecomunicaciones",
+        value: "2707",
       },
       {
         title: "Maestría en Ingenieria Industrial",
         value: "2708",
       },
+      {
+        title: "Maestría en Ingeniería - Ingeniería de Sistemas y Computación - Conv UPC",
+        value: "2856",
+      },
+      {
+        title: "Maestría en Bioinformática",
+        value: "2882",
+      },
+      {
+        title: "Maestría en Ingeniería - Ingeniería de Sistemas y Computación - Conv Unillanos",
+        value: "2928",
+      },
+      {
+        title: "Doctorado en Ingeniería - Sistemas y Computación",
+        value: "2684",
+      },
+      {
+        title: "Doctorado en Ingeniería - Industria y Organizaciones",
+        value: "2838",
+      },
     ],
   },
   {
-    title: "Departamento Ejemplo",
-    value: "0-1",
+    title: "Departamento de Ingeniería Electrica y Electrónica",
+    value: ["2064", "2113", "2687", "2691", "2698", "2703", "2794", "2865", "2685"],
     children: [
       {
-        title: "Doctorado en Ingeniería Agrícola",
-        value: "Doctorado en Ingeniería Agrícola",
+        title: "Especialización en Calidad de la Energía",
+        value: "2064",
       },
       {
-        title: "Maestría en Ingeniería Química",
-        value: "Maestría en Ingeniería Química",
+        title: "Especialización en Ingeniería Eléctrica",
+        value: "2113",
       },
       {
-        title: "Especialización en Ingeniería Civil",
-        value: "Especialización en Ingeniería Civil",
+        title: "Especialización en Automatización Industrial",
+        value: "2687",
+      },
+      {
+        title: "Especialización en Iluminación Pública y Privada",
+        value: "2691",
+      },
+      {
+        title: "Maestría en Ingeniería - Automatización Industrial",
+        value: "2698",
+      },
+      {
+        title: "Maestría en Ingeniería - Ingeniería Eléctrica",
+        value: "2703",
+      },
+      {
+        title: "Maestría en Ingeniería - Ingeniería Eléctrica Convenio Sede Manizales",
+        value: "2794",
+      },
+      {
+        title: "Maestría en Ingeniería - Ingeniería Electrónica",
+        value: "2865",
+      },
+      {
+        title: "Doctorado en Ingeniería - Ingeniería Eléctrica",
+        value: "2685",
       },
     ],
+  },
+  {
+    title: "Departamento de Ingeniería Mecánica y Mecatrónica",
+    value: ["2709", "2710", "2682", "2839"],
+    children: [
+      {
+        title: "Maestría en Ingeniería - Ingeniería Mecánica",
+        value: "2709",
+      },
+      {
+        title: "Maestría en Ingeniería - Materiales y Procesos",
+        value: "2710",
+      },
+      {
+        title: "Doctorado en Ingeniería - Ciencia y Tecnología de Materiales",
+        value: "2682",
+      },
+      {
+        title: "Doctorado en Ingeniería - Ingeniería Mecánica y Mecatrónica",
+        value: "2839",
+      },
+    ],
+  },
+  {
+    title: "Departamento de Química y Ambiental",
+    value: ["2792", "2562", "2704", "2686"],
+    children: [
+      {
+        title: "Especialización en Ingeniería Ambiental",
+        value: "2792",
+      },
+      {
+        title: "Maestría en Ingeniería - Ingeniería Ambiental",
+        value: "2562",
+      },
+      {
+        title: "Maestría en Ingeniería - Ingeniería Química",
+        value: "2704",
+      },
+      {
+        title: "Doctorado en Ingeniería - Ingeniería Química",
+        value: "2686",
+      },
+    ]
   },
 ];
 
 class AdminUsers extends React.Component {
+
+  formRef = React.createRef();
+
   constructor(props) {
     super(props);
     this.state = {
@@ -106,8 +297,8 @@ class AdminUsers extends React.Component {
           correo: "Cargando...",
         },
       ],
-      programasPreSelected: ["2879", "2546"],
-      programasPosSelected: ["2708", "2702"],
+      programasPreSelected: [],
+      programasPosSelected: [],
       searchText: "",
       searchedColumn: "",
       visibleModal: false,
@@ -116,8 +307,16 @@ class AdminUsers extends React.Component {
 
   onFinishEditUser = (record, values) => {
     let username = record['username'];
-    let programs = values['programsPos'].concat(values['programsPre']);
-
+    let programs = [];
+    
+    values['programsPre'].forEach(element => {
+      programs = programs.concat(element);
+    });
+    values['programsPos'].forEach(element => {
+      programs = programs.concat(element);
+    });
+    programs = Array.from(new Set(programs));
+    console.log(programs);
     const key = "updatable";
     Backend.sendRequest("POST", "app_user_programs/add_programs_with_delete", {
       username: username,
@@ -132,9 +331,17 @@ class AdminUsers extends React.Component {
         });
       }
     });
-    console.log(username);
-    console.log(programs);
+    
   };
+
+  getRecord = (record) => {
+    let users = this.state.dataSourceUsers;
+    users.forEach((user)=>{
+      if(user['username'] === record['username']){
+        return user;
+      }
+    })
+  }
 
   onFinishEditUserFailed = (values) => {
     console.log(values);
@@ -218,16 +425,6 @@ class AdminUsers extends React.Component {
     this.setState({ searchText: "" });
   };
 
-  onChangePre = (value) => {
-    console.log("onChangePre ", value);
-    this.setState({ programasPreSelected: value });
-  };
-
-  onChangePos = (value) => {
-    console.log("onChangePos ", value);
-    this.setState({ programasPosSelected: value });
-  };
-
   showModal = () => {
     this.setState({
       visibleModal: true,
@@ -283,6 +480,75 @@ class AdminUsers extends React.Component {
       this.setState({ dataSourceUsers: users });
     });
   }
+  renderForm = (record)=> {
+    let form = (
+      <Form
+        ref={this.formRef}
+        onFinish={(values) => this.onFinishEditUser(record, values)}
+        onFinishFailed={this.onFinishEditUserFailed}
+        initialValues={{
+          programsPre: [],
+          programsPos: [],
+        }}
+      >
+        <Form.Item name="userType" label="Tipo de usuario">
+          <Radio.Group
+            buttonStyle="solid"
+            onChange={this.handleFormLayoutChange}
+          >
+            <Radio.Button value="NoRol">Sin rol asignado</Radio.Button>
+            <Radio.Button value="Admin">Administrador</Radio.Button>
+            <Radio.Button value="Auxil">Auxiliar</Radio.Button>
+            <Radio.Button value="Coord">Coordinador</Radio.Button>
+            <Radio.Button value="UAPA">UAPA</Radio.Button>
+            <Radio.Button value="Depen">Dependencia</Radio.Button>
+          </Radio.Group>
+        </Form.Item>
+        <Form.Item name="programsPre" label="Permisos de pregrado">
+          <TreeSelect
+            treeData={ProgramsPre}
+            value={record['programasPre']}
+            treeCheckable={true}
+            showCheckedStrategy={"SHOW_PARENT"}
+            placeholder="Por favor seleccione programas."
+          />
+        </Form.Item>
+        <Form.Item name="programsPos" label="Permisos de posgrado">
+          <TreeSelect
+            treeData={ProgramsPos}
+            value={this.state.programasPosSelected}
+            treeCheckable={true}
+            showCheckedStrategy={"SHOW_PARENT"}
+            placeholder="Por favor seleccione programas."
+          />
+        </Form.Item>
+        <Form.Item>
+          <Button
+            type="primary"
+            htmlType="submit"
+            className="admin-users-btnfinish"
+          >
+            Guardar cambios
+          </Button>
+        </Form.Item>
+      </Form>
+    );
+    let username = record['username'];
+    Backend.sendRequest("POST", "app_user_programs", {
+      username: username
+    }).then(async (response) => {
+      response.json().then( async (response) => {
+        let programasPre = response.filter(data=>data['data']['cod_nivel'] === 1).map(data => data['data']['cod_programa'])
+        let programasPos = response.filter(data=>data['data']['cod_nivel'] !== 1).map(data => data['data']['cod_programa'])
+        console.log(this.formRef)
+        this.formRef.current.setFieldsValue({
+          programsPre: programasPre,
+          programsPos: programasPos,
+        });
+      })
+    });
+    return form;
+  }
 
   render() {
     var columns = [
@@ -330,59 +596,7 @@ class AdminUsers extends React.Component {
           dataSource={this.state.dataSourceUsers}
           columns={columns}
           bordered={true}
-          expandedRowRender={(record) => (
-            <Form
-              onFinish={(values) => this.onFinishEditUser(record, values)}
-              onFinishFailed={this.onFinishEditUserFailed}
-              initialValues={{
-                programsPre: this.state.programasPreSelected,
-                programsPos: this.state.programasPosSelected,
-              }}
-            >
-              <Form.Item name="userType" label="Tipo de usuario">
-                <Radio.Group
-                  buttonStyle="solid"
-                  onChange={this.handleFormLayoutChange}
-                >
-                  <Radio.Button value="NoRol">Sin rol asignado</Radio.Button>
-                  <Radio.Button value="Admin">Administrador</Radio.Button>
-                  <Radio.Button value="Auxil">Auxiliar</Radio.Button>
-                  <Radio.Button value="Coord">Coordinador</Radio.Button>
-                  <Radio.Button value="UAPA">UAPA</Radio.Button>
-                  <Radio.Button value="Depen">Dependencia</Radio.Button>
-                </Radio.Group>
-              </Form.Item>
-              <Form.Item name="programsPre" label="Permisos de pregrado">
-                <TreeSelect
-                  treeData={ProgramsPre}
-                  value={this.state.programasPreSelected}
-                  onChange={this.onChangePre}
-                  treeCheckable={true}
-                  showCheckedStrategy={"SHOW_PARENT"}
-                  placeholder="Por favor seleccione programas."
-                />
-              </Form.Item>
-              <Form.Item name="programsPos" label="Permisos de posgrado">
-                <TreeSelect
-                  treeData={ProgramsPos}
-                  value={this.state.programasPosSelected}
-                  onChange={this.onChangePos}
-                  treeCheckable={true}
-                  showCheckedStrategy={"SHOW_PARENT"}
-                  placeholder="Por favor seleccione programas."
-                />
-              </Form.Item>
-              <Form.Item>
-                <Button
-                  type="primary"
-                  htmlType="submit"
-                  className="admin-users-btnfinish"
-                >
-                  Guardar cambios
-                </Button>
-              </Form.Item>
-            </Form>
-          )}
+          expandedRowRender={this.renderForm}
           pagination={{
             defaultPageSize: 10,
             showSizeChanger: true,
@@ -442,7 +656,6 @@ class AdminUsers extends React.Component {
               <TreeSelect
                 treeData={ProgramsPre}
                 value={this.state.programasPreSelected}
-                onChange={this.onChangePre}
                 treeCheckable={true}
                 showCheckedStrategy={"SHOW_PARENT"}
                 placeholder="Por favor seleccione programas."
@@ -452,7 +665,6 @@ class AdminUsers extends React.Component {
               <TreeSelect
                 treeData={ProgramsPos}
                 value={this.state.programasPosSelected}
-                onChange={this.onChangePos}
                 treeCheckable={true}
                 showCheckedStrategy={"SHOW_PARENT"}
                 placeholder="Por favor seleccione programas."
