@@ -40,6 +40,10 @@ class AdminProgramsAsigna extends React.Component {
     };
   }
 
+  componentDidMount() {
+    console.log(this.props.subjects);
+  }
+
   getColumnSearchProps = (dataIndex) => ({
     filterDropdown: ({
       setSelectedKeys,

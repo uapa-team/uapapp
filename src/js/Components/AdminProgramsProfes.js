@@ -52,6 +52,10 @@ class AdminProgramsProfes extends React.Component {
     };
   }
 
+  componentDidMount() {
+    console.log(this.props.teachers);
+  }
+
   getColumnSearchProps = (dataIndex) => ({
     filterDropdown: ({
       setSelectedKeys,

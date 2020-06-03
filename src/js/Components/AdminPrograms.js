@@ -13,7 +13,7 @@ class AdminPrograms extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      value: undefined,
+      programSelected: undefined,
       programsPre: [],
       programsPos: [],
       programsFound: true, //Variable según si se encuentran programas asignados.
@@ -24,17 +24,48 @@ class AdminPrograms extends React.Component {
       visibleModalProfes: false,
       visibleModalAsigna: false,
       visibleModalGrupos: false,
+      recievedProfessors: [],
+      recievedSubjects: [],
+      recievedGroups: [],
     };
   }
 
-  onChangeSelect = (value) => {
+  onChangeSelectProgram = (value) => {
     console.log(value);
     if (value !== undefined) {
       this.setState({ visibleMenu: true });
     } else {
       this.setState({ visibleMenu: false });
     }
-    this.setState({ value });
+    this.setState({ programSelected: value });
+
+    Backend.sendRequest("POST", "get_unique_program_professors", {
+      cod_programa: value,
+    }).then(async (response) => {
+      let res = await response.json();
+      this.setState({
+        recievedProfessors: res,
+      });
+      console.log(res);
+    });
+    Backend.sendRequest("POST", "get_program_subjects", {
+      cod_programa: value,
+    }).then(async (response) => {
+      let res = await response.json();
+      this.setState({
+        recievedSubjects: res,
+      });
+      console.log(res);
+    });
+    Backend.sendRequest("POST", "get_program_groups", {
+      cod_programa: value,
+    }).then(async (response) => {
+      let res = await response.json();
+      this.setState({
+        recievedGroups: res,
+      });
+      console.log(res);
+    });
   };
 
   displayAdminProgram = (e) => {
@@ -70,7 +101,8 @@ class AdminPrograms extends React.Component {
         if (res[i].data["cod_nivel"] !== 1) {
           posProgRec.push(
             <TreeNode
-              value={res[i].data["programa"]}
+              key={res[i].data["cod_programa"]}
+              value={res[i].data["cod_programa"]}
               title={
                 res[i].data["cod_programa"] + " - " + res[i].data["programa"]
               }
@@ -79,13 +111,13 @@ class AdminPrograms extends React.Component {
         } else {
           preProgRec.push(
             <TreeNode
-              value={res[i].data["programa"]}
+              key={res[i].data["cod_programa"]}
+              value={res[i].data["cod_programa"]}
               title={
                 res[i].data["cod_programa"] + " - " + res[i].data["programa"]
               }
             ></TreeNode>
           );
-          console.log(preProgRec);
         }
       }
       if (preProgRec.length === 0 && posProgRec.length === 0) {
@@ -100,6 +132,21 @@ class AdminPrograms extends React.Component {
       }
     });
   }
+
+  filterTreeNode = (input, child) => {
+    return (
+      child.props.title
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .indexOf(
+          input
+            .toLowerCase()
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+        ) >= 0
+    );
+  };
 
   render() {
     return !this.state.programsFound ? (
@@ -120,12 +167,14 @@ class AdminPrograms extends React.Component {
         <TreeSelect
           showSearch
           style={{ width: "100%" }}
-          value={this.state.value}
+          value={this.state.programSelected}
           dropdownStyle={{ maxHeight: 400, overflow: "auto" }}
           placeholder="Por favor busque o seleccione un programa."
           allowClear
           treeDefaultExpandAll
-          onChange={this.onChangeSelect}
+          onChange={this.onChangeSelectProgram}
+          filterTreeNode={this.filterTreeNode}
+          defaultValue={undefined}
         >
           <TreeNode selectable={false} value="Pregrado" title="Pregrado">
             {this.state.programsPre}
@@ -160,9 +209,15 @@ class AdminPrograms extends React.Component {
                 Grupos de Investigación
               </Radio.Button>
             </Radio.Group>
-            {this.state.visibleProfes ? <AdminProgramsProfes /> : null}
-            {this.state.visibleAsigna ? <AdminProgramsAsigna /> : null}
-            {this.state.visibleGrupos ? <AdminProgramsGrupos /> : null}
+            {this.state.visibleProfes ? (
+              <AdminProgramsProfes teachers={this.state.recievedProfessors} />
+            ) : null}
+            {this.state.visibleAsigna ? (
+              <AdminProgramsAsigna subjects={this.state.recievedSubjects} />
+            ) : null}
+            {this.state.visibleGrupos ? (
+              <AdminProgramsGrupos groups={this.state.recievedGroups} />
+            ) : null}
           </div>
         ) : null}
       </div>

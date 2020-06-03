@@ -522,13 +522,18 @@ class AdminUsers extends React.Component {
   }
 
   filterTreeNode = (input, child) => {
-    let words = child.props.title.split(" ");
-    for (let i = 0; i < words.length; i++) {
-      if (words[i].toLowerCase().indexOf(input.toLowerCase()) === 0) {
-        return true;
-      }
-    }
-    return false;
+    return (
+      child.props.title
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .indexOf(
+          input
+            .toLowerCase()
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+        ) >= 0
+    );
   };
 
   renderForm = (record) => {
