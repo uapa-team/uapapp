@@ -40,6 +40,10 @@ class AdminProgramsGrupos extends React.Component {
     };
   }
 
+  componentDidMount() {
+    console.log(this.props.groups);
+  }
+
   showModal = () => {
     this.setState({
       visibleModal: true,
