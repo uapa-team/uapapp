@@ -353,7 +353,6 @@ class AdminUsers extends React.Component {
       programs = programs.concat(element);
     });
     programs = Array.from(new Set(programs));
-    console.log(programs);
     const key = "updatable";
     Backend.sendRequest("POST", "app_user_programs/add_programs_with_delete", {
       username: username,
@@ -472,7 +471,6 @@ class AdminUsers extends React.Component {
   };
 
   handleNewUser = (values) => {
-    //console.log(values);
     const key = "updatable";
     message.loading({ content: "Creando usuario...", key });
     Backend.sendRequest("POST", "user_create", {

@@ -19,7 +19,7 @@ const componentOf = {
 class Home extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { tab: "au" };
+    this.state = { tab: undefined };
   }
 
   myCallback = (current) => {

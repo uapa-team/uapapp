@@ -16,7 +16,6 @@ class NormalLoginForm extends React.Component {
   }
 
   onFinish = (values) => {
-    console.log(values);
     this.performLogin(values);
   };
 

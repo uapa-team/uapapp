@@ -28,20 +28,23 @@ class AdminProgramsGrupos extends React.Component {
       dataSourceGrupos: [
         {
           key: "1",
-          código: "102",
-          nombre: "Grupo de Investigación Y",
-        },
-        {
-          key: "2",
-          código: "123",
-          nombre: "Grupo de Investigación X",
+          código: "Cargando...",
+          nombre: "Cargando...",
         },
       ],
     };
   }
 
   componentDidMount() {
-    console.log(this.props.groups);
+    let recievedGroups = [];
+    for (let i = 0; i < this.props.groups.length; i++) {
+      recievedGroups.push({
+        key: this.props.groups[i].data["cod_hermes"],
+        código: this.props.groups[i].data["cod_hermes"],
+        nombre: this.props.groups[i].data["nombre"],
+      });
+    }
+    this.setState({ dataSourceGrupos: recievedGroups });
   }
 
   showModal = () => {
@@ -60,6 +63,19 @@ class AdminProgramsGrupos extends React.Component {
     this.setState({
       visibleModal: false,
     });
+  };
+
+  handleSearch = (selectedKeys, confirm, dataIndex) => {
+    confirm();
+    this.setState({
+      searchText: selectedKeys[0],
+      searchedColumn: dataIndex,
+    });
+  };
+
+  handleReset = (clearFilters) => {
+    clearFilters();
+    this.setState({ searchText: "" });
   };
 
   getColumnSearchProps = (dataIndex) => ({

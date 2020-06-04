@@ -31,7 +31,6 @@ class AdminPrograms extends React.Component {
   }
 
   onChangeSelectProgram = (value) => {
-    console.log(value);
     if (value !== undefined) {
       this.setState({ visibleMenu: true });
     } else {
@@ -46,7 +45,6 @@ class AdminPrograms extends React.Component {
       this.setState({
         recievedProfessors: res,
       });
-      console.log(res);
     });
     Backend.sendRequest("POST", "get_program_subjects", {
       cod_programa: value,
@@ -55,7 +53,6 @@ class AdminPrograms extends React.Component {
       this.setState({
         recievedSubjects: res,
       });
-      console.log(res);
     });
     Backend.sendRequest("POST", "get_program_groups", {
       cod_programa: value,
@@ -64,7 +61,6 @@ class AdminPrograms extends React.Component {
       this.setState({
         recievedGroups: res,
       });
-      console.log(res);
     });
   };
 

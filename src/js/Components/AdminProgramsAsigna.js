@@ -28,21 +28,37 @@ class AdminProgramsAsigna extends React.Component {
       dataSourceAsigna: [
         {
           key: "1",
-          código: "102102",
-          nombre: "Cálculo Diferencial",
-        },
-        {
-          key: "2",
-          código: "102123",
-          nombre: "Cálculo Integral",
+          código: "Cargando...",
+          nombre: "Cargando...",
         },
       ],
     };
   }
 
   componentDidMount() {
-    console.log(this.props.subjects);
+    let recievedAsigna = [];
+    for (let i = 0; i < this.props.subjects.length; i++) {
+      recievedAsigna.push({
+        key: this.props.subjects[i].data["cod_asignatura"],
+        código: this.props.subjects[i].data["cod_asignatura"],
+        nombre: this.props.subjects[i].data["nombre_materia"],
+      });
+    }
+    this.setState({ dataSourceAsigna: recievedAsigna });
   }
+
+  handleSearch = (selectedKeys, confirm, dataIndex) => {
+    confirm();
+    this.setState({
+      searchText: selectedKeys[0],
+      searchedColumn: dataIndex,
+    });
+  };
+
+  handleReset = (clearFilters) => {
+    clearFilters();
+    this.setState({ searchText: "" });
+  };
 
   getColumnSearchProps = (dataIndex) => ({
     filterDropdown: ({

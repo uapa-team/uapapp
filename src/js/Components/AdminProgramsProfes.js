@@ -40,11 +40,8 @@ class AdminProgramsProfes extends React.Component {
       dataSourceProfes: [
         {
           key: "1",
-          nombre: "Nicolás Gómez",
-        },
-        {
-          key: "2",
-          nombre: "Angel Corredor",
+          correo: "Cargando...",
+          nombre: "Cargando...",
         },
       ],
       periodsSelected: [],
@@ -53,8 +50,29 @@ class AdminProgramsProfes extends React.Component {
   }
 
   componentDidMount() {
-    console.log(this.props.teachers);
+    let recievedProfes = [];
+    for (let i = 0; i < this.props.teachers.length; i++) {
+      recievedProfes.push({
+        key: this.props.teachers[i].data["dni_docente"],
+        correo: this.props.teachers[i].data["correo_unal"],
+        nombre: this.props.teachers[i].data["nombre_completo"],
+      });
+    }
+    this.setState({ dataSourceProfes: recievedProfes });
   }
+
+  handleSearch = (selectedKeys, confirm, dataIndex) => {
+    confirm();
+    this.setState({
+      searchText: selectedKeys[0],
+      searchedColumn: dataIndex,
+    });
+  };
+
+  handleReset = (clearFilters) => {
+    clearFilters();
+    this.setState({ searchText: "" });
+  };
 
   getColumnSearchProps = (dataIndex) => ({
     filterDropdown: ({
@@ -157,8 +175,15 @@ class AdminProgramsProfes extends React.Component {
         title: "Nombre",
         dataIndex: "nombre",
         key: "name",
-        width: "90%",
+        width: "45%",
         ...this.getColumnSearchProps("nombre"),
+      },
+      {
+        title: "Correo",
+        dataIndex: "correo",
+        key: "mail",
+        width: "45%",
+        ...this.getColumnSearchProps("correo"),
       },
       {
         title: "Eliminar",
