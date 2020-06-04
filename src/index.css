@@ -98,6 +98,29 @@ code {
   text-align: center;
 }
 
+/* Estilos de Welcome */
+.welcome-title {
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+  width: 100%;
+  text-align: center;
+}
+
+.welcome-video {
+  margin-bottom: 1.5em;
+  width: 100%;
+}
+
+.player-wrapper {
+  position: relative;
+  padding-top: 56.25%;
+}
+
+.react-player {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
 /* Estilos AdminUsers */
 .admin-users-btnctn,
 .admin-programs-subtitle {

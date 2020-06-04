@@ -5,15 +5,16 @@ import {
   AppstoreOutlined,
   BookOutlined,
   AuditOutlined,
+  HomeOutlined,
 } from "@ant-design/icons";
 import { withRouter } from "react-router-dom";
 
 class MainMenu extends React.Component {
   constructor(props) {
     super(props);
-    this.props.callbackFromParent("fr");
+    this.props.callbackFromParent("we");
     this.state = {
-      current: "fr",
+      current: "we",
     };
   }
 
@@ -25,34 +26,38 @@ class MainMenu extends React.Component {
   };
 
   handlePermissions = () => {
-    switch(localStorage.getItem("type")) {
+    switch (localStorage.getItem("type")) {
       case "1":
-        return(
-        <Menu
-          onClick={this.handleClick}
-          selectedKeys={[this.state.current]}
-          mode="horizontal"
-        >
-          <Menu.Item key="au">
-            <ScheduleOutlined />
-            Administración
-          </Menu.Item>
-          <Menu.Item key="ap">
-            <AppstoreOutlined />
-            Administración - Programas
-          </Menu.Item>
-          <Menu.Item key="gr">
-            <AuditOutlined />
-            Generar Reporte
-          </Menu.Item>
-          <Menu.Item key="fr">
-            <BookOutlined />
-            Formatos Recolección
-          </Menu.Item>
-        </Menu>
-        )
+        return (
+          <Menu
+            onClick={this.handleClick}
+            selectedKeys={[this.state.current]}
+            mode="horizontal"
+          >
+            <Menu.Item key="we">
+              <HomeOutlined />
+              Home
+            </Menu.Item>
+            <Menu.Item key="au">
+              <ScheduleOutlined />
+              Administración
+            </Menu.Item>
+            <Menu.Item key="ap">
+              <AppstoreOutlined />
+              Administración - Programas
+            </Menu.Item>
+            <Menu.Item key="gr">
+              <AuditOutlined />
+              Generar Reporte
+            </Menu.Item>
+            <Menu.Item key="fr">
+              <BookOutlined />
+              Formatos Recolección
+            </Menu.Item>
+          </Menu>
+        );
       case "2":
-        return(
+        return (
           <Menu
             onClick={this.handleClick}
             selectedKeys={[this.state.current]}
@@ -63,9 +68,9 @@ class MainMenu extends React.Component {
               Formatos Recolección
             </Menu.Item>
           </Menu>
-          )
+        );
       case "3":
-        return(
+        return (
           <Menu
             onClick={this.handleClick}
             selectedKeys={[this.state.current]}
@@ -84,9 +89,9 @@ class MainMenu extends React.Component {
               Formatos Recolección
             </Menu.Item>
           </Menu>
-          )
+        );
       case "4":
-        return(
+        return (
           <Menu
             onClick={this.handleClick}
             selectedKeys={[this.state.current]}
@@ -101,7 +106,7 @@ class MainMenu extends React.Component {
               Formatos Recolección
             </Menu.Item>
           </Menu>
-          )
+        );
       default:
         return (
           <Menu
@@ -109,9 +114,9 @@ class MainMenu extends React.Component {
             selectedKeys={[this.state.current]}
             mode="horizontal"
           ></Menu>
-        )
+        );
     }
-  }
+  };
 
   render() {
     return this.handlePermissions();

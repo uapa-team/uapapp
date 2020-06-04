@@ -8,12 +8,14 @@ import AdminPrograms from "./AdminPrograms";
 import AdminUsers from "./AdminUsers";
 import GenerateReport from "./GenerateReport";
 import RecFormat from "./RecFormat";
+import Welcome from "./Welcome";
 
 const componentOf = {
   au: <AdminUsers />,
   ap: <AdminPrograms />,
   gr: <GenerateReport />,
   fr: <RecFormat />,
+  we: <Welcome />,
 };
 
 class Home extends React.Component {

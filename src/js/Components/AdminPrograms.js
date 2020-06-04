@@ -37,7 +37,6 @@ class AdminPrograms extends React.Component {
       this.setState({ visibleMenu: false });
     }
     this.setState({ programSelected: value });
-
     Backend.sendRequest("POST", "get_unique_program_professors", {
       cod_programa: value,
     }).then(async (response) => {

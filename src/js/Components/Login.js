@@ -75,9 +75,9 @@ class NormalLoginForm extends React.Component {
           <Col xs={16} sm={16} md={12} lg={8} xl={8}>
             <div className="login-general">
               <div className="login-welcome">
-                <Title>Bienvenido a UAPApp</Title>
+                <Title>Ingreso a UAPApp</Title>
                 <Text>
-                  Para continuar, por favor ingrese su usuario y contraseña.
+                  Para continuar, por favor escriba su usuario y contraseña.
                 </Text>
               </div>
               <Form

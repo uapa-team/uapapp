@@ -480,14 +480,14 @@ class AdminUsers extends React.Component {
       role: values["userType"],
     }).then(async (response) => {
       let res = await response.json();
+      console.log(res);
       if (res.status === 200) {
         message.success({ content: "Usuario creado correctamente.", key });
       } else if (res.status === 204) {
         message.warning({ content: "El usuario ingresado ya existe.", key });
       } else {
         message.error({
-          content:
-            "Ha ocurrido un error creando el usuario. Por favor revise los campos.",
+          content: "Ha ocurrido un error creando el usuario.",
           key,
         });
       }
@@ -495,6 +495,10 @@ class AdminUsers extends React.Component {
     this.setState({
       visibleModal: false,
     });
+  };
+
+  handleNewUserFailed = (values) => {
+    console.log("Failed:", values);
   };
 
   handleCancel = () => {
@@ -545,7 +549,16 @@ class AdminUsers extends React.Component {
           programsPos: [],
         }}
       >
-        <Form.Item name="userType" label="Tipo de usuario">
+        <Form.Item
+          name="userType"
+          label="Tipo de usuario"
+          rules={[
+            {
+              required: true,
+              message: "Por favor seleccione el tipo de usuario.",
+            },
+          ]}
+        >
           <Radio.Group
             buttonStyle="solid"
             onChange={this.handleFormLayoutChange}
@@ -674,22 +687,52 @@ class AdminUsers extends React.Component {
           footer={null}
           width={800}
         >
-          <Form onFinish={this.handleNewUser}>
+          <Form
+            onFinish={this.handleNewUser}
+            onFinishFailed={this.handleNewUserFailed}
+          >
             <Row gutter={16}>
               <Col span={12}>
-                <Form.Item label="Nombres" name="names">
+                <Form.Item
+                  label="Nombres"
+                  name="names"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Por favor ingrese el nombre.",
+                    },
+                  ]}
+                >
                   <Input placeholder="Nombres" />
                 </Form.Item>
               </Col>
               <Col span={12}>
-                <Form.Item label="Usuario UNAL" name="usernameUN">
+                <Form.Item
+                  label="Usuario UNAL"
+                  name="usernameUN"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Por favor ingrese el usuario.",
+                    },
+                  ]}
+                >
                   <Input placeholder="Usuario institucional" />
                 </Form.Item>
               </Col>
             </Row>
             <Row gutter={16}>
               <Col span={12}>
-                <Form.Item label="Apellidos" name="lastnames">
+                <Form.Item
+                  label="Apellidos"
+                  name="lastnames"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Por favor ingrese los apellidos.",
+                    },
+                  ]}
+                >
                   <Input placeholder="Apellidos" />
                 </Form.Item>
               </Col>
@@ -699,7 +742,16 @@ class AdminUsers extends React.Component {
                 </Form.Item>
               </Col>
             </Row>
-            <Form.Item name="userType" label="Tipo de usuario">
+            <Form.Item
+              name="userType"
+              label="Tipo de usuario"
+              rules={[
+                {
+                  required: true,
+                  message: "Por favor seleccione el tipo de usuario.",
+                },
+              ]}
+            >
               <Radio.Group
                 buttonStyle="solid"
                 onChange={this.handleFormLayoutChange}
