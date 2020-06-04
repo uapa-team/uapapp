@@ -15,8 +15,7 @@ export default class Backend {
         "Content-Type": "application/json",
         Authorization: "Bearer " + localStorage.getItem("jwt"),
       },
-      body,
-      true,
+      body
     );
   }
 
@@ -31,12 +30,11 @@ export default class Backend {
       {
         username: username,
         password: password,
-      },
-      false,
+      }
     );
   }
 
-  static _check_session(){
+  static check_session() {
     let newurl = this.backEndUrl + "check_session";
     let answer = fetch(newurl, {
       method: "POST",
@@ -45,7 +43,7 @@ export default class Backend {
         "Content-Type": "application/json",
         Authorization: "Bearer " + localStorage.getItem("jwt"),
       },
-      body: JSON.stringify({username: localStorage.getItem("username")}),
+      body: JSON.stringify({ username: localStorage.getItem("username") }),
     });
     answer.then((res) => {
       if (res.status !== 200) {
@@ -57,10 +55,7 @@ export default class Backend {
     });
   }
 
-  static _request(method, path, headers, body, check) {
-    if(check){
-      this._check_session();
-    }
+  static _request(method, path, headers, body) {
     let newurl = this.backEndUrl + path;
     let answer = fetch(newurl, {
       method: method,

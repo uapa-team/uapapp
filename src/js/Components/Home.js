@@ -10,6 +10,8 @@ import GenerateReport from "./GenerateReport";
 import RecFormat from "./RecFormat";
 import Welcome from "./Welcome";
 
+import Backend from "../Basics/Backend";
+
 const componentOf = {
   au: <AdminUsers />,
   ap: <AdminPrograms />,
@@ -31,6 +33,10 @@ class Home extends React.Component {
   renderContent = () => {
     return componentOf[this.state.tab];
   };
+
+  componentDidMount() {
+    Backend.check_session();
+  }
 
   render() {
     return (

@@ -130,6 +130,10 @@ code {
   justify-content: space-evenly;
 }
 
+.admin-users-tablectn {
+  margin-bottom: 1.5em;
+}
+
 .admin-users-btnfinish {
   width: 100%;
 }

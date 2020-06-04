@@ -353,6 +353,7 @@ class AdminUsers extends React.Component {
       programs = programs.concat(element);
     });
     programs = Array.from(new Set(programs));
+
     const key = "updatable";
     Backend.sendRequest("POST", "app_user_programs/add_programs_with_delete", {
       username: username,
@@ -538,6 +539,25 @@ class AdminUsers extends React.Component {
     );
   };
 
+  handleDeleteUser = (mail) => {
+    const key = "updatable";
+    message.loading({ content: "Eliminando usuario...", key });
+    let user = mail.replace("@unal.edu.co", "");
+    Backend.sendRequest("DELETE", "delete_user", { username: user }).then(
+      async (response) => {
+        const key = "updatable";
+        if (response.status === 200) {
+          message.success({ content: "Usuario eliminado correctamente.", key });
+        } else {
+          message.error({
+            content: "Ha ocurrido un error eliminando el usuario.",
+            key,
+          });
+        }
+      }
+    );
+  };
+
   renderForm = (record) => {
     let form = (
       <Form
@@ -646,7 +666,7 @@ class AdminUsers extends React.Component {
         render: (record) => (
           <Popconfirm
             title="¿Está seguro que desea eliminar este usuario?"
-            onConfirm={() => console.log(record.correo)}
+            onConfirm={() => this.handleDeleteUser(record.correo)}
             okText="Sí"
             cancelText="No"
             placement="top"
@@ -665,21 +685,23 @@ class AdminUsers extends React.Component {
             <UserAddOutlined /> Añadir usuario
           </Button>
         </Row>
-        <Table
-          dataSource={this.state.dataSourceUsers}
-          columns={columns}
-          bordered={true}
-          expandedRowRender={this.renderForm}
-          pagination={{
-            defaultPageSize: 10,
-            showSizeChanger: true,
-            locale: { items_per_page: "por página" },
-            pageSizeOptions: ["10", "20", "50"],
-            position: "bottom",
-            size: "small",
-            showTotal: showTotal,
-          }}
-        />
+        <div className="admin-users-tablectn">
+          <Table
+            dataSource={this.state.dataSourceUsers}
+            columns={columns}
+            bordered={true}
+            expandedRowRender={this.renderForm}
+            pagination={{
+              defaultPageSize: 10,
+              showSizeChanger: true,
+              locale: { items_per_page: "por página" },
+              pageSizeOptions: ["10", "20", "50"],
+              position: "bottom",
+              size: "small",
+              showTotal: showTotal,
+            }}
+          />
+        </div>
         <Modal
           title="Crear un nuevo usuario"
           visible={this.state.visibleModal}
@@ -771,6 +793,7 @@ class AdminUsers extends React.Component {
                 treeCheckable={true}
                 showCheckedStrategy={"SHOW_PARENT"}
                 placeholder="Por favor seleccione programas."
+                filterTreeNode={this.filterTreeNode}
               />
             </Form.Item>
             <Form.Item name="programsPos" label="Permisos de posgrado">
@@ -780,6 +803,7 @@ class AdminUsers extends React.Component {
                 treeCheckable={true}
                 showCheckedStrategy={"SHOW_PARENT"}
                 placeholder="Por favor seleccione programas."
+                filterTreeNode={this.filterTreeNode}
               />
             </Form.Item>
             <Button
