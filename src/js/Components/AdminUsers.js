@@ -354,20 +354,36 @@ class AdminUsers extends React.Component {
     });
     programs = Array.from(new Set(programs));
 
+
+    let rol = values["userType"];
+
     const key = "updatable";
     Backend.sendRequest("POST", "app_user_programs/add_programs_with_delete", {
       username: username,
       programs: programs,
     }).then(async (response) => {
       if (response.status === 200) {
-        message.success({
-          content: "Permisos de usuario actualizados correctamente.",
-          key,
+        Backend.sendRequest("POST", "change_role", {
+          username: username,
+          role: rol,
+        }).then(async (response) => {
+          if (response.status === 200) {
+            message.success({
+              content: "Permisos de usuario actualizados correctamente.",
+              key,
+            });
+          } else {
+            message.error({
+              content:
+                "Ha ocurrido un error actualizando los permisos. Por favor contáctenos.",
+              key,
+            });
+          }
         });
       } else {
         message.error({
           content:
-            "Ha ocurrido un error actualizando los permisos. Por favor contáctenos.",
+            "Ha ocurrido un error actualizando los programas. Por favor contáctenos.",
           key,
         });
       }
@@ -518,6 +534,7 @@ class AdminUsers extends React.Component {
         user["nombre"] = res[i].data["full_name"];
         user["correo"] = res[i].data["username"] + "@unal.edu.co";
         user["username"] = res[i].data["username"];
+        user["role"] = res[i].data["role"];
         users.push(user);
       }
       this.setState({ dataSourceUsers: users });
@@ -583,12 +600,12 @@ class AdminUsers extends React.Component {
             buttonStyle="solid"
             onChange={this.handleFormLayoutChange}
           >
-            <Radio.Button value="NoRol">Sin rol asignado</Radio.Button>
-            <Radio.Button value="Admin">Administrador</Radio.Button>
-            <Radio.Button value="Auxil">Auxiliar</Radio.Button>
-            <Radio.Button value="Coord">Coordinador</Radio.Button>
-            <Radio.Button value="UAPA">UAPA</Radio.Button>
-            <Radio.Button value="Depen">Dependencia</Radio.Button>
+            <Radio.Button value="0">Sin rol asignado</Radio.Button>
+            <Radio.Button value="1">Administrador</Radio.Button>
+            <Radio.Button value="2">Auxiliar</Radio.Button>
+            <Radio.Button value="3">Coordinador</Radio.Button>
+            <Radio.Button value="4">UAPA</Radio.Button>
+            <Radio.Button value="5">Dependencia</Radio.Button>
           </Radio.Group>
         </Form.Item>
         <Form.Item name="programsPre" label="Permisos de pregrado">
@@ -637,6 +654,7 @@ class AdminUsers extends React.Component {
         this.formRef.current.setFieldsValue({
           programsPre: programasPre,
           programsPos: programasPos,
+          userType: record["role"].toString(),
         });
       });
     });
