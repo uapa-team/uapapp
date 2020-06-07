@@ -179,7 +179,6 @@ class AdminProgramsProfes extends React.Component {
   };
 
   handleDeleteProfe = (dni) => {
-    console.log(dni);
     const key = "updatable";
     message.loading({ content: "Desvinculando profesor...", key });
     Backend.sendRequest("POST", "remove_professor_from_program", {

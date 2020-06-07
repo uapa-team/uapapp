@@ -152,7 +152,6 @@ class AdminProgramsAsigna extends React.Component {
 
   handleDeleteAsigna = (código) => {
     const key = "updatable";
-    console.log(código);
     message.loading({ content: "Borrando asignatura...", key });
     Backend.sendRequest("POST", "remove_subject_from_program", {
       cod_asignatura: código,

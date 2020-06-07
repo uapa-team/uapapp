@@ -1,15 +1,35 @@
 import React from "react";
-import { Input, Button, Radio, Form, Typography } from "antd";
+import { Input, Button, Radio, Form, Typography, message } from "antd";
 import { Row, Col } from "antd";
 import { SmileOutlined, MailOutlined } from "@ant-design/icons";
 import { withRouter } from "react-router-dom";
+import Backend from "../Basics/Backend";
 
 const { TextArea } = Input;
 const { Title } = Typography;
 
 class Contact extends React.Component {
   onFinish = (values) => {
-    console.log("Received values of form: ", values);
+    const key = "updatable";
+    message.loading({ content: "Enviando mensaje...", key });
+    Backend.sendRequest("POST", "make_suggestion", {
+      name: values.name,
+      email: values.mail,
+      sugtype: values.type,
+      content: values.message,
+    }).then(async (response) => {
+      if (response.status === 200) {
+        message.success({
+          content: "Leeremos su mensaje cuanto antes. ¡Gracias!",
+          key,
+        });
+      } else {
+        message.error({
+          content: "Ha ocurrido un error enviando el mensaje.",
+          key,
+        });
+      }
+    });
   };
 
   onFinishFailed = (errorInfo) => {

@@ -153,7 +153,6 @@ class AdminProgramsGrupos extends React.Component {
   });
 
   handleDeleteGrupo = (code) => {
-    console.log(code);
     const key = "updatable";
     message.loading({ content: "Desvinculando grupo...", key });
     Backend.sendRequest("POST", "remove_group_from_program", {
