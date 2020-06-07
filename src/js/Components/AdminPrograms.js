@@ -18,6 +18,7 @@ class AdminPrograms extends React.Component {
       programsPos: [],
       programsFound: true, //Variable según si se encuentran programas asignados.
       visibleMenu: false,
+      selectedAdminCategory: undefined,
       visibleProfes: false,
       visibleAsigna: false,
       visibleGrupos: false,
@@ -31,12 +32,19 @@ class AdminPrograms extends React.Component {
   }
 
   onChangeSelectProgram = (value) => {
+    this.setState({ selectedAdminCategory: undefined });
+    this.setState({
+      visibleProfes: false,
+      visibleAsigna: false,
+      visibleGrupos: false,
+    });
     if (value !== undefined) {
       this.setState({ visibleMenu: true });
     } else {
       this.setState({ visibleMenu: false });
     }
     this.setState({ programSelected: value });
+
     Backend.sendRequest("POST", "get_unique_program_professors", {
       cod_programa: value,
     }).then(async (response) => {
@@ -45,6 +53,7 @@ class AdminPrograms extends React.Component {
         recievedProfessors: res,
       });
     });
+
     Backend.sendRequest("POST", "get_program_subjects", {
       cod_programa: value,
     }).then(async (response) => {
@@ -53,6 +62,7 @@ class AdminPrograms extends React.Component {
         recievedSubjects: res,
       });
     });
+
     Backend.sendRequest("POST", "get_program_groups", {
       cod_programa: value,
     }).then(async (response) => {
@@ -64,6 +74,7 @@ class AdminPrograms extends React.Component {
   };
 
   displayAdminProgram = (e) => {
+    this.setState({ selectedAdminCategory: e.target.value });
     if (e.target.value === "Profesores") {
       this.setState({
         visibleProfes: true,
@@ -184,6 +195,7 @@ class AdminPrograms extends React.Component {
             <Radio.Group
               onChange={this.displayAdminProgram}
               className="admin-programs-radio-container"
+              value={this.state.selectedAdminCategory}
             >
               <Radio.Button
                 className="admin-programs-radio-buttons"

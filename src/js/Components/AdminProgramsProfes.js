@@ -19,6 +19,7 @@ import {
   SearchOutlined,
   UserAddOutlined,
 } from "@ant-design/icons";
+import Backend from "../Basics/Backend";
 
 const { Title } = Typography;
 
@@ -59,6 +60,13 @@ class AdminProgramsProfes extends React.Component {
       });
     }
     this.setState({ dataSourceProfes: recievedProfes });
+
+    Backend.sendRequest("POST", "get_professors_list").then(
+      async (response) => {
+        let res = await response.json();
+        console.log(res);
+      }
+    );
   }
 
   handleSearch = (selectedKeys, confirm, dataIndex) => {

@@ -18,6 +18,7 @@ import {
   SearchOutlined,
 } from "@ant-design/icons";
 import Highlighter from "react-highlight-words";
+import Backend from "../Basics/Backend";
 
 const { Title } = Typography;
 
@@ -45,6 +46,13 @@ class AdminProgramsGrupos extends React.Component {
       });
     }
     this.setState({ dataSourceGrupos: recievedGroups });
+
+    Backend.sendRequest("GET", "investigation_groups").then(
+      async (response) => {
+        let res = await response.json();
+        console.log(res);
+      }
+    );
   }
 
   showModal = () => {

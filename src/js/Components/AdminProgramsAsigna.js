@@ -18,6 +18,7 @@ import {
   SearchOutlined,
 } from "@ant-design/icons";
 import Highlighter from "react-highlight-words";
+import Backend from "../Basics/Backend";
 
 const { Title } = Typography;
 
@@ -45,6 +46,11 @@ class AdminProgramsAsigna extends React.Component {
       });
     }
     this.setState({ dataSourceAsigna: recievedAsigna });
+
+    Backend.sendRequest("GET", "subjects").then(async (response) => {
+      let res = await response.json();
+      console.log(res);
+    });
   }
 
   handleSearch = (selectedKeys, confirm, dataIndex) => {
