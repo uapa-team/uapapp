@@ -217,13 +217,22 @@ class AdminPrograms extends React.Component {
               </Radio.Button>
             </Radio.Group>
             {this.state.visibleProfes ? (
-              <AdminProgramsProfes teachers={this.state.recievedProfessors} />
+              <AdminProgramsProfes
+                programa={this.state.programSelected}
+                teachers={this.state.recievedProfessors}
+              />
             ) : null}
             {this.state.visibleAsigna ? (
-              <AdminProgramsAsigna subjects={this.state.recievedSubjects} />
+              <AdminProgramsAsigna
+                programa={this.state.programSelected}
+                subjects={this.state.recievedSubjects}
+              />
             ) : null}
             {this.state.visibleGrupos ? (
-              <AdminProgramsGrupos groups={this.state.recievedGroups} />
+              <AdminProgramsGrupos
+                programa={this.state.programSelected}
+                groups={this.state.recievedGroups}
+              />
             ) : null}
           </div>
         ) : null}

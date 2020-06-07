@@ -12,6 +12,7 @@ import {
   Typography,
   Modal,
   Col,
+  message,
 } from "antd";
 import Highlighter from "react-highlight-words";
 import {
@@ -177,6 +178,28 @@ class AdminProgramsProfes extends React.Component {
     });
   };
 
+  handleDeleteProfe = (dni) => {
+    console.log(dni);
+    const key = "updatable";
+    message.loading({ content: "Desvinculando profesor...", key });
+    Backend.sendRequest("POST", "remove_professor_from_program", {
+      cod_programa: this.props.programa,
+      dni_docente: dni,
+    }).then(async (response) => {
+      if (response.status === 200) {
+        message.success({
+          content: "El profesor se ha desvinculado correctamente.",
+          key,
+        });
+      } else {
+        message.error({
+          content: "Ha ocurrido un error creando desvinculando al profesor.",
+          key,
+        });
+      }
+    });
+  };
+
   render() {
     var columns = [
       {
@@ -200,7 +223,7 @@ class AdminProgramsProfes extends React.Component {
         render: (record) => (
           <Popconfirm
             title="¿Está seguro que desea eliminar este profesor?"
-            onConfirm={() => console.log(record.nombre)}
+            onConfirm={() => this.handleDeleteProfe(record.key)}
             okText="Sí"
             cancelText="No"
             placement="top"

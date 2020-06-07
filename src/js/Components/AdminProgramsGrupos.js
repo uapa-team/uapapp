@@ -11,6 +11,7 @@ import {
   Modal,
   Form,
   Col,
+  message,
 } from "antd";
 import {
   UsergroupAddOutlined,
@@ -151,6 +152,28 @@ class AdminProgramsGrupos extends React.Component {
       ),
   });
 
+  handleDeleteGrupo = (code) => {
+    console.log(code);
+    const key = "updatable";
+    message.loading({ content: "Desvinculando grupo...", key });
+    Backend.sendRequest("POST", "remove_group_from_program", {
+      cod_hermes: code,
+      cod_programa: this.props.programa,
+    }).then(async (response) => {
+      if (response.status === 200) {
+        message.success({
+          content: "El grupo se ha desvinculado correctamente.",
+          key,
+        });
+      } else {
+        message.error({
+          content: "Ha ocurrido un error creando desvinculando al grupo.",
+          key,
+        });
+      }
+    });
+  };
+
   render() {
     var columns = [
       {
@@ -174,7 +197,7 @@ class AdminProgramsGrupos extends React.Component {
         render: (record) => (
           <Popconfirm
             title="¿Está seguro que desea eliminar este grupo?"
-            onConfirm={() => console.log(record.nombre)}
+            onConfirm={() => this.handleDeleteGrupo(record.código)}
             okText="Sí"
             cancelText="No"
             placement="top"

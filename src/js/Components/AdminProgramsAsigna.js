@@ -11,6 +11,7 @@ import {
   Modal,
   Form,
   Col,
+  message,
 } from "antd";
 import {
   AppstoreAddOutlined,
@@ -149,6 +150,28 @@ class AdminProgramsAsigna extends React.Component {
     });
   };
 
+  handleDeleteAsigna = (código) => {
+    const key = "updatable";
+    console.log(código);
+    message.loading({ content: "Borrando asignatura...", key });
+    Backend.sendRequest("POST", "remove_subject_from_program", {
+      cod_asignatura: código,
+      cod_programa: this.props.programa,
+    }).then(async (response) => {
+      if (response.status === 200) {
+        message.success({
+          content: "La asignatura se ha eliminado correctamente.",
+          key,
+        });
+      } else {
+        message.error({
+          content: "Ha ocurrido un error creando eliminando la asignatura.",
+          key,
+        });
+      }
+    });
+  };
+
   render() {
     var columns = [
       {
@@ -172,7 +195,7 @@ class AdminProgramsAsigna extends React.Component {
         render: (record) => (
           <Popconfirm
             title="¿Está seguro que desea eliminar esta asignatura?"
-            onConfirm={() => console.log(record.nombre)}
+            onConfirm={() => this.handleDeleteAsigna(record.código)}
             okText="Sí"
             cancelText="No"
             placement="top"
