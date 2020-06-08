@@ -36,6 +36,9 @@ const periods = [
 ];
 
 class AdminProgramsProfes extends React.Component {
+
+  formRef = React.createRef();
+
   constructor(props) {
     super(props);
     this.state = {
@@ -199,6 +202,55 @@ class AdminProgramsProfes extends React.Component {
     });
   };
 
+  renderForm = (record) => {
+    let form = (
+      <Form
+        ref={this.formRef}
+        onFinish={(values) => this.onFinishPeriods(record, values)}
+        onFinishFailed={this.onFinishEditUserFailed}
+        initialValues={{
+          periods: this.state.periodsSelected,
+        }}
+      >
+        <Form.Item name="periods" label="Periodos">
+          <TreeSelect
+            treeData={periods}
+            value={this.state.periodsSelected}
+            onChange={this.onChangePeriods}
+            treeCheckable={true}
+            showCheckedStrategy={"SHOW_PARENT"}
+            placeholder="Por favor seleccione programas."
+          />
+        </Form.Item>
+        <Form.Item>
+          <Button
+            type="primary"
+            htmlType="submit"
+            className="admin-users-btnfinish"
+          >
+            Guardar cambios
+          </Button>
+        </Form.Item>
+      </Form>
+    )
+    
+    let program = this.props.programa;
+    let professor = record['key'];
+    Backend.sendRequest("POST", "get_professor_periods", {
+      cod_programa: program,
+      dni_docente: professor,
+    }).then(async (response) => {
+      response.json().then(async (response) => {
+        let periods_professor = response.map((data) => data["data"]["periodo"]);
+        console.log(periods_professor);
+        this.formRef.current.setFieldsValue({
+          periods: periods_professor
+        });
+      });
+    });
+    return form;
+  }
+
   render() {
     var columns = [
       {
@@ -245,35 +297,7 @@ class AdminProgramsProfes extends React.Component {
           dataSource={this.state.dataSourceProfes}
           columns={columns}
           bordered={true}
-          expandedRowRender={(record) => (
-            <Form
-              onFinish={(values) => this.onFinishPeriods(record, values)}
-              onFinishFailed={this.onFinishEditUserFailed}
-              initialValues={{
-                periods: this.state.periodsSelected,
-              }}
-            >
-              <Form.Item name="periods" label="Periodos">
-                <TreeSelect
-                  treeData={periods}
-                  value={this.state.periodsSelected}
-                  onChange={this.onChangePeriods}
-                  treeCheckable={true}
-                  showCheckedStrategy={"SHOW_PARENT"}
-                  placeholder="Por favor seleccione programas."
-                />
-              </Form.Item>
-              <Form.Item>
-                <Button
-                  type="primary"
-                  htmlType="submit"
-                  className="admin-users-btnfinish"
-                >
-                  Guardar cambios
-                </Button>
-              </Form.Item>
-            </Form>
-          )}
+          expandedRowRender={this.renderForm}
           pagination={{
             defaultPageSize: 10,
             showSizeChanger: true,
