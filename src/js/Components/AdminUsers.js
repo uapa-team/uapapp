@@ -25,302 +25,6 @@ import Backend from "../Basics/Backend";
 
 const { Title } = Typography;
 
-const ProgramsPre = [
-  {
-    title: "Departamento de Ingeniería Civil y Agrícola",
-    value: ["2541", "2542"],
-    children: [
-      {
-        title: "Ingeniería Agrícola",
-        value: "2541",
-      },
-      {
-        title: "Ingeniería Civil",
-        value: "2542",
-      },
-    ],
-  },
-  {
-    title: "Departamento de Sistemas e Industrial",
-    value: ["2879", "2546"],
-    children: [
-      {
-        title: "Ingeniería de Sistemas y Computación",
-        value: "2879",
-      },
-      {
-        title: "Ingeniería Industrial",
-        value: "2546",
-      },
-    ],
-  },
-  {
-    title: "Departamento de Ingeniería Electrica y Electrónica",
-    value: ["2544", "2545"],
-    children: [
-      {
-        title: "Ingeniería Electrica",
-        value: "2544",
-      },
-      {
-        title: "Ingeniería Electrónica",
-        value: "2545",
-      },
-    ],
-  },
-  {
-    title: "Departamento de Ingeniería Mecánica y Mecatrónica",
-    value: ["2547", "2548"],
-    children: [
-      {
-        title: "Ingeniería Mecánica",
-        value: "2547",
-      },
-      {
-        title: "Ingeniería Mecatrónica",
-        value: "2548",
-      },
-    ],
-  },
-  {
-    title: "Departamento de Química y Ambiental",
-    value: ["2549", "2549"],
-    children: [
-      {
-        title: "Ingeniería Química",
-        value: "2549",
-      },
-    ],
-  },
-];
-
-const ProgramsPos = [
-  {
-    title: "Departamento de Ingeniería Civil y Agrícola",
-    value: [
-      "2217",
-      "2278",
-      "2492",
-      "2696",
-      "2285",
-      "2886",
-      "2699",
-      "2700",
-      "2701",
-      "2705",
-      "2706",
-      "2683",
-      "2887",
-    ],
-    children: [
-      {
-        title: "Especialización en Geotecnia",
-        value: "2217",
-      },
-      {
-        title: "Especialización en Recursos Hidráulicos",
-        value: "2278",
-      },
-      {
-        title:
-          "Especialización en Ingeniería - Tránsito, Diseño y Seguridad Vial",
-        value: "2492",
-      },
-      {
-        title: "Especialización en Transito, Diseño y Seguridad Vial",
-        value: "2696",
-      },
-      {
-        title: "Especialización en Transporte",
-        value: "2285",
-      },
-      {
-        title: "Especialización en Estructuras",
-        value: "2886",
-      },
-      {
-        title: "Maestría en Ingeniería - Estructuras",
-        value: "2699",
-      },
-      {
-        title: "Maestría en Ingeniería - Geotecnia",
-        value: "2700",
-      },
-      {
-        title: "Maestría en Ingeniería - Ingeniería Agrícola",
-        value: "2701",
-      },
-      {
-        title: "Maestría en Ingeniería - Recursos Hidráulicos",
-        value: "2705",
-      },
-      {
-        title: "Maestría en Ingeniería - Transporte",
-        value: "2706",
-      },
-      {
-        title: "Doctorado en Ingeniería - Geotecnia",
-        value: "2683",
-      },
-      {
-        title: "Doctorado en Ingeniería - Ingeniería Civil",
-        value: "2887",
-      },
-    ],
-  },
-  {
-    title: "Departamento de Sistemas e Industrial",
-    value: [
-      "2896",
-      "2702",
-      "2707",
-      "2708",
-      "2856",
-      "2882",
-      "2928",
-      "2684",
-      "2838",
-    ],
-    children: [
-      {
-        title: "Especialización en Gobierno Electrónico",
-        value: "2896",
-      },
-      {
-        title: "Maestría en Ingeniería - Ingeniería de Sistemas y Computación",
-        value: "2702",
-      },
-      {
-        title: "Maestría en Ingeniería - Telecomunicaciones",
-        value: "2707",
-      },
-      {
-        title: "Maestría en Ingenieria Industrial",
-        value: "2708",
-      },
-      {
-        title:
-          "Maestría en Ingeniería - Ingeniería de Sistemas y Computación - Conv UPC",
-        value: "2856",
-      },
-      {
-        title: "Maestría en Bioinformática",
-        value: "2882",
-      },
-      {
-        title:
-          "Maestría en Ingeniería - Ingeniería de Sistemas y Computación - Conv Unillanos",
-        value: "2928",
-      },
-      {
-        title: "Doctorado en Ingeniería - Sistemas y Computación",
-        value: "2684",
-      },
-      {
-        title: "Doctorado en Ingeniería - Industria y Organizaciones",
-        value: "2838",
-      },
-    ],
-  },
-  {
-    title: "Departamento de Ingeniería Electrica y Electrónica",
-    value: [
-      "2064",
-      "2113",
-      "2687",
-      "2691",
-      "2698",
-      "2703",
-      "2794",
-      "2865",
-      "2685",
-    ],
-    children: [
-      {
-        title: "Especialización en Calidad de la Energía",
-        value: "2064",
-      },
-      {
-        title: "Especialización en Ingeniería Eléctrica",
-        value: "2113",
-      },
-      {
-        title: "Especialización en Automatización Industrial",
-        value: "2687",
-      },
-      {
-        title: "Especialización en Iluminación Pública y Privada",
-        value: "2691",
-      },
-      {
-        title: "Maestría en Ingeniería - Automatización Industrial",
-        value: "2698",
-      },
-      {
-        title: "Maestría en Ingeniería - Ingeniería Eléctrica",
-        value: "2703",
-      },
-      {
-        title:
-          "Maestría en Ingeniería - Ingeniería Eléctrica Convenio Sede Manizales",
-        value: "2794",
-      },
-      {
-        title: "Maestría en Ingeniería - Ingeniería Electrónica",
-        value: "2865",
-      },
-      {
-        title: "Doctorado en Ingeniería - Ingeniería Eléctrica",
-        value: "2685",
-      },
-    ],
-  },
-  {
-    title: "Departamento de Ingeniería Mecánica y Mecatrónica",
-    value: ["2709", "2710", "2682", "2839"],
-    children: [
-      {
-        title: "Maestría en Ingeniería - Ingeniería Mecánica",
-        value: "2709",
-      },
-      {
-        title: "Maestría en Ingeniería - Materiales y Procesos",
-        value: "2710",
-      },
-      {
-        title: "Doctorado en Ingeniería - Ciencia y Tecnología de Materiales",
-        value: "2682",
-      },
-      {
-        title: "Doctorado en Ingeniería - Ingeniería Mecánica y Mecatrónica",
-        value: "2839",
-      },
-    ],
-  },
-  {
-    title: "Departamento de Química y Ambiental",
-    value: ["2792", "2562", "2704", "2686"],
-    children: [
-      {
-        title: "Especialización en Ingeniería Ambiental",
-        value: "2792",
-      },
-      {
-        title: "Maestría en Ingeniería - Ingeniería Ambiental",
-        value: "2562",
-      },
-      {
-        title: "Maestría en Ingeniería - Ingeniería Química",
-        value: "2704",
-      },
-      {
-        title: "Doctorado en Ingeniería - Ingeniería Química",
-        value: "2686",
-      },
-    ],
-  },
-];
-
 class AdminUsers extends React.Component {
   formRef = React.createRef();
 
@@ -336,6 +40,8 @@ class AdminUsers extends React.Component {
       ],
       programasPreSelected: [],
       programasPosSelected: [],
+      ProgramsPre: undefined,
+      ProgramsPos: undefined,
       searchText: "",
       searchedColumn: "",
       visibleModal: false,
@@ -539,6 +245,47 @@ class AdminUsers extends React.Component {
       }
       this.setState({ dataSourceUsers: users });
     });
+
+    Backend.sendRequest("GET", "academic_programs_info").then(async (response) => {
+      let res = await response.json();
+      let area = {};
+      res.forEach((program) => {
+        let pprogram = {
+          title: program['data']['programa'],
+          nivel: program['data']['cod_nivel'],
+          value: program['data']['cod_programa'],
+        }
+        if(area[program['data']['area_curricular']] === undefined){
+          area[program['data']['area_curricular']] = [];
+        }
+        area[program['data']['area_curricular']].push(pprogram);
+      });
+      let pProgramsPre = [];
+      let pProgramsPos = [];
+      for(const [key] of Object.entries(area)) {
+        let preprograms = area[key].filter((program)=>program['nivel'] === 1);
+        let posprograms = area[key].filter((program)=>program['nivel'] !== 1);
+        let preprogramskeys = preprograms.map((program)=>program['value']);
+        let posprogramskeys = posprograms.map((program)=>program['value']);
+        if(preprogramskeys.length === 1){
+          preprogramskeys.push(preprogramskeys[0])
+        }
+        let pareapre = {
+          title: key,
+          value: preprogramskeys,
+          children: preprograms,
+        }
+        pProgramsPre.push(pareapre);
+        let pareapos = {
+          title: key,
+          value: posprogramskeys,
+          children: posprograms,
+        }
+        pProgramsPos.push(pareapos);
+      }
+      this.setState({ ProgramsPre: pProgramsPre });
+      this.setState({ ProgramsPos: pProgramsPos });
+    });
   }
 
   filterTreeNode = (input, child) => {
@@ -610,7 +357,7 @@ class AdminUsers extends React.Component {
         </Form.Item>
         <Form.Item name="programsPre" label="Permisos de pregrado">
           <TreeSelect
-            treeData={ProgramsPre}
+            treeData={this.state.ProgramsPre}
             value={record["programasPre"]}
             treeCheckable={true}
             showCheckedStrategy={"SHOW_PARENT"}
@@ -620,7 +367,7 @@ class AdminUsers extends React.Component {
         </Form.Item>
         <Form.Item name="programsPos" label="Permisos de posgrado">
           <TreeSelect
-            treeData={ProgramsPos}
+            treeData={this.state.ProgramsPos}
             value={this.state.programasPosSelected}
             treeCheckable={true}
             showCheckedStrategy={"SHOW_PARENT"}
@@ -650,7 +397,6 @@ class AdminUsers extends React.Component {
         let programasPos = response
           .filter((data) => data["data"]["cod_nivel"] !== 1)
           .map((data) => data["data"]["cod_programa"]);
-        console.log(this.formRef);
         this.formRef.current.setFieldsValue({
           programsPre: programasPre,
           programsPos: programasPos,
@@ -806,7 +552,7 @@ class AdminUsers extends React.Component {
             </Form.Item>
             <Form.Item name="programsPre" label="Permisos de pregrado">
               <TreeSelect
-                treeData={ProgramsPre}
+                treeData={this.state.ProgramsPre}
                 value={this.state.programasPreSelected}
                 treeCheckable={true}
                 showCheckedStrategy={"SHOW_PARENT"}
@@ -816,7 +562,7 @@ class AdminUsers extends React.Component {
             </Form.Item>
             <Form.Item name="programsPos" label="Permisos de posgrado">
               <TreeSelect
-                treeData={ProgramsPos}
+                treeData={this.state.ProgramsPos}
                 value={this.state.programasPosSelected}
                 treeCheckable={true}
                 showCheckedStrategy={"SHOW_PARENT"}
