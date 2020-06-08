@@ -24,17 +24,6 @@ import Backend from "../Basics/Backend";
 
 const { Title } = Typography;
 
-const periods = [
-  {
-    title: "2010-1",
-    value: "2010-1",
-  },
-  {
-    title: "2010-2",
-    value: "2010-2",
-  },
-];
-
 class AdminProgramsProfes extends React.Component {
 
   formRef = React.createRef();
@@ -49,6 +38,7 @@ class AdminProgramsProfes extends React.Component {
           nombre: "Cargando...",
         },
       ],
+      periods: undefined,
       periodsSelected: [],
       visibleModal: false,
     };
@@ -69,6 +59,19 @@ class AdminProgramsProfes extends React.Component {
       async (response) => {
         let res = await response.json();
         console.log(res);
+      }
+    );
+    Backend.sendRequest("GET", "periods").then(
+      async (response) => {
+        let periods = await response.json();
+        periods = periods.map((data)=>{
+          let ndata = {
+            title:data['data']['periodo'],
+            value:data['data']['periodo'],
+          };
+          return ndata;
+        });
+        this.setState({periods: periods});
       }
     );
   }
@@ -214,7 +217,7 @@ class AdminProgramsProfes extends React.Component {
       >
         <Form.Item name="periods" label="Periodos">
           <TreeSelect
-            treeData={periods}
+            treeData={this.state.periods}
             value={this.state.periodsSelected}
             onChange={this.onChangePeriods}
             treeCheckable={true}
