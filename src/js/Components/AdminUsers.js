@@ -60,10 +60,10 @@ class AdminUsers extends React.Component {
     });
     programs = Array.from(new Set(programs));
 
-
     let rol = values["userType"];
 
     const key = "updatable";
+    message.loading({ content: "Guardando permisos...", key });
     Backend.sendRequest("POST", "app_user_programs/add_programs_with_delete", {
       username: username,
       programs: programs,
@@ -246,46 +246,52 @@ class AdminUsers extends React.Component {
       this.setState({ dataSourceUsers: users });
     });
 
-    Backend.sendRequest("GET", "academic_programs_info").then(async (response) => {
-      let res = await response.json();
-      let area = {};
-      res.forEach((program) => {
-        let pprogram = {
-          title: program['data']['programa'],
-          nivel: program['data']['cod_nivel'],
-          value: program['data']['cod_programa'],
+    Backend.sendRequest("GET", "academic_programs_info").then(
+      async (response) => {
+        let res = await response.json();
+        let area = {};
+        res.forEach((program) => {
+          let pprogram = {
+            title: program["data"]["programa"],
+            nivel: program["data"]["cod_nivel"],
+            value: program["data"]["cod_programa"],
+          };
+          if (area[program["data"]["area_curricular"]] === undefined) {
+            area[program["data"]["area_curricular"]] = [];
+          }
+          area[program["data"]["area_curricular"]].push(pprogram);
+        });
+        let pProgramsPre = [];
+        let pProgramsPos = [];
+        for (const [key] of Object.entries(area)) {
+          let preprograms = area[key].filter(
+            (program) => program["nivel"] === 1
+          );
+          let posprograms = area[key].filter(
+            (program) => program["nivel"] !== 1
+          );
+          let preprogramskeys = preprograms.map((program) => program["value"]);
+          let posprogramskeys = posprograms.map((program) => program["value"]);
+          if (preprogramskeys.length === 1) {
+            preprogramskeys.push(preprogramskeys[0]);
+          }
+          let pareapre = {
+            title: key,
+            value: preprogramskeys,
+            children: preprograms,
+          };
+          pProgramsPre.push(pareapre);
+          let pareapos = {
+            title: key,
+            value: posprogramskeys,
+            children: posprograms,
+          };
+          pProgramsPos.push(pareapos);
         }
-        if(area[program['data']['area_curricular']] === undefined){
-          area[program['data']['area_curricular']] = [];
-        }
-        area[program['data']['area_curricular']].push(pprogram);
-      });
-      let pProgramsPre = [];
-      let pProgramsPos = [];
-      for(const [key] of Object.entries(area)) {
-        let preprograms = area[key].filter((program)=>program['nivel'] === 1);
-        let posprograms = area[key].filter((program)=>program['nivel'] !== 1);
-        let preprogramskeys = preprograms.map((program)=>program['value']);
-        let posprogramskeys = posprograms.map((program)=>program['value']);
-        if(preprogramskeys.length === 1){
-          preprogramskeys.push(preprogramskeys[0])
-        }
-        let pareapre = {
-          title: key,
-          value: preprogramskeys,
-          children: preprograms,
-        }
-        pProgramsPre.push(pareapre);
-        let pareapos = {
-          title: key,
-          value: posprogramskeys,
-          children: posprograms,
-        }
-        pProgramsPos.push(pareapos);
+        this.setState({ ProgramsPre: pProgramsPre });
+        this.setState({ ProgramsPos: pProgramsPos });
       }
-      this.setState({ ProgramsPre: pProgramsPre });
-      this.setState({ ProgramsPos: pProgramsPos });
-    });
+    );
   }
 
   filterTreeNode = (input, child) => {
