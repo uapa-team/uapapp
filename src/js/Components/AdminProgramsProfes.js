@@ -13,6 +13,7 @@ import {
   Modal,
   Col,
   message,
+  Select,
 } from "antd";
 import Highlighter from "react-highlight-words";
 import {
@@ -22,10 +23,10 @@ import {
 } from "@ant-design/icons";
 import Backend from "../Basics/Backend";
 
-const { Title } = Typography;
+const { Option } = Select;
+const { Title, Text } = Typography;
 
 class AdminProgramsProfes extends React.Component {
-
   formRef = React.createRef();
 
   constructor(props) {
@@ -41,6 +42,11 @@ class AdminProgramsProfes extends React.Component {
       periods: undefined,
       periodsSelected: [],
       visibleModal: false,
+      selectedProfe: undefined,
+      selectedMail: undefined,
+      allProfes: {},
+      optionsCorreos: [],
+      optionsNombres: [],
     };
   }
 
@@ -59,21 +65,50 @@ class AdminProgramsProfes extends React.Component {
       async (response) => {
         let res = await response.json();
         console.log(res);
-      }
-    );
-    Backend.sendRequest("GET", "periods").then(
-      async (response) => {
-        let periods = await response.json();
-        periods = periods.map((data)=>{
-          let ndata = {
-            title:data['data']['periodo'],
-            value:data['data']['periodo'],
-          };
-          return ndata;
+        this.setState({ allProfes: res });
+        let recievedProfesCorreos = [];
+        let recievedProfesNombres = [];
+        for (let i = 0; i < res.length; i++) {
+          if (
+            res[i].data["nombre_completo"] !== "" ||
+            res[i].data["nombre_completo"] !== null
+          ) {
+            recievedProfesNombres.push(
+              <Option key={res[i].data["dni_persona"]}>
+                {res[i].data["nombre_completo"]}
+              </Option>
+            );
+          }
+
+          if (
+            res[i].data["correo_unal"] !== "" ||
+            res[i].data["correo_unal"] !== null
+          ) {
+            recievedProfesCorreos.push(
+              <Option key={res[i].data["dni_persona"]}>
+                {res[i].data["correo_unal"]}
+              </Option>
+            );
+          }
+        }
+        this.setState({
+          optionsCorreos: recievedProfesCorreos,
+          optionsNombres: recievedProfesNombres,
         });
-        this.setState({periods: periods});
       }
     );
+
+    Backend.sendRequest("GET", "periods").then(async (response) => {
+      let periods = await response.json();
+      periods = periods.map((data) => {
+        let ndata = {
+          title: data["data"]["periodo"],
+          value: data["data"]["periodo"],
+        };
+        return ndata;
+      });
+      this.setState({ periods: periods });
+    });
   }
 
   handleSearch = (selectedKeys, confirm, dataIndex) => {
@@ -235,10 +270,10 @@ class AdminProgramsProfes extends React.Component {
           </Button>
         </Form.Item>
       </Form>
-    )
-    
+    );
+
     let program = this.props.programa;
-    let professor = record['key'];
+    let professor = record["key"];
     Backend.sendRequest("POST", "get_professor_periods", {
       cod_programa: program,
       dni_docente: professor,
@@ -247,12 +282,19 @@ class AdminProgramsProfes extends React.Component {
         let periods_professor = response.map((data) => data["data"]["periodo"]);
         console.log(periods_professor);
         this.formRef.current.setFieldsValue({
-          periods: periods_professor
+          periods: periods_professor,
         });
       });
     });
     return form;
-  }
+  };
+
+  onChangeName = (value) => {
+    this.setState({ selectedProfe: value });
+  };
+  onChangeCorreo = (value) => {
+    this.setState({ selectedProfe: value });
+  };
 
   render() {
     var columns = [
@@ -293,7 +335,7 @@ class AdminProgramsProfes extends React.Component {
         <Row className="admin-programs-subtitle">
           <Title level={2}>Administración de profesores</Title>
           <Button type="primary" onClick={this.showModal}>
-            <UserAddOutlined /> Añadir profesor
+            <UserAddOutlined /> Añadir docente
           </Button>
         </Row>
         <Table
@@ -312,59 +354,79 @@ class AdminProgramsProfes extends React.Component {
           }}
         />
         <Modal
-          title="Añadir un nuevo profesor"
+          title="Por favor escriba y seleccione el nombre o correo del docente a agregar."
           visible={this.state.visibleModal}
           onCancel={this.handleCancel}
           footer={null}
           width={800}
         >
-          <Form onFinish={this.searchByName}>
+          <Form>
             <Row gutter={16}>
               <Col span={12}>
                 <Form.Item label="Nombre" name="names">
-                  <Input placeholder="Nombres" />
+                  <Select
+                    showSearch
+                    placeholder="Escriba el nombre del docente."
+                    onChange={this.onChangeName}
+                    filterOption={(input, option) =>
+                      option.children
+                        .toLowerCase()
+                        .normalize("NFD")
+                        .replace(/[\u0300-\u036f]/g, "")
+                        .indexOf(
+                          input
+                            .toLowerCase()
+                            .normalize("NFD")
+                            .replace(/[\u0300-\u036f]/g, "")
+                        ) >= 0
+                    }
+                  >
+                    {this.state.optionsNombres}
+                  </Select>
                 </Form.Item>
               </Col>
               <Col span={12}>
-                <Button
-                  ghost
-                  icon={<SearchOutlined />}
-                  type="primary"
-                  htmlType="submit"
-                  className="admin-users-add-finish-btn"
-                >
-                  Buscar por nombre
-                </Button>
-              </Col>
-            </Row>
-          </Form>
-          <Form onFinish={this.searchByMail}>
-            <Row gutter={16}>
-              <Col span={12}>
-                <Form.Item label="Correo" name="mail">
-                  <Input placeholder="Correo" />
+                <Form.Item label="Correo" name="username">
+                  <Select
+                    showSearch
+                    placeholder="Escriba el nombre de usuario del docente."
+                    onChange={this.onChangeCorreo}
+                    filterOption={(input, option) =>
+                      option.children
+                        .toLowerCase()
+                        .normalize("NFD")
+                        .replace(/[\u0300-\u036f]/g, "")
+                        .indexOf(
+                          input
+                            .toLowerCase()
+                            .normalize("NFD")
+                            .replace(/[\u0300-\u036f]/g, "")
+                        ) >= 0
+                    }
+                  >
+                    {this.state.optionsCorreos}
+                  </Select>
                 </Form.Item>
               </Col>
-              <Col span={12}>
-                <Button
-                  ghost
-                  icon={<SearchOutlined />}
-                  type="primary"
-                  htmlType="submit"
-                  className="admin-users-add-finish-btn"
-                >
-                  Buscar por correo
-                </Button>
-              </Col>
             </Row>
           </Form>
-          <Button
-            type="primary"
-            onClick={this.addProfe}
-            className="admin-users-add-finish-btn"
-          >
-            Añadir profesor
-          </Button>
+          {this.state.selectedProfe === undefined ? (
+            <Text></Text>
+          ) : (
+            <>
+              <Text>
+                Profesor seleccionado: {this.state.selectedProfe}. Correo:{" "}
+                {this.state.selectedMail}.
+              </Text>
+              <Button
+                type="primary"
+                onClick={this.addProfe}
+                className="admin-users-add-finish-btn"
+              >
+                Añadir profesor
+              </Button>
+            </>
+          )}
         </Modal>
       </div>
     );

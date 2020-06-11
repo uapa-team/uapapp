@@ -9,6 +9,7 @@ import {
   Col,
   Row,
   TreeSelect,
+  message,
 } from "antd";
 import { DownloadOutlined } from "@ant-design/icons";
 import Backend from "../Basics/Backend";
@@ -30,6 +31,7 @@ class RecFormat extends React.Component {
       selectedSubformat: undefined,
       selectedPeriods: undefined,
       selectedPrograms: undefined,
+      formatName: undefined,
     };
   }
 
@@ -125,6 +127,17 @@ class RecFormat extends React.Component {
         selectedSubformat: value,
       });
     });
+
+    Backend.sendRequest("POST", "FR_names", {
+      username: localStorage.getItem("username"),
+      format: this.state.selectedFormat,
+      sub_format: value,
+    }).then(async (response) => {
+      let res = await response.json();
+      this.setState({
+        formatName: res,
+      });
+    });
   };
 
   handleChangePeriod = (value) => {
@@ -136,7 +149,39 @@ class RecFormat extends React.Component {
   };
 
   onFinish = (values) => {
-    console.log(values);
+    const key = "updatable";
+    message.loading({ content: "Obteniendo formato...", key });
+    Backend.sendRequest("POST", this.state.formatName, {
+      periodos: values["periods"],
+      programas: values["programs"],
+    })
+      .then(async (response) => {
+        if (response.status === 200) {
+          message.success({ content: "Formato obtenido correctamente.", key });
+          return response.blob();
+        } else {
+          message.error({
+            content:
+              "Ha ocurrido un error obteniendo el formato. Por favor contáctenos.",
+            key,
+          });
+          return null;
+        }
+      })
+      .then((blob) => {
+        const href = window.URL.createObjectURL(blob);
+        const a = this.linkRef.current;
+        a.download =
+          "Formato" +
+          this.state.selectedLevel +
+          this.state.selectedReport +
+          this.state.selectedSubformat +
+          ".xls";
+        a.href = href;
+        a.click();
+        a.href = "";
+      })
+      .catch((err) => console.error(err));
   };
 
   onFinishFailed = (errorInfo) => {
