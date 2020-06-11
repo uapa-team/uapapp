@@ -5,6 +5,7 @@ import AdminProgramsProfes from "./AdminProgramsProfes";
 import AdminProgramsAsigna from "./AdminProgramsAsigna";
 import AdminProgramsGrupos from "./AdminProgramsGrupos";
 import Backend from "../Basics/Backend";
+import { filterTreeNode } from "../Basics/Backend";
 
 const { TreeNode } = TreeSelect;
 const { Title, Text } = Typography;
@@ -139,21 +140,6 @@ class AdminPrograms extends React.Component {
     });
   }
 
-  filterTreeNode = (input, child) => {
-    return (
-      child.props.title
-        .toLowerCase()
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "")
-        .indexOf(
-          input
-            .toLowerCase()
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "")
-        ) >= 0
-    );
-  };
-
   render() {
     return !this.state.programsFound ? (
       <div className="admin-programs-not-found-div">
@@ -171,16 +157,16 @@ class AdminPrograms extends React.Component {
           <Title level={2}>Administración de programas</Title>
         </div>
         <TreeSelect
-          showSearch
+          className="select-props"
           style={{ width: "100%" }}
-          value={this.state.programSelected}
-          dropdownStyle={{ maxHeight: 400, overflow: "auto" }}
-          placeholder="Por favor busque o seleccione un programa."
           allowClear
+          showSearch
           treeDefaultExpandAll
-          onChange={this.onChangeSelectProgram}
-          filterTreeNode={this.filterTreeNode}
           defaultValue={undefined}
+          value={this.state.programSelected}
+          onChange={this.onChangeSelectProgram}
+          filterTreeNode={filterTreeNode}
+          placeholder="Por favor busque o seleccione un programa."
         >
           <TreeNode selectable={false} value="Pregrado" title="Pregrado">
             {this.state.programsPre}

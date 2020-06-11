@@ -175,6 +175,7 @@ class GenerateReport extends React.Component {
             ]}
           >
             <Select
+              className="select-props"
               placeholder="Seleccione el nivel"
               onChange={this.handleChangeLevel}
             >
@@ -193,6 +194,7 @@ class GenerateReport extends React.Component {
             ]}
           >
             <Select
+              className="select-props"
               placeholder="Seleccione el reporte"
               onChange={this.handleChangeReport}
             >

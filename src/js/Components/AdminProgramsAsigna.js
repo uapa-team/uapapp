@@ -22,6 +22,7 @@ import {
 } from "@ant-design/icons";
 import Highlighter from "react-highlight-words";
 import Backend from "../Basics/Backend";
+import { filterSelect } from "../Basics/Backend";
 
 const { Title, Text } = Typography;
 
@@ -36,10 +37,10 @@ class AdminProgramsAsigna extends React.Component {
           nombre: "Cargando...",
         },
       ],
-      optionsCódigos: [],
-      optionsNombres: [],
+      optionsCodes: [],
+      optionsNames: [],
       searchCriteria: "código",
-      selectedAsigna: undefined,
+      selectedNewAsigna: undefined,
     };
   }
 
@@ -270,45 +271,25 @@ class AdminProgramsAsigna extends React.Component {
                 {this.state.searchCriteria === "código" ? (
                   <Form.Item label="Código" name="code">
                     <Select
+                      className="select-props"
                       showSearch
                       placeholder="Escriba el código de la asignatura."
                       onChange={this.onChangeCode}
-                      filterOption={(input, option) =>
-                        option.children
-                          .toLowerCase()
-                          .normalize("NFD")
-                          .replace(/[\u0300-\u036f]/g, "")
-                          .indexOf(
-                            input
-                              .toLowerCase()
-                              .normalize("NFD")
-                              .replace(/[\u0300-\u036f]/g, "")
-                          ) >= 0
-                      }
+                      filterOption={filterSelect}
                     >
-                      {this.state.optionsCódigos}
+                      {this.state.optionsCodes}
                     </Select>
                   </Form.Item>
                 ) : (
                   <Form.Item label="Nombre" name="name">
                     <Select
+                      className="select-props"
                       showSearch
                       placeholder="Escriba el nombre de la asignatura."
                       onChange={this.onChangeName}
-                      filterOption={(input, option) =>
-                        option.children
-                          .toLowerCase()
-                          .normalize("NFD")
-                          .replace(/[\u0300-\u036f]/g, "")
-                          .indexOf(
-                            input
-                              .toLowerCase()
-                              .normalize("NFD")
-                              .replace(/[\u0300-\u036f]/g, "")
-                          ) >= 0
-                      }
+                      filterOption={filterSelect}
                     >
-                      {this.state.optionsNombres}
+                      {this.state.optionsNames}
                     </Select>
                   </Form.Item>
                 )}

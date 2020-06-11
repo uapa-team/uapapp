@@ -23,6 +23,7 @@ import {
   UserAddOutlined,
 } from "@ant-design/icons";
 import Backend from "../Basics/Backend";
+import { filterSelect } from "../Basics/Backend";
 
 const { Option } = Select;
 const { Title, Text } = Typography;
@@ -45,9 +46,9 @@ class AdminProgramsProfes extends React.Component {
       visibleModal: false,
       selectedProfe: undefined,
       selectedMail: undefined,
-      allProfes: {},
-      optionsUsuarios: [],
-      optionsNombres: [],
+      optionsUsers: [],
+      optionsNames: [],
+      currentOptions: [],
       searchCriteria: "nombre",
     };
   }
@@ -66,16 +67,14 @@ class AdminProgramsProfes extends React.Component {
     Backend.sendRequest("POST", "get_professors_list").then(
       async (response) => {
         let res = await response.json();
-        console.log(res);
-        this.setState({ allProfes: res });
-        let recievedProfesUsuarios = [];
-        let recievedProfesNombres = [];
+        let recievedProfesUsers = [];
+        let recievedProfesNames = [];
         for (let i = 0; i < res.length; i++) {
           if (
             res[i].data["nombre_completo"] !== "" ||
             res[i].data["nombre_completo"] !== null
           ) {
-            recievedProfesNombres.push(
+            recievedProfesNames.push(
               <Option key={res[i].data["dni_persona"]}>
                 {res[i].data["nombre_completo"]}
               </Option>
@@ -86,7 +85,7 @@ class AdminProgramsProfes extends React.Component {
             res[i].data["correo_unal"] !== "" ||
             res[i].data["correo_unal"] !== null
           ) {
-            recievedProfesUsuarios.push(
+            recievedProfesUsers.push(
               <Option key={res[i].data["dni_persona"]}>
                 {res[i].data["correo_unal"]}
               </Option>
@@ -94,8 +93,8 @@ class AdminProgramsProfes extends React.Component {
           }
         }
         this.setState({
-          optionsUsuarios: recievedProfesUsuarios,
-          optionsNombres: recievedProfesNombres,
+          optionsUsers: recievedProfesUsers,
+          optionsNames: recievedProfesNames,
         });
       }
     );
@@ -198,7 +197,9 @@ class AdminProgramsProfes extends React.Component {
   };
 
   changeCriteria = (value) => {
-    this.setState({ searchCriteria: value.target.value });
+    this.setState({
+      searchCriteria: value.target.value,
+    });
   };
 
   handleNewProfe = (values) => {
@@ -280,6 +281,7 @@ class AdminProgramsProfes extends React.Component {
 
     let program = this.props.programa;
     let professor = record["key"];
+
     Backend.sendRequest("POST", "get_professor_periods", {
       cod_programa: program,
       dni_docente: professor,
@@ -292,14 +294,32 @@ class AdminProgramsProfes extends React.Component {
         });
       });
     });
+
     return form;
   };
 
   onChangeName = (value) => {
     this.setState({ selectedProfe: value });
   };
+
   onChangeCorreo = (value) => {
     this.setState({ selectedProfe: value });
+  };
+
+  handleTypeName = (value) => {
+    if (value.length < 3) {
+      this.setState({ currentOptions: [] });
+    } else {
+      this.setState({ currentOptions: this.state.optionsNames });
+    }
+  };
+
+  handleTypeUser = (value) => {
+    if (value.length < 3) {
+      this.setState({ currentOptions: [] });
+    } else {
+      this.setState({ currentOptions: this.state.optionsUsers });
+    }
   };
 
   render() {
@@ -392,45 +412,29 @@ class AdminProgramsProfes extends React.Component {
                 {this.state.searchCriteria === "nombre" ? (
                   <Form.Item label="Nombre" name="names">
                     <Select
+                      className="select-props"
                       showSearch
                       placeholder="Escriba el nombre del docente."
                       onChange={this.onChangeName}
-                      filterOption={(input, option) =>
-                        option.children
-                          .toLowerCase()
-                          .normalize("NFD")
-                          .replace(/[\u0300-\u036f]/g, "")
-                          .indexOf(
-                            input
-                              .toLowerCase()
-                              .normalize("NFD")
-                              .replace(/[\u0300-\u036f]/g, "")
-                          ) >= 0
-                      }
+                      filterOption={filterSelect}
+                      notFoundContent={null}
+                      onSearch={this.handleTypeName}
                     >
-                      {this.state.optionsNombres}
+                      {this.state.currentOptions}
                     </Select>
                   </Form.Item>
                 ) : (
                   <Form.Item label="Usuario" name="username">
                     <Select
+                      className="select-props"
                       showSearch
                       placeholder="Escriba el nombre de usuario del docente."
                       onChange={this.onChangeCorreo}
-                      filterOption={(input, option) =>
-                        option.children
-                          .toLowerCase()
-                          .normalize("NFD")
-                          .replace(/[\u0300-\u036f]/g, "")
-                          .indexOf(
-                            input
-                              .toLowerCase()
-                              .normalize("NFD")
-                              .replace(/[\u0300-\u036f]/g, "")
-                          ) >= 0
-                      }
+                      filterOption={filterSelect}
+                      notFoundContent={null}
+                      onSearch={this.handleTypeUser}
                     >
-                      {this.state.optionsUsuarios}
+                      {this.state.currentOptions}
                     </Select>
                   </Form.Item>
                 )}
@@ -443,7 +447,7 @@ class AdminProgramsProfes extends React.Component {
             <>
               <Text>
                 Profesor seleccionado: {this.state.selectedProfe}. Usuario
-                institucional: {this.state.selectedMail}.
+                institucional: {this.state.selectedProfe}.
               </Text>
               <Button
                 type="primary"
