@@ -14,6 +14,7 @@ import {
   Col,
   message,
   Select,
+  Radio,
 } from "antd";
 import Highlighter from "react-highlight-words";
 import {
@@ -45,8 +46,9 @@ class AdminProgramsProfes extends React.Component {
       selectedProfe: undefined,
       selectedMail: undefined,
       allProfes: {},
-      optionsCorreos: [],
+      optionsUsuarios: [],
       optionsNombres: [],
+      searchCriteria: "nombre",
     };
   }
 
@@ -66,7 +68,7 @@ class AdminProgramsProfes extends React.Component {
         let res = await response.json();
         console.log(res);
         this.setState({ allProfes: res });
-        let recievedProfesCorreos = [];
+        let recievedProfesUsuarios = [];
         let recievedProfesNombres = [];
         for (let i = 0; i < res.length; i++) {
           if (
@@ -84,7 +86,7 @@ class AdminProgramsProfes extends React.Component {
             res[i].data["correo_unal"] !== "" ||
             res[i].data["correo_unal"] !== null
           ) {
-            recievedProfesCorreos.push(
+            recievedProfesUsuarios.push(
               <Option key={res[i].data["dni_persona"]}>
                 {res[i].data["correo_unal"]}
               </Option>
@@ -92,7 +94,7 @@ class AdminProgramsProfes extends React.Component {
           }
         }
         this.setState({
-          optionsCorreos: recievedProfesCorreos,
+          optionsUsuarios: recievedProfesUsuarios,
           optionsNombres: recievedProfesNombres,
         });
       }
@@ -193,6 +195,10 @@ class AdminProgramsProfes extends React.Component {
     this.setState({
       visibleModal: true,
     });
+  };
+
+  changeCriteria = (value) => {
+    this.setState({ searchCriteria: value.target.value });
   };
 
   handleNewProfe = (values) => {
@@ -354,7 +360,7 @@ class AdminProgramsProfes extends React.Component {
           }}
         />
         <Modal
-          title="Por favor escriba y seleccione el nombre o correo del docente a agregar."
+          title="Por favor escriba y seleccione el nombre o usuario del docente a agregar."
           visible={this.state.visibleModal}
           onCancel={this.handleCancel}
           footer={null}
@@ -363,50 +369,71 @@ class AdminProgramsProfes extends React.Component {
           <Form>
             <Row gutter={16}>
               <Col span={12}>
-                <Form.Item label="Nombre" name="names">
-                  <Select
-                    showSearch
-                    placeholder="Escriba el nombre del docente."
-                    onChange={this.onChangeName}
-                    filterOption={(input, option) =>
-                      option.children
-                        .toLowerCase()
-                        .normalize("NFD")
-                        .replace(/[\u0300-\u036f]/g, "")
-                        .indexOf(
-                          input
-                            .toLowerCase()
-                            .normalize("NFD")
-                            .replace(/[\u0300-\u036f]/g, "")
-                        ) >= 0
-                    }
+                <Radio.Group
+                  onChange={this.changeCriteria}
+                  className="admin-programs-new-radio-container"
+                  value={this.state.searchCriteria}
+                >
+                  <Radio.Button
+                    className="admin-programs-new-radio-buttons"
+                    value="nombre"
                   >
-                    {this.state.optionsNombres}
-                  </Select>
-                </Form.Item>
+                    Nombre
+                  </Radio.Button>
+                  <Radio.Button
+                    className="admin-programs-new-radio-buttons"
+                    value="usuario"
+                  >
+                    Usuario
+                  </Radio.Button>
+                </Radio.Group>
               </Col>
               <Col span={12}>
-                <Form.Item label="Correo" name="username">
-                  <Select
-                    showSearch
-                    placeholder="Escriba el nombre de usuario del docente."
-                    onChange={this.onChangeCorreo}
-                    filterOption={(input, option) =>
-                      option.children
-                        .toLowerCase()
-                        .normalize("NFD")
-                        .replace(/[\u0300-\u036f]/g, "")
-                        .indexOf(
-                          input
-                            .toLowerCase()
-                            .normalize("NFD")
-                            .replace(/[\u0300-\u036f]/g, "")
-                        ) >= 0
-                    }
-                  >
-                    {this.state.optionsCorreos}
-                  </Select>
-                </Form.Item>
+                {this.state.searchCriteria === "nombre" ? (
+                  <Form.Item label="Nombre" name="names">
+                    <Select
+                      showSearch
+                      placeholder="Escriba el nombre del docente."
+                      onChange={this.onChangeName}
+                      filterOption={(input, option) =>
+                        option.children
+                          .toLowerCase()
+                          .normalize("NFD")
+                          .replace(/[\u0300-\u036f]/g, "")
+                          .indexOf(
+                            input
+                              .toLowerCase()
+                              .normalize("NFD")
+                              .replace(/[\u0300-\u036f]/g, "")
+                          ) >= 0
+                      }
+                    >
+                      {this.state.optionsNombres}
+                    </Select>
+                  </Form.Item>
+                ) : (
+                  <Form.Item label="Usuario" name="username">
+                    <Select
+                      showSearch
+                      placeholder="Escriba el nombre de usuario del docente."
+                      onChange={this.onChangeCorreo}
+                      filterOption={(input, option) =>
+                        option.children
+                          .toLowerCase()
+                          .normalize("NFD")
+                          .replace(/[\u0300-\u036f]/g, "")
+                          .indexOf(
+                            input
+                              .toLowerCase()
+                              .normalize("NFD")
+                              .replace(/[\u0300-\u036f]/g, "")
+                          ) >= 0
+                      }
+                    >
+                      {this.state.optionsUsuarios}
+                    </Select>
+                  </Form.Item>
+                )}
               </Col>
             </Row>
           </Form>
@@ -415,8 +442,8 @@ class AdminProgramsProfes extends React.Component {
           ) : (
             <>
               <Text>
-                Profesor seleccionado: {this.state.selectedProfe}. Correo:{" "}
-                {this.state.selectedMail}.
+                Profesor seleccionado: {this.state.selectedProfe}. Usuario
+                institucional: {this.state.selectedMail}.
               </Text>
               <Button
                 type="primary"

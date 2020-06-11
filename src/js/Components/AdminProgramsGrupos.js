@@ -12,6 +12,8 @@ import {
   Form,
   Col,
   message,
+  Radio,
+  Select,
 } from "antd";
 import {
   UsergroupAddOutlined,
@@ -21,7 +23,7 @@ import {
 import Highlighter from "react-highlight-words";
 import Backend from "../Basics/Backend";
 
-const { Title } = Typography;
+const { Title, Text } = Typography;
 
 class AdminProgramsGrupos extends React.Component {
   constructor(props) {
@@ -34,6 +36,10 @@ class AdminProgramsGrupos extends React.Component {
           nombre: "Cargando...",
         },
       ],
+      optionsCódigos: [],
+      optionsNombres: [],
+      searchCriteria: "código",
+      selectedGrupo: undefined,
     };
   }
 
@@ -66,6 +72,10 @@ class AdminProgramsGrupos extends React.Component {
     this.setState({
       visibleModal: false,
     });
+  };
+
+  changeCriteria = (value) => {
+    this.setState({ searchCriteria: value.target.value });
   };
 
   addGrupo = () => {
@@ -229,59 +239,100 @@ class AdminProgramsGrupos extends React.Component {
           }}
         />
         <Modal
-          title="Añadir un nuevo grupo de investigación"
+          title="Por favor escriba y seleccione el código o el nombre del grupo a agregar."
           visible={this.state.visibleModal}
           onCancel={this.handleCancel}
           footer={null}
           width={800}
         >
-          <Form onFinish={this.searchByName}>
+          <Form>
             <Row gutter={16}>
               <Col span={12}>
-                <Form.Item label="Nombre" name="names">
-                  <Input placeholder="Nombres" />
-                </Form.Item>
+                <Radio.Group
+                  onChange={this.changeCriteria}
+                  className="admin-programs-new-radio-container"
+                  value={this.state.searchCriteria}
+                >
+                  <Radio.Button
+                    className="admin-programs-new-radio-buttons"
+                    value="código"
+                  >
+                    Código
+                  </Radio.Button>
+                  <Radio.Button
+                    className="admin-programs-new-radio-buttons"
+                    value="nombre"
+                  >
+                    Nombre
+                  </Radio.Button>
+                </Radio.Group>
               </Col>
               <Col span={12}>
-                <Button
-                  ghost
-                  icon={<SearchOutlined />}
-                  type="primary"
-                  htmlType="submit"
-                  className="admin-users-add-finish-btn"
-                >
-                  Buscar por nombre
-                </Button>
+                {this.state.searchCriteria === "código" ? (
+                  <Form.Item label="Código" name="code">
+                    <Select
+                      showSearch
+                      placeholder="Escriba el código Hermes del grupo."
+                      onChange={this.onChangeCode}
+                      filterOption={(input, option) =>
+                        option.children
+                          .toLowerCase()
+                          .normalize("NFD")
+                          .replace(/[\u0300-\u036f]/g, "")
+                          .indexOf(
+                            input
+                              .toLowerCase()
+                              .normalize("NFD")
+                              .replace(/[\u0300-\u036f]/g, "")
+                          ) >= 0
+                      }
+                    >
+                      {this.state.optionsCódigos}
+                    </Select>
+                  </Form.Item>
+                ) : (
+                  <Form.Item label="Nombre" name="name">
+                    <Select
+                      showSearch
+                      placeholder="Escriba el nombre del grupo."
+                      onChange={this.onChangeName}
+                      filterOption={(input, option) =>
+                        option.children
+                          .toLowerCase()
+                          .normalize("NFD")
+                          .replace(/[\u0300-\u036f]/g, "")
+                          .indexOf(
+                            input
+                              .toLowerCase()
+                              .normalize("NFD")
+                              .replace(/[\u0300-\u036f]/g, "")
+                          ) >= 0
+                      }
+                    >
+                      {this.state.optionsNombres}
+                    </Select>
+                  </Form.Item>
+                )}
               </Col>
             </Row>
           </Form>
-          <Form onFinish={this.searchByMail}>
-            <Row gutter={16}>
-              <Col span={12}>
-                <Form.Item label="Código" name="code">
-                  <Input placeholder="Código Hermes" />
-                </Form.Item>
-              </Col>
-              <Col span={12}>
-                <Button
-                  ghost
-                  icon={<SearchOutlined />}
-                  type="primary"
-                  htmlType="submit"
-                  className="admin-users-add-finish-btn"
-                >
-                  Buscar por código
-                </Button>
-              </Col>
-            </Row>
-          </Form>
-          <Button
-            type="primary"
-            onClick={this.addGrupo}
-            className="admin-users-add-finish-btn"
-          >
-            Añadir grupo
-          </Button>
+          {this.state.selectedGrupo === undefined ? (
+            <Text></Text>
+          ) : (
+            <>
+              <Text>
+                Profesor seleccionado: {this.state.selectedProfe}. Usuario
+                institucional: {this.state.selectedMail}.
+              </Text>
+              <Button
+                type="primary"
+                onClick={this.addGrupo}
+                className="admin-users-add-finish-btn"
+              >
+                Añadir grupo
+              </Button>
+            </>
+          )}
         </Modal>
       </div>
     );

@@ -49,12 +49,10 @@ code {
   box-shadow: -1px 0 0 0 #2d2656 !important;
 }
 
-.ant-table-tbody tr:first-child,
 .ant-table-tbody tr:nth-child(odd) {
   background-color: white;
 }
 
-.ant-table-tbody tr:last-child,
 .ant-table-tbody tr:nth-child(even) {
   background-color: whitesmoke;
 }
@@ -154,13 +152,19 @@ code {
   margin-bottom: 1.5em;
 }
 
-.admin-programs-radio-container {
+.admin-programs-radio-container,
+.admin-programs-new-radio-container {
   flex: 1;
   width: 100%;
 }
 
 .admin-programs-radio-buttons {
   width: 33.333%;
+  text-align: center;
+}
+
+.admin-programs-new-radio-buttons {
+  width: 50%;
   text-align: center;
 }
 
