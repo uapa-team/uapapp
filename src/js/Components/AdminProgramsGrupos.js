@@ -25,6 +25,7 @@ import Backend from "../Basics/Backend";
 import { filterSelect } from "../Basics/Backend";
 
 const { Title, Text } = Typography;
+const { Option } = Select;
 
 class AdminProgramsGrupos extends React.Component {
   constructor(props) {
@@ -37,8 +38,9 @@ class AdminProgramsGrupos extends React.Component {
           nombre: "Cargando...",
         },
       ],
-      optionsCódigos: [],
-      optionsNombres: [],
+      optionsCodes: [],
+      optionsNames: [],
+      currentOptions: undefined,
       searchCriteria: "código",
       selectedGrupo: undefined,
     };
@@ -59,6 +61,24 @@ class AdminProgramsGrupos extends React.Component {
       async (response) => {
         let res = await response.json();
         console.log(res);
+        let recievedGruposCodes = [];
+        let recievedGruposNames = [];
+        for (let i = 0; i < res.length; i++) {
+          recievedGruposCodes.push(
+            <Option key={res[i].data["cod_hermes"]}>
+              {res[i].data["cod_hermes"].toString()}
+            </Option>
+          );
+          recievedGruposNames.push(
+            <Option key={res[i].data["cod_hermes"]}>
+              {res[i].data["nombre"]}
+            </Option>
+          );
+        }
+        this.setState({
+          optionsCodes: recievedGruposCodes,
+          optionsNames: recievedGruposNames,
+        });
       }
     );
   }
@@ -80,9 +100,44 @@ class AdminProgramsGrupos extends React.Component {
   };
 
   addGrupo = () => {
+    const key = "updatable";
+    message.loading({ content: "Añadiendo grupo...", key });
+    Backend.sendRequest("POST", "program_groups/add", {
+      cod_hermes: this.state.selectedGrupo.data.cod_hermes,
+      cod_programa: this.props.programa,
+    }).then(async (response) => {
+      if (response.status === 200) {
+        message.success({
+          content: "El grupo se ha añadido correctamente.",
+          key,
+        });
+      } else {
+        message.error({
+          content: "Ha ocurrido un error añadiendo el grupo.",
+          key,
+        });
+      }
+    });
+
     this.setState({
       visibleModal: false,
     });
+  };
+
+  handleTypeCode = (value) => {
+    if (value.length < 3) {
+      this.setState({ currentOptions: [] });
+    } else {
+      this.setState({ currentOptions: this.state.optionsCodes });
+    }
+  };
+
+  handleTypeName = (value) => {
+    if (value.length < 3) {
+      this.setState({ currentOptions: [] });
+    } else {
+      this.setState({ currentOptions: this.state.optionsNames });
+    }
   };
 
   handleSearch = (selectedKeys, confirm, dataIndex) => {
@@ -90,6 +145,16 @@ class AdminProgramsGrupos extends React.Component {
     this.setState({
       searchText: selectedKeys[0],
       searchedColumn: dataIndex,
+    });
+  };
+
+  onChangeInput = (value) => {
+    console.log(value.toString());
+    Backend.sendRequest("POST", "investigation_group", {
+      cod_hermes: value.toString(),
+    }).then(async (response) => {
+      let res = await response.json();
+      this.setState({ selectedGrupo: res });
     });
   };
 
@@ -275,10 +340,12 @@ class AdminProgramsGrupos extends React.Component {
                       className="select-props"
                       showSearch
                       placeholder="Escriba el código Hermes del grupo."
-                      onChange={this.onChangeCode}
+                      onChange={this.onChangeInput}
                       filterOption={filterSelect}
+                      notFoundContent={null}
+                      onSearch={this.handleTypeCode}
                     >
-                      {this.state.optionsCódigos}
+                      {this.state.currentOptions}
                     </Select>
                   </Form.Item>
                 ) : (
@@ -287,10 +354,12 @@ class AdminProgramsGrupos extends React.Component {
                       className="select-props"
                       showSearch
                       placeholder="Escriba el nombre del grupo."
-                      onChange={this.onChangeName}
+                      onChange={this.onChangeInput}
                       filterOption={filterSelect}
+                      notFoundContent={null}
+                      onSearch={this.handleTypeName}
                     >
-                      {this.state.optionsNombres}
+                      {this.state.currentOptions}
                     </Select>
                   </Form.Item>
                 )}
@@ -302,8 +371,8 @@ class AdminProgramsGrupos extends React.Component {
           ) : (
             <>
               <Text>
-                Profesor seleccionado: {this.state.selectedProfe}. Usuario
-                institucional: {this.state.selectedMail}.
+                Grupo seleccionado: {this.state.selectedGrupo.data.nombre}.
+                Código Hermes: {this.state.selectedGrupo.data.cod_hermes}.
               </Text>
               <Button
                 type="primary"

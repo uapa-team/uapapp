@@ -61,7 +61,13 @@ export default class Backend {
         Authorization: "Bearer " + localStorage.getItem("jwt"),
       },
       body: JSON.stringify({ username: localStorage.getItem("username") }),
+    }).catch(function (error) {
+      localStorage.removeItem("username");
+      localStorage.removeItem("type");
+      localStorage.removeItem("jwt");
+      window.location.reload();
     });
+
     answer.then((res) => {
       if (res.status !== 200) {
         localStorage.removeItem("username");

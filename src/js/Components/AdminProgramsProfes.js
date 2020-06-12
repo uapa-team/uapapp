@@ -45,7 +45,6 @@ class AdminProgramsProfes extends React.Component {
       periodsSelected: [],
       visibleModal: false,
       selectedProfe: undefined,
-      selectedMail: undefined,
       optionsUsers: [],
       optionsNames: [],
       currentOptions: [],
@@ -221,6 +220,26 @@ class AdminProgramsProfes extends React.Component {
   };
 
   addProfe = () => {
+    const key = "updatable";
+    message.loading({ content: "Vinculando profesor...", key });
+    Backend.sendRequest("POST", "program_profressors/add", {
+      cod_programa: this.props.programa,
+      dni_docente: this.state.selectedProfe[0].data.dni_docente,
+      periodos: ["1968"], //TO DO
+    }).then(async (response) => {
+      if (response.status === 200) {
+        message.success({
+          content: "El profesor ha sido vinculado correctamente.",
+          key,
+        });
+      } else {
+        message.error({
+          content: "Ha ocurrido un error creando vinculando al profesor.",
+          key,
+        });
+      }
+    });
+
     this.setState({
       visibleModal: false,
     });
@@ -298,12 +317,14 @@ class AdminProgramsProfes extends React.Component {
     return form;
   };
 
-  onChangeName = (value) => {
-    this.setState({ selectedProfe: value });
-  };
-
-  onChangeCorreo = (value) => {
-    this.setState({ selectedProfe: value });
+  onChangeInput = (value) => {
+    console.log(value.toString());
+    Backend.sendRequest("POST", "get_professor_dni", {
+      dni_professor: value.toString(),
+    }).then(async (response) => {
+      let res = await response.json();
+      this.setState({ selectedProfe: res });
+    });
   };
 
   handleTypeName = (value) => {
@@ -415,7 +436,7 @@ class AdminProgramsProfes extends React.Component {
                       className="select-props"
                       showSearch
                       placeholder="Escriba el nombre del docente."
-                      onChange={this.onChangeName}
+                      onChange={this.onChangeInput}
                       filterOption={filterSelect}
                       notFoundContent={null}
                       onSearch={this.handleTypeName}
@@ -429,7 +450,7 @@ class AdminProgramsProfes extends React.Component {
                       className="select-props"
                       showSearch
                       placeholder="Escriba el nombre de usuario del docente."
-                      onChange={this.onChangeCorreo}
+                      onChange={this.onChangeInput}
                       filterOption={filterSelect}
                       notFoundContent={null}
                       onSearch={this.handleTypeUser}
@@ -442,12 +463,13 @@ class AdminProgramsProfes extends React.Component {
             </Row>
           </Form>
           {this.state.selectedProfe === undefined ? (
-            <Text></Text>
+            <></>
           ) : (
             <>
               <Text>
-                Profesor seleccionado: {this.state.selectedProfe}. Usuario
-                institucional: {this.state.selectedProfe}.
+                Profesor seleccionado:{" "}
+                {this.state.selectedProfe[0].data.nombre_completo}. Correo
+                institucional: {this.state.selectedProfe[0].data.correo_unal}.
               </Text>
               <Button
                 type="primary"
