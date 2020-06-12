@@ -236,13 +236,13 @@ class AdminProgramsProfes extends React.Component {
     });
   };
 
-  addProfe = () => {
+  addProfe = (values) => {
     const key = "updatable";
     message.loading({ content: "Vinculando profesor...", key });
     Backend.sendRequest("POST", "program_profressors/add", {
       cod_programa: this.props.programa,
-      dni_docente: this.state.selectedProfe[0].data.dni_docente,
-      periodos: ["1968"], //TO DO
+      dni_docente: values.names,
+      periodos: values.periods, //TO DO
     }).then(async (response) => {
       if (response.status === 200) {
         message.success({
@@ -424,7 +424,7 @@ class AdminProgramsProfes extends React.Component {
           footer={null}
           width={800}
         >
-          <Form>
+          <Form onFinish={this.addProfe}>
             <Row gutter={16}>
               <Col span={12}>
                 <Radio.Group
@@ -478,25 +478,45 @@ class AdminProgramsProfes extends React.Component {
                 )}
               </Col>
             </Row>
+            <Row gutter={16}>
+              <Col span={24}>
+                <Form.Item name="periods" label="Periodos">
+                  <TreeSelect
+                    treeData={this.state.periods}
+                    value={this.state.periodsSelected}
+                    onChange={this.onChangePeriods}
+                    treeCheckable={true}
+                    showCheckedStrategy={"SHOW_PARENT"}
+                    placeholder="Por favor seleccione programas."
+                  />
+                </Form.Item>
+              </Col>
+            </Row>
+            <Row gutter={16}>
+              <Col span={24}>
+                {this.state.selectedProfe === undefined ? (
+                  <></>
+                ) : (
+                  <>
+                    <Text>
+                      Profesor seleccionado:{" "}
+                      {this.state.selectedProfe[0].data.nombre_completo}. Correo
+                      institucional: {this.state.selectedProfe[0].data.correo_unal}.
+                    </Text>
+                    <Form.Item>
+                      <Button
+                        type="primary"
+                        htmlType="submit"
+                        className="admin-users-add-finish-btn"
+                      >
+                        Añadir profesor
+                      </Button>
+                    </Form.Item>
+                  </>
+                )}
+              </Col>
+            </Row>
           </Form>
-          {this.state.selectedProfe === undefined ? (
-            <></>
-          ) : (
-            <>
-              <Text>
-                Profesor seleccionado:{" "}
-                {this.state.selectedProfe[0].data.nombre_completo}. Correo
-                institucional: {this.state.selectedProfe[0].data.correo_unal}.
-              </Text>
-              <Button
-                type="primary"
-                onClick={this.addProfe}
-                className="admin-users-add-finish-btn"
-              >
-                Añadir profesor
-              </Button>
-            </>
-          )}
         </Modal>
       </div>
     );
