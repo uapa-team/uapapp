@@ -215,8 +215,25 @@ class AdminProgramsProfes extends React.Component {
   };
 
   onFinishPeriods = (record, values) => {
-    console.log(record);
-    console.log(values);
+    const key = "updatable";
+    message.loading({ content: "Actualizando periodos...", key });
+    Backend.sendRequest("POST", "set_professor_periods", {
+      dni_docente: record.key,
+      cod_programa: this.props.programa,
+      periods: values.periods,
+    }).then(async (response) => {
+      if (response.status === 200) {
+        message.success({
+          content: "Los periodos fueron asignados correctamente.",
+          key,
+        });
+      } else {
+        message.error({
+          content: "Ha ocurrido un error actualizando los periodos del profesor.",
+          key,
+        });
+      }
+    });
   };
 
   addProfe = () => {
