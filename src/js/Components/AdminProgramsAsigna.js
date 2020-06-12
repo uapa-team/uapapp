@@ -22,8 +22,10 @@ import {
 } from "@ant-design/icons";
 import Highlighter from "react-highlight-words";
 import Backend from "../Basics/Backend";
+import { filterSelect } from "../Basics/Backend";
 
 const { Title, Text } = Typography;
+const { Option } = Select;
 
 class AdminProgramsAsigna extends React.Component {
   constructor(props) {
@@ -36,8 +38,9 @@ class AdminProgramsAsigna extends React.Component {
           nombre: "Cargando...",
         },
       ],
-      optionsCódigos: [],
-      optionsNombres: [],
+      optionsCodes: [],
+      optionsNames: [],
+      currentOptions: [],
       searchCriteria: "código",
       selectedAsigna: undefined,
     };
@@ -57,6 +60,24 @@ class AdminProgramsAsigna extends React.Component {
     Backend.sendRequest("GET", "subjects").then(async (response) => {
       let res = await response.json();
       console.log(res);
+      let recievedAsignaCodes = [];
+      let recievedAsignaNames = [];
+      for (let i = 0; i < res.length; i++) {
+        recievedAsignaCodes.push(
+          <Option key={res[i].data["cod_materia"]}>
+            {res[i].data["cod_materia"]}
+          </Option>
+        );
+        recievedAsignaNames.push(
+          <Option key={res[i].data["cod_materia"]}>
+            {res[i].data["nombre_materia"] + " - " + res[i].data["cod_materia"]}
+          </Option>
+        );
+      }
+      this.setState({
+        optionsCodes: recievedAsignaCodes,
+        optionsNames: recievedAsignaNames,
+      });
     });
   }
 
@@ -65,6 +86,16 @@ class AdminProgramsAsigna extends React.Component {
     this.setState({
       searchText: selectedKeys[0],
       searchedColumn: dataIndex,
+    });
+  };
+
+  onChangeInput = (value) => {
+    console.log(value.toString());
+    Backend.sendRequest("POST", "subject", {
+      cod_subject: value.toString(),
+    }).then(async (response) => {
+      let res = await response.json();
+      this.setState({ selectedAsigna: res });
     });
   };
 
@@ -155,9 +186,44 @@ class AdminProgramsAsigna extends React.Component {
   };
 
   addAsigna = () => {
+    const key = "updatable";
+    message.loading({ content: "Añadiendo asignatura...", key });
+    Backend.sendRequest("POST", "program_subjects/add", {
+      cod_asignatura: this.state.selectedAsigna.data.cod_materia,
+      cod_programa: this.props.programa,
+    }).then(async (response) => {
+      if (response.status === 200) {
+        message.success({
+          content: "La asignatura se ha añadido correctamente.",
+          key,
+        });
+      } else {
+        message.error({
+          content: "Ha ocurrido un error añadiendo la asignatura.",
+          key,
+        });
+      }
+    });
+
     this.setState({
       visibleModal: false,
     });
+  };
+
+  handleTypeCode = (value) => {
+    if (value.length < 3) {
+      this.setState({ currentOptions: [] });
+    } else {
+      this.setState({ currentOptions: this.state.optionsCodes });
+    }
+  };
+
+  handleTypeName = (value) => {
+    if (value.length < 3) {
+      this.setState({ currentOptions: [] });
+    } else {
+      this.setState({ currentOptions: this.state.optionsNames });
+    }
   };
 
   handleDeleteAsigna = (código) => {
@@ -270,45 +336,29 @@ class AdminProgramsAsigna extends React.Component {
                 {this.state.searchCriteria === "código" ? (
                   <Form.Item label="Código" name="code">
                     <Select
+                      className="select-props"
                       showSearch
                       placeholder="Escriba el código de la asignatura."
-                      onChange={this.onChangeCode}
-                      filterOption={(input, option) =>
-                        option.children
-                          .toLowerCase()
-                          .normalize("NFD")
-                          .replace(/[\u0300-\u036f]/g, "")
-                          .indexOf(
-                            input
-                              .toLowerCase()
-                              .normalize("NFD")
-                              .replace(/[\u0300-\u036f]/g, "")
-                          ) >= 0
-                      }
+                      onChange={this.onChangeInput}
+                      filterOption={filterSelect}
+                      notFoundContent={null}
+                      onSearch={this.handleTypeCode}
                     >
-                      {this.state.optionsCódigos}
+                      {this.state.currentOptions}
                     </Select>
                   </Form.Item>
                 ) : (
                   <Form.Item label="Nombre" name="name">
                     <Select
+                      className="select-props"
                       showSearch
                       placeholder="Escriba el nombre de la asignatura."
-                      onChange={this.onChangeName}
-                      filterOption={(input, option) =>
-                        option.children
-                          .toLowerCase()
-                          .normalize("NFD")
-                          .replace(/[\u0300-\u036f]/g, "")
-                          .indexOf(
-                            input
-                              .toLowerCase()
-                              .normalize("NFD")
-                              .replace(/[\u0300-\u036f]/g, "")
-                          ) >= 0
-                      }
+                      onChange={this.onChangeInput}
+                      filterOption={filterSelect}
+                      notFoundContent={null}
+                      onSearch={this.handleTypeName}
                     >
-                      {this.state.optionsNombres}
+                      {this.state.currentOptions}
                     </Select>
                   </Form.Item>
                 )}
@@ -320,8 +370,9 @@ class AdminProgramsAsigna extends React.Component {
           ) : (
             <>
               <Text>
-                Asignatura seleccionada: {this.state.selectedProfe}. Código:{" "}
-                {this.state.selectedMail}.
+                Asignatura seleccionada:{" "}
+                {this.state.selectedAsigna.data.nombre_materia}. Código:
+                {this.state.selectedAsigna.data.cod_materia}.
               </Text>
               <Button
                 type="primary"

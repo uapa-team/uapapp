@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import Backend from "./Backend";
+
 import "../../css/base.css";
 import "../../css/bootstrap.min.css";
 import "../../css/bootstrap-theme.min.css";
@@ -11,8 +13,6 @@ import "../../css/unal.css";
 
 import "./unal.js";
 import "./jquery.js";
-
-import Backend from "./Backend";
 
 class UnalCanvas extends Component {
   render() {
@@ -347,7 +347,7 @@ class UnalCanvas extends Component {
               (+57 1) 316 5000 Ext. 13578
             </p>
             <p className="col-sm-12 col-md-6 derechos">
-              © Copyright 2019
+              © Copyright 2020
               <br /> Algunos derechos reservados.
               <br />
               <a
@@ -358,7 +358,7 @@ class UnalCanvas extends Component {
               </a>
               <br />
               <a href="index.html#">Acerca de este sitio web</a>
-              <br /> Última actualización: 22/04/2020
+              <br /> Última actualización: 11/06/2020
             </p>
           </div>
           <div className="col-md-2 col-lg-2 col-sm-2 col-xs-12 logos">

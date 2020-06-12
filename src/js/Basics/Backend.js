@@ -6,6 +6,23 @@ export default class Backend {
     window.open(this.backEndUrl + url, "_blank");
   }
 
+  static _request(method, path, headers, body) {
+    let newurl = this.backEndUrl + path;
+    let answer = fetch(newurl, {
+      method: method,
+      headers: headers,
+      body: JSON.stringify(body),
+    });
+    answer.then((res) => {
+      if (res.status === 401) {
+        localStorage.removeItem("jwt");
+        localStorage.removeItem("type");
+        window.location.reload();
+      }
+    });
+    return answer;
+  }
+
   static sendRequest(method, path, body) {
     return this._request(
       method,
@@ -44,7 +61,13 @@ export default class Backend {
         Authorization: "Bearer " + localStorage.getItem("jwt"),
       },
       body: JSON.stringify({ username: localStorage.getItem("username") }),
+    }).catch(function (error) {
+      localStorage.removeItem("username");
+      localStorage.removeItem("type");
+      localStorage.removeItem("jwt");
+      window.location.reload();
     });
+
     answer.then((res) => {
       if (res.status !== 200) {
         localStorage.removeItem("username");
@@ -54,20 +77,38 @@ export default class Backend {
       }
     });
   }
-
-  static _request(method, path, headers, body) {
-    let newurl = this.backEndUrl + path;
-    let answer = fetch(newurl, {
-      method: method,
-      headers: headers,
-      body: JSON.stringify(body),
-    });
-    answer.then((res) => {
-      if (res.status === 401) {
-        localStorage.removeItem("jwt");
-        window.location.reload();
-      }
-    });
-    return answer;
-  }
 }
+
+export const filterTreeNode = (input, child) => {
+  return (
+    child.props.title
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .indexOf(
+        input
+          .toLowerCase()
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "")
+      ) >= 0
+  );
+};
+
+export const filterSelect = (input, option) => {
+  if (input !== null && option.children !== null) {
+    return (
+      option.children
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .indexOf(
+          input
+            .toLowerCase()
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+        ) >= 0
+    );
+  } else {
+    return false;
+  }
+};

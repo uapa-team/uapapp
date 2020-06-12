@@ -203,6 +203,7 @@ class RecFormat extends React.Component {
             >
               <Form.Item label="Nivel" className="rec-format-formitem">
                 <Select
+                  className="select-props"
                   placeholder="Seleccione el nivel"
                   onChange={this.handleChangeLevel}
                 >
@@ -211,6 +212,7 @@ class RecFormat extends React.Component {
               </Form.Item>
               <Form.Item label="Formato" className="rec-format-formitem">
                 <Select
+                  className="select-props"
                   placeholder="Seleccione el formato"
                   onChange={this.handleChangeFormat}
                   disabled={this.state.selectedLevel === undefined}
@@ -220,6 +222,7 @@ class RecFormat extends React.Component {
               </Form.Item>
               <Form.Item label="Sub-formato" className="rec-format-formitem">
                 <Select
+                  className="select-props"
                   placeholder="Seleccione el sub-formato"
                   onChange={this.handleChangeSubformat}
                   disabled={this.state.selectedFormat === undefined}

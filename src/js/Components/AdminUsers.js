@@ -22,6 +22,7 @@ import {
   DeleteOutlined,
 } from "@ant-design/icons";
 import Backend from "../Basics/Backend";
+import { filterTreeNode } from "../Basics/Backend";
 
 const { Title } = Typography;
 
@@ -294,21 +295,6 @@ class AdminUsers extends React.Component {
     );
   }
 
-  filterTreeNode = (input, child) => {
-    return (
-      child.props.title
-        .toLowerCase()
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "")
-        .indexOf(
-          input
-            .toLowerCase()
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "")
-        ) >= 0
-    );
-  };
-
   handleDeleteUser = (mail) => {
     const key = "updatable";
     message.loading({ content: "Eliminando usuario...", key });
@@ -368,7 +354,7 @@ class AdminUsers extends React.Component {
             treeCheckable={true}
             showCheckedStrategy={"SHOW_PARENT"}
             placeholder="Por favor seleccione programas."
-            filterTreeNode={this.filterTreeNode}
+            filterTreeNode={filterTreeNode}
           />
         </Form.Item>
         <Form.Item name="programsPos" label="Permisos de posgrado">
@@ -378,7 +364,7 @@ class AdminUsers extends React.Component {
             treeCheckable={true}
             showCheckedStrategy={"SHOW_PARENT"}
             placeholder="Por favor seleccione programas."
-            filterTreeNode={this.filterTreeNode}
+            filterTreeNode={filterTreeNode}
           />
         </Form.Item>
         <Form.Item>
@@ -563,7 +549,7 @@ class AdminUsers extends React.Component {
                 treeCheckable={true}
                 showCheckedStrategy={"SHOW_PARENT"}
                 placeholder="Por favor seleccione programas."
-                filterTreeNode={this.filterTreeNode}
+                filterTreeNode={filterTreeNode}
               />
             </Form.Item>
             <Form.Item name="programsPos" label="Permisos de posgrado">
@@ -573,7 +559,7 @@ class AdminUsers extends React.Component {
                 treeCheckable={true}
                 showCheckedStrategy={"SHOW_PARENT"}
                 placeholder="Por favor seleccione programas."
-                filterTreeNode={this.filterTreeNode}
+                filterTreeNode={filterTreeNode}
               />
             </Form.Item>
             <Button

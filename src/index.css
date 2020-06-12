@@ -34,6 +34,11 @@ code {
   margin-top: 1.5em;
 }
 
+.select-props {
+  max-height: 400;
+  overflow: auto;
+}
+
 /* Sobre-escribiendo estilos de AntD */
 .ant-form-item-required::before {
   font-size: 0px !important;
@@ -120,20 +125,27 @@ code {
   left: 0;
 }
 /* Estilos AdminUsers */
-.admin-users-btnctn,
-.admin-programs-subtitle {
-  margin-top: 1.5em;
-  margin-bottom: 1.5em;
-  width: 100%;
-  justify-content: space-evenly;
-}
-
 .admin-users-tablectn {
   margin-bottom: 1.5em;
 }
 
 .admin-users-btnfinish {
   width: 100%;
+}
+
+.admin-users-add-finish-btn {
+  width: 100%;
+  text-align: center;
+  margin-bottom: -1em !important;
+  margin-top: 0.5em;
+}
+
+.admin-users-btnctn,
+.admin-programs-subtitle {
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+  width: 100%;
+  justify-content: space-evenly;
 }
 
 /* Estilos AdminPrograms */
@@ -163,16 +175,10 @@ code {
   text-align: center;
 }
 
-.admin-programs-new-radio-buttons {
+.admin-programs-new-radio-buttons,
+.generate-report-formitem-button {
   width: 50%;
   text-align: center;
-}
-
-.admin-users-add-finish-btn {
-  width: 100%;
-  text-align: center;
-  margin-bottom: -1em !important;
-  margin-top: 0.5em;
 }
 
 /* Estilos GenerateReport y RecFormat */
@@ -191,11 +197,6 @@ code {
 
 .rec-format-formitem {
   width: 100%;
-}
-
-.generate-report-formitem-button {
-  width: 50%;
-  text-align: center;
 }
 
 .rec-format-formitem-button,
