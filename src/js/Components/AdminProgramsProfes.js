@@ -61,6 +61,7 @@ class AdminProgramsProfes extends React.Component {
         nombre: this.props.teachers[i].data["nombre_completo"],
       });
     }
+    recievedProfes = recievedProfes.sort((a, b) => a.nombre.localeCompare(b.nombre));
     this.setState({ dataSourceProfes: recievedProfes });
 
     Backend.sendRequest("POST", "get_professors_list").then(
@@ -242,9 +243,23 @@ class AdminProgramsProfes extends React.Component {
     Backend.sendRequest("POST", "program_profressors/add", {
       cod_programa: this.props.programa,
       dni_docente: values.names,
-      periodos: values.periods, //TO DO
+      periodos: values.periods,
     }).then(async (response) => {
       if (response.status === 200) {
+        Backend.sendRequest("POST", "get_professor_dni", {
+          dni_professor: values.names,
+        }).then(async (response) => {
+          response.json().then(response => {
+            let dataSourceProfes = this.state.dataSourceProfes.slice();
+            dataSourceProfes.push({
+              key: response[0].data.dni_docente,
+              correo: response[0].data.correo_unal,
+              nombre: response[0].data.nombres, 
+            });
+            dataSourceProfes = dataSourceProfes.sort((a, b) => a.nombre.localeCompare(b.nombre));
+            this.setState({ dataSourceProfes: dataSourceProfes });
+          });
+        });
         message.success({
           content: "El profesor ha sido vinculado correctamente.",
           key,
@@ -256,7 +271,6 @@ class AdminProgramsProfes extends React.Component {
         });
       }
     });
-
     this.setState({
       visibleModal: false,
     });
