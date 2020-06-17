@@ -284,6 +284,13 @@ class AdminProgramsProfes extends React.Component {
       dni_docente: dni,
     }).then(async (response) => {
       if (response.status === 200) {
+        let dataSourceProfes = this.state.dataSourceProfes.slice();
+        for (let i = 0; i < dataSourceProfes.length; i++){
+          if(dataSourceProfes[i].key === dni){
+            dataSourceProfes.splice(i,1);
+          }
+        }
+        this.setState({dataSourceProfes: dataSourceProfes});
         message.success({
           content: "El profesor se ha desvinculado correctamente.",
           key,
