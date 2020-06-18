@@ -55,6 +55,7 @@ class AdminProgramsAsigna extends React.Component {
         nombre: this.props.subjects[i].data["nombre_materia"],
       });
     }
+    recievedAsigna = recievedAsigna.sort((a, b) => a.key.localeCompare(b.key));
     this.setState({ dataSourceAsigna: recievedAsigna });
 
     Backend.sendRequest("GET", "subjects").then(async (response) => {
@@ -193,6 +194,14 @@ class AdminProgramsAsigna extends React.Component {
       cod_programa: this.props.programa,
     }).then(async (response) => {
       if (response.status === 200) {
+        let dataSourceAsigna = this.state.dataSourceAsigna.slice();
+        dataSourceAsigna.push({
+          key: this.state.selectedAsigna.data.cod_materia,
+          código: this.state.selectedAsigna.data.cod_materia,
+          nombre: this.state.selectedAsigna.data.nombre_materia,
+        });
+        dataSourceAsigna = dataSourceAsigna.sort((a, b) => a.key.localeCompare(b.key));
+        this.setState({ dataSourceAsigna: dataSourceAsigna });
         message.success({
           content: "La asignatura se ha añadido correctamente.",
           key,
@@ -234,6 +243,13 @@ class AdminProgramsAsigna extends React.Component {
       cod_programa: this.props.programa,
     }).then(async (response) => {
       if (response.status === 200) {
+        let dataSourceAsigna = this.state.dataSourceAsigna.slice();
+        for (let i = 0; i < dataSourceAsigna.length; i++){
+          if(dataSourceAsigna[i].key === código){
+            dataSourceAsigna.splice(i,1);
+          }
+        }
+        this.setState({dataSourceAsigna: dataSourceAsigna});
         message.success({
           content: "La asignatura se ha eliminado correctamente.",
           key,
