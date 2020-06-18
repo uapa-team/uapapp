@@ -55,6 +55,7 @@ class AdminProgramsGrupos extends React.Component {
         nombre: this.props.groups[i].data["nombre"],
       });
     }
+    recievedGroups = recievedGroups.sort((a, b) => a.nombre.localeCompare(b.nombre));
     this.setState({ dataSourceGrupos: recievedGroups });
 
     Backend.sendRequest("GET", "investigation_groups").then(
@@ -106,6 +107,14 @@ class AdminProgramsGrupos extends React.Component {
       cod_hermes: this.state.selectedGrupo.data.cod_hermes,
       cod_programa: this.props.programa,
     }).then(async (response) => {
+      let dataSourceGrupos = this.state.dataSourceGrupos.slice();
+      dataSourceGrupos.push({
+        key: this.state.selectedGrupo.data.cod_hermes,
+        código: this.state.selectedGrupo.data.cod_hermes,
+        nombre: this.state.selectedGrupo.data.nombre, 
+      });
+      dataSourceGrupos = dataSourceGrupos.sort((a, b) => a.nombre.localeCompare(b.nombre));
+      this.setState({ dataSourceGrupos: dataSourceGrupos });
       if (response.status === 200) {
         message.success({
           content: "El grupo se ha añadido correctamente.",
@@ -235,6 +244,13 @@ class AdminProgramsGrupos extends React.Component {
       cod_hermes: code,
       cod_programa: this.props.programa,
     }).then(async (response) => {
+      let dataSourceGrupos = this.state.dataSourceGrupos.slice();
+      for (let i = 0; i < dataSourceGrupos.length; i++){
+        if(dataSourceGrupos[i].key === code){
+          dataSourceGrupos.splice(i,1);
+        }
+      }
+      this.setState({dataSourceGrupos: dataSourceGrupos});
       if (response.status === 200) {
         message.success({
           content: "El grupo se ha desvinculado correctamente.",
