@@ -1,24 +1,63 @@
 import React from "react";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
-import { Input, Button, Checkbox, Form, Typography } from "antd";
+import { Input, Button, Checkbox, Form, Typography, message } from "antd";
 import { Row, Col } from "antd";
 import { withRouter } from "react-router-dom";
+import Backend from "../Basics/Backend";
 
 const { Title, Text } = Typography;
 
 class NormalLoginForm extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      checked: false,
+    };
+  }
+
   onFinish = (values) => {
-    this.performLogin();
-    console.log(values);
+    this.performLogin(values);
+  };
+
+  performLogin = (values) => {
+    const key = "updatable";
+    message.loading({ content: "Iniciando sesión...", key });
+    Backend.sendLogin(values.username, values.password)
+      .then(async (response) => {
+        let res = await response.json();
+        if (res.status === 403) {
+          message.error({ content: "Acceso restringido.", key });
+        } else if (res.status === 404) {
+          message.error({ content: "Contraseña incorrecta.", key });
+        } else if (res.status === 200) {
+          message.success({ content: "Inicio de sesión exitoso.", key });
+          localStorage.setItem("username", res.user.data["username"]);
+          localStorage.setItem("jwt", res.user.data["auth_token"]);
+          localStorage.setItem("type", res.user.data["role"]);
+          window.location.reload();
+        } else {
+          message.error({
+            content: "Error realizando el login.",
+            key,
+          });
+          console.log("Login Error: Backend HTTP code " + res.status);
+        }
+      })
+      .catch((error) => {
+        message.error({
+          content: "Error realizando el login.",
+          key,
+        });
+        console.log("Login Error: " + error);
+      });
   };
 
   onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
 
-  performLogin = () => {
-    localStorage.setItem("jwt", "un_token_cualquiera");
-    window.location.reload();
+  checkChanged = () => {
+    this.setState({ checked: !this.state.checked });
   };
 
   render() {
@@ -36,18 +75,15 @@ class NormalLoginForm extends React.Component {
           <Col xs={16} sm={16} md={12} lg={8} xl={8}>
             <div className="login-general">
               <div className="login-welcome">
-                <Title>Bienvenido a UAPApp</Title>
+                <Title>Ingreso a UAPApp</Title>
                 <Text>
-                  Para continuar, por favor ingrese su usuario y contraseña.
+                  Para continuar, por favor escriba su usuario y contraseña.
                 </Text>
               </div>
               <Form
                 onFinish={this.onFinish}
                 onFinishFailed={this.onFinishFailed}
                 className="login-form"
-                initialValues={{
-                  remember: true,
-                }}
               >
                 <Form.Item
                   name="username"
@@ -82,7 +118,12 @@ class NormalLoginForm extends React.Component {
                   />
                 </Form.Item>
                 <Form.Item name="remember" className="login-form-remember">
-                  <Checkbox defaultChecked={true}>Recuérdame</Checkbox>
+                  <Checkbox
+                    checked={this.state.checked}
+                    onClick={this.checkChanged}
+                  >
+                    Recuérdame
+                  </Checkbox>
                 </Form.Item>
                 <a
                   className="login-form-forgot"

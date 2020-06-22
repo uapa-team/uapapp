@@ -13,6 +13,7 @@ import {
   Modal,
   Row,
   Col,
+  message,
 } from "antd";
 import Highlighter from "react-highlight-words";
 import {
@@ -20,97 +21,28 @@ import {
   UserAddOutlined,
   DeleteOutlined,
 } from "@ant-design/icons";
+import Backend from "../Basics/Backend";
+import { filterTreeNode } from "../Basics/Backend";
 
 const { Title } = Typography;
 
-const ProgramsPre = [
-  {
-    title: "Departamento de Sistemas e Industrial",
-    value: "Departamento de Sistemas e Industrial",
-    children: [
-      {
-        title: "Ingeniería de Sistemas y Computación",
-        value: "Ingeniería de Sistemas y Computación",
-      },
-      {
-        title: "Ingeniería Industrial",
-        value: "Ingeniería Industrial",
-      },
-    ],
-  },
-  {
-    title: "Departamento Ejemplo",
-    value: "0-1",
-    children: [
-      {
-        title: "Ingeniería Agrícola",
-        value: "Ingeniería Agrícola",
-      },
-      {
-        title: "Ingeniería Química",
-        value: "Ingeniería Química",
-      },
-      {
-        title: "Ingeniería Civil",
-        value: "Ingeniería Civil",
-      },
-    ],
-  },
-];
-
-const ProgramsPos = [
-  {
-    title: "Departamento de Sistemas e Industrial",
-    value: "Departamento de Sistemas e Industrial",
-    children: [
-      {
-        title: "Maestría en Ingeniería de Sistemas y Computación",
-        value: "Maestría en Ingeniería de Sistemas y Computación",
-      },
-      {
-        title: "Doctorado en Ingeniería Industrial",
-        value: "Doctorado en Ingeniería Industrial",
-      },
-    ],
-  },
-  {
-    title: "Departamento Ejemplo",
-    value: "0-1",
-    children: [
-      {
-        title: "Doctorado en Ingeniería Agrícola",
-        value: "Doctorado en Ingeniería Agrícola",
-      },
-      {
-        title: "Maestría en Ingeniería Química",
-        value: "Maestría en Ingeniería Química",
-      },
-      {
-        title: "Especialización en Ingeniería Civil",
-        value: "Especialización en Ingeniería Civil",
-      },
-    ],
-  },
-];
-
 class AdminUsers extends React.Component {
+  formRef = React.createRef();
+
   constructor(props) {
     super(props);
     this.state = {
       dataSourceUsers: [
         {
           key: "1",
-          nombre: "Nicolás Gómez",
-          correo: "nigomezgu@unal.edu.co",
-        },
-        {
-          key: "2",
-          nombre: "Angel Corredor",
-          correo: "adcorredorm@unal.edu.co",
+          nombre: "Cargando...",
+          correo: "Cargando...",
         },
       ],
-      programasPreSelected: ["Ingeniería de Sistemas y Computación"],
-      programasPosSelected: ["Maestría en Ingeniería Química"],
+      programasPreSelected: [],
+      programasPosSelected: [],
+      ProgramsPre: undefined,
+      ProgramsPos: undefined,
       searchText: "",
       searchedColumn: "",
       visibleModal: false,
@@ -118,8 +50,60 @@ class AdminUsers extends React.Component {
   }
 
   onFinishEditUser = (record, values) => {
-    console.log(record);
-    console.log(values);
+    let username = record["username"];
+    let programs = [];
+
+    values["programsPre"].forEach((element) => {
+      programs = programs.concat(element);
+    });
+    values["programsPos"].forEach((element) => {
+      programs = programs.concat(element);
+    });
+    programs = Array.from(new Set(programs));
+
+    let rol = values["userType"];
+
+    const key = "updatable";
+    message.loading({ content: "Guardando permisos...", key });
+    Backend.sendRequest("POST", "app_user_programs/add_programs_with_delete", {
+      username: username,
+      programs: programs,
+    }).then(async (response) => {
+      if (response.status === 200) {
+        Backend.sendRequest("POST", "change_role", {
+          username: username,
+          role: rol,
+        }).then(async (response) => {
+          if (response.status === 200) {
+            message.success({
+              content: "Permisos de usuario actualizados correctamente.",
+              key,
+            });
+          } else {
+            message.error({
+              content:
+                "Ha ocurrido un error actualizando los permisos. Por favor contáctenos.",
+              key,
+            });
+          }
+        });
+      } else {
+        message.error({
+          content:
+            "Ha ocurrido un error actualizando los programas. Por favor contáctenos.",
+          key,
+        });
+      }
+    });
+  };
+
+  getRecord = (record) => {
+    let users = this.state.dataSourceUsers;
+    users.forEach((user) => {
+      if (user["username"] === record["username"]) {
+        return user;
+      }
+    });
   };
 
   onFinishEditUserFailed = (values) => {
@@ -204,16 +188,6 @@ class AdminUsers extends React.Component {
     this.setState({ searchText: "" });
   };
 
-  onChangePre = (value) => {
-    console.log("onChangePre ", value);
-    this.setState({ programasPreSelected: value });
-  };
-
-  onChangePos = (value) => {
-    console.log("onChangePos ", value);
-    this.setState({ programasPosSelected: value });
-  };
-
   showModal = () => {
     this.setState({
       visibleModal: true,
@@ -221,16 +195,208 @@ class AdminUsers extends React.Component {
   };
 
   handleNewUser = (values) => {
-    console.log(values);
+    const key = "updatable";
+    message.loading({ content: "Creando usuario...", key });
+    Backend.sendRequest("POST", "user_create", {
+      username: values["usernameUN"],
+      first_name: values["names"],
+      last_name: values["lastnames"],
+      role: values["userType"],
+    }).then(async (response) => {
+      let res = await response.json();
+      console.log(res);
+      if (res.status === 200) {
+        message.success({ content: "Usuario creado correctamente.", key });
+      } else if (res.status === 204) {
+        message.warning({ content: "El usuario ingresado ya existe.", key });
+      } else {
+        message.error({
+          content: "Ha ocurrido un error creando el usuario.",
+          key,
+        });
+      }
+    });
     this.setState({
       visibleModal: false,
     });
+  };
+
+  handleNewUserFailed = (values) => {
+    console.log("Failed:", values);
   };
 
   handleCancel = () => {
     this.setState({
       visibleModal: false,
     });
+  };
+
+  componentDidMount() {
+    Backend.sendRequest("GET", "users").then(async (response) => {
+      let res = await response.json();
+      let users = [];
+      for (let i = 0; i < res.length; i++) {
+        let user = {};
+        user["key"] = i;
+        user["nombre"] = res[i].data["full_name"];
+        user["correo"] = res[i].data["username"] + "@unal.edu.co";
+        user["username"] = res[i].data["username"];
+        user["role"] = res[i].data["role"];
+        users.push(user);
+      }
+      this.setState({ dataSourceUsers: users });
+    });
+
+    Backend.sendRequest("GET", "academic_programs_info").then(
+      async (response) => {
+        let res = await response.json();
+        let area = {};
+        res.forEach((program) => {
+          let pprogram = {
+            title: program["data"]["programa"],
+            nivel: program["data"]["cod_nivel"],
+            value: program["data"]["cod_programa"],
+          };
+          if (area[program["data"]["area_curricular"]] === undefined) {
+            area[program["data"]["area_curricular"]] = [];
+          }
+          area[program["data"]["area_curricular"]].push(pprogram);
+        });
+        let pProgramsPre = [];
+        let pProgramsPos = [];
+        for (const [key] of Object.entries(area)) {
+          let preprograms = area[key].filter(
+            (program) => program["nivel"] === 1
+          );
+          let posprograms = area[key].filter(
+            (program) => program["nivel"] !== 1
+          );
+          let preprogramskeys = preprograms.map((program) => program["value"]);
+          let posprogramskeys = posprograms.map((program) => program["value"]);
+          if (preprogramskeys.length === 1) {
+            preprogramskeys.push(preprogramskeys[0]);
+          }
+          let pareapre = {
+            title: key,
+            value: preprogramskeys,
+            children: preprograms,
+          };
+          pProgramsPre.push(pareapre);
+          let pareapos = {
+            title: key,
+            value: posprogramskeys,
+            children: posprograms,
+          };
+          pProgramsPos.push(pareapos);
+        }
+        this.setState({ ProgramsPre: pProgramsPre });
+        this.setState({ ProgramsPos: pProgramsPos });
+      }
+    );
+  }
+
+  handleDeleteUser = (mail) => {
+    const key = "updatable";
+    message.loading({ content: "Eliminando usuario...", key });
+    let user = mail.replace("@unal.edu.co", "");
+    Backend.sendRequest("DELETE", "delete_user", { username: user }).then(
+      async (response) => {
+        const key = "updatable";
+        if (response.status === 200) {
+          message.success({ content: "Usuario eliminado correctamente.", key });
+        } else {
+          message.error({
+            content: "Ha ocurrido un error eliminando el usuario.",
+            key,
+          });
+        }
+      }
+    );
+  };
+
+  renderForm = (record) => {
+    let form = (
+      <Form
+        ref={this.formRef}
+        onFinish={(values) => this.onFinishEditUser(record, values)}
+        onFinishFailed={this.onFinishEditUserFailed}
+        initialValues={{
+          programsPre: [],
+          programsPos: [],
+        }}
+      >
+        <Form.Item
+          name="userType"
+          label="Tipo de usuario"
+          rules={[
+            {
+              required: true,
+              message: "Por favor seleccione el tipo de usuario.",
+            },
+          ]}
+        >
+          <Radio.Group
+            buttonStyle="solid"
+            onChange={this.handleFormLayoutChange}
+          >
+            <Radio.Button value="0">Sin rol asignado</Radio.Button>
+            <Radio.Button value="1">Administrador</Radio.Button>
+            <Radio.Button value="2">Auxiliar</Radio.Button>
+            <Radio.Button value="3">Coordinador</Radio.Button>
+            <Radio.Button value="4">UAPA</Radio.Button>
+            <Radio.Button value="5">Dependencia</Radio.Button>
+          </Radio.Group>
+        </Form.Item>
+        <Form.Item name="programsPre" label="Permisos de pregrado">
+          <TreeSelect
+            treeData={this.state.ProgramsPre}
+            value={record["programasPre"]}
+            treeCheckable={true}
+            showCheckedStrategy={"SHOW_PARENT"}
+            placeholder="Por favor seleccione programas."
+            filterTreeNode={filterTreeNode}
+          />
+        </Form.Item>
+        <Form.Item name="programsPos" label="Permisos de posgrado">
+          <TreeSelect
+            treeData={this.state.ProgramsPos}
+            value={this.state.programasPosSelected}
+            treeCheckable={true}
+            showCheckedStrategy={"SHOW_PARENT"}
+            placeholder="Por favor seleccione programas."
+            filterTreeNode={filterTreeNode}
+          />
+        </Form.Item>
+        <Form.Item>
+          <Button
+            type="primary"
+            htmlType="submit"
+            className="admin-users-btnfinish"
+          >
+            Guardar cambios
+          </Button>
+        </Form.Item>
+      </Form>
+    );
+    let username = record["username"];
+    Backend.sendRequest("POST", "app_user_programs", {
+      username: username,
+    }).then(async (response) => {
+      response.json().then(async (response) => {
+        let programasPre = response
+          .filter((data) => data["data"]["cod_nivel"] === 1)
+          .map((data) => data["data"]["cod_programa"]);
+        let programasPos = response
+          .filter((data) => data["data"]["cod_nivel"] !== 1)
+          .map((data) => data["data"]["cod_programa"]);
+        this.formRef.current.setFieldsValue({
+          programsPre: programasPre,
+          programsPos: programasPos,
+          userType: record["role"].toString(),
+        });
+      });
+    });
+    return form;
   };
 
   render() {
@@ -256,7 +422,7 @@ class AdminUsers extends React.Component {
         render: (record) => (
           <Popconfirm
             title="¿Está seguro que desea eliminar este usuario?"
-            onConfirm={() => console.log(record.correo)}
+            onConfirm={() => this.handleDeleteUser(record.correo)}
             okText="Sí"
             cancelText="No"
             placement="top"
@@ -275,73 +441,23 @@ class AdminUsers extends React.Component {
             <UserAddOutlined /> Añadir usuario
           </Button>
         </Row>
-        <Table
-          dataSource={this.state.dataSourceUsers}
-          columns={columns}
-          bordered={true}
-          expandedRowRender={(record) => (
-            <Form
-              onFinish={(values) => this.onFinishEditUser(record, values)}
-              onFinishFailed={this.onFinishEditUserFailed}
-              initialValues={{
-                programsPre: this.state.programasPreSelected,
-                programsPos: this.state.programasPosSelected,
-              }}
-            >
-              <Form.Item name="userType" label="Tipo de usuario">
-                <Radio.Group
-                  buttonStyle="solid"
-                  onChange={this.handleFormLayoutChange}
-                >
-                  <Radio.Button value="NoRol">Sin rol asignado</Radio.Button>
-                  <Radio.Button value="Admin">Administrador</Radio.Button>
-                  <Radio.Button value="Auxil">Auxiliar</Radio.Button>
-                  <Radio.Button value="Coord">Coordinador</Radio.Button>
-                  <Radio.Button value="UAPA">UAPA</Radio.Button>
-                  <Radio.Button value="Depen">Dependencia</Radio.Button>
-                </Radio.Group>
-              </Form.Item>
-              <Form.Item name="programsPre" label="Permisos de pregrado">
-                <TreeSelect
-                  treeData={ProgramsPre}
-                  value={this.state.programasPreSelected}
-                  onChange={this.onChangePre}
-                  treeCheckable={true}
-                  showCheckedStrategy={"SHOW_PARENT"}
-                  placeholder="Por favor seleccione programas."
-                />
-              </Form.Item>
-              <Form.Item name="programsPos" label="Permisos de posgrado">
-                <TreeSelect
-                  treeData={ProgramsPos}
-                  value={this.state.programasPosSelected}
-                  onChange={this.onChangePos}
-                  treeCheckable={true}
-                  showCheckedStrategy={"SHOW_PARENT"}
-                  placeholder="Por favor seleccione programas."
-                />
-              </Form.Item>
-              <Form.Item>
-                <Button
-                  type="primary"
-                  htmlType="submit"
-                  className="admin-users-btnfinish"
-                >
-                  Guardar cambios
-                </Button>
-              </Form.Item>
-            </Form>
-          )}
-          pagination={{
-            defaultPageSize: 10,
-            showSizeChanger: true,
-            locale: { items_per_page: "por página" },
-            pageSizeOptions: ["10", "20", "50"],
-            position: "bottom",
-            size: "small",
-            showTotal: showTotal,
-          }}
-        />
+        <div className="admin-users-tablectn">
+          <Table
+            dataSource={this.state.dataSourceUsers}
+            columns={columns}
+            bordered={true}
+            expandedRowRender={this.renderForm}
+            pagination={{
+              defaultPageSize: 10,
+              showSizeChanger: true,
+              locale: { items_per_page: "por página" },
+              pageSizeOptions: ["10", "20", "50"],
+              position: "bottom",
+              size: "small",
+              showTotal: showTotal,
+            }}
+          />
+        </div>
         <Modal
           title="Crear un nuevo usuario"
           visible={this.state.visibleModal}
@@ -349,22 +465,52 @@ class AdminUsers extends React.Component {
           footer={null}
           width={800}
         >
-          <Form onFinish={this.handleNewUser}>
+          <Form
+            onFinish={this.handleNewUser}
+            onFinishFailed={this.handleNewUserFailed}
+          >
             <Row gutter={16}>
               <Col span={12}>
-                <Form.Item label="Nombres" name="names">
+                <Form.Item
+                  label="Nombres"
+                  name="names"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Por favor ingrese el nombre.",
+                    },
+                  ]}
+                >
                   <Input placeholder="Nombres" />
                 </Form.Item>
               </Col>
               <Col span={12}>
-                <Form.Item label="Usuario UNAL" name="usernameUN">
+                <Form.Item
+                  label="Usuario UNAL"
+                  name="usernameUN"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Por favor ingrese el usuario.",
+                    },
+                  ]}
+                >
                   <Input placeholder="Usuario institucional" />
                 </Form.Item>
               </Col>
             </Row>
             <Row gutter={16}>
               <Col span={12}>
-                <Form.Item label="Apellidos" name="lastnames">
+                <Form.Item
+                  label="Apellidos"
+                  name="lastnames"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Por favor ingrese los apellidos.",
+                    },
+                  ]}
+                >
                   <Input placeholder="Apellidos" />
                 </Form.Item>
               </Col>
@@ -374,37 +520,46 @@ class AdminUsers extends React.Component {
                 </Form.Item>
               </Col>
             </Row>
-            <Form.Item name="userType" label="Tipo de usuario">
+            <Form.Item
+              name="userType"
+              label="Tipo de usuario"
+              rules={[
+                {
+                  required: true,
+                  message: "Por favor seleccione el tipo de usuario.",
+                },
+              ]}
+            >
               <Radio.Group
                 buttonStyle="solid"
                 onChange={this.handleFormLayoutChange}
               >
-                <Radio.Button value="NoRol">Sin rol asignado</Radio.Button>
-                <Radio.Button value="Admin">Administrador</Radio.Button>
-                <Radio.Button value="Auxil">Auxiliar</Radio.Button>
-                <Radio.Button value="Coord">Coordinador</Radio.Button>
-                <Radio.Button value="UAPA">UAPA</Radio.Button>
-                <Radio.Button value="Depen">Dependencia</Radio.Button>
+                <Radio.Button value="0">Sin rol asignado</Radio.Button>
+                <Radio.Button value="1">Administrador</Radio.Button>
+                <Radio.Button value="2">Auxiliar</Radio.Button>
+                <Radio.Button value="3">Coordinador</Radio.Button>
+                <Radio.Button value="4">UAPA</Radio.Button>
+                <Radio.Button value="5">Dependencia</Radio.Button>
               </Radio.Group>
             </Form.Item>
             <Form.Item name="programsPre" label="Permisos de pregrado">
               <TreeSelect
-                treeData={ProgramsPre}
+                treeData={this.state.ProgramsPre}
                 value={this.state.programasPreSelected}
-                onChange={this.onChangePre}
                 treeCheckable={true}
                 showCheckedStrategy={"SHOW_PARENT"}
                 placeholder="Por favor seleccione programas."
+                filterTreeNode={filterTreeNode}
               />
             </Form.Item>
             <Form.Item name="programsPos" label="Permisos de posgrado">
               <TreeSelect
-                treeData={ProgramsPos}
+                treeData={this.state.ProgramsPos}
                 value={this.state.programasPosSelected}
-                onChange={this.onChangePos}
                 treeCheckable={true}
                 showCheckedStrategy={"SHOW_PARENT"}
                 placeholder="Por favor seleccione programas."
+                filterTreeNode={filterTreeNode}
               />
             </Form.Item>
             <Button

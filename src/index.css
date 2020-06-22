@@ -34,6 +34,11 @@ code {
   margin-top: 1.5em;
 }
 
+.select-props {
+  max-height: 400;
+  overflow: auto;
+}
+
 /* Sobre-escribiendo estilos de AntD */
 .ant-form-item-required::before {
   font-size: 0px !important;
@@ -53,8 +58,6 @@ code {
   background-color: white;
 }
 
-.ant-table-tbody tr:first-child,
-.ant-table-tbody tr:last-child,
 .ant-table-tbody tr:nth-child(even) {
   background-color: whitesmoke;
 }
@@ -98,17 +101,51 @@ code {
   text-align: center;
 }
 
+/* Estilos de Welcome */
+.welcome-title {
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+  width: 100%;
+  text-align: center;
+}
+
+.welcome-video {
+  margin-bottom: 1.5em;
+  width: 100%;
+}
+
+.player-wrapper {
+  position: relative;
+  padding-top: 56.25%;
+}
+
+.react-player {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
 /* Estilos AdminUsers */
+.admin-users-tablectn {
+  margin-bottom: 1.5em;
+}
+
+.admin-users-btnfinish {
+  width: 100%;
+}
+
+.admin-users-add-finish-btn {
+  width: 100%;
+  text-align: center;
+  margin-bottom: -1em !important;
+  margin-top: 0.5em;
+}
+
 .admin-users-btnctn,
 .admin-programs-subtitle {
   margin-top: 1.5em;
   margin-bottom: 1.5em;
   width: 100%;
   justify-content: space-evenly;
-}
-
-.admin-users-btnfinish {
-  width: 100%;
 }
 
 /* Estilos AdminPrograms */
@@ -124,9 +161,11 @@ code {
 
 .admin-programs-below-select {
   margin-top: 1em;
+  margin-bottom: 1.5em;
 }
 
-.admin-programs-radio-container {
+.admin-programs-radio-container,
+.admin-programs-new-radio-container {
   flex: 1;
   width: 100%;
 }
@@ -136,10 +175,10 @@ code {
   text-align: center;
 }
 
-.admin-users-add-finish-btn {
-  width: 100%;
+.admin-programs-new-radio-buttons,
+.generate-report-formitem-button {
+  width: 50%;
   text-align: center;
-  margin-bottom: -1em !important;
 }
 
 /* Estilos GenerateReport y RecFormat */
@@ -158,11 +197,6 @@ code {
 
 .rec-format-formitem {
   width: 100%;
-}
-
-.generate-report-formitem-button {
-  width: 50%;
-  text-align: center;
 }
 
 .rec-format-formitem-button,

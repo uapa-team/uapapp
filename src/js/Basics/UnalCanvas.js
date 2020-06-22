@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import Backend from "./Backend";
+
 import "../../css/base.css";
 import "../../css/bootstrap.min.css";
 import "../../css/bootstrap-theme.min.css";
@@ -226,7 +228,7 @@ class UnalCanvas extends Component {
                         {/*eslint-disable-next-line*/}
                         <a
                           onClick={() => {
-                            //Backend.sendRequest("GET", "logout");
+                            Backend.sendRequest("POST", "logout");
                             localStorage.removeItem("jwt");
                             localStorage.removeItem("type");
                             window.location.reload();
@@ -252,16 +254,6 @@ class UnalCanvas extends Component {
                   Servicios<span className="caret"> </span>
                 </div>
               </div>
-              <div className="btn-group hidden-sm hidden-md hidden-lg hidden-print">
-                <div
-                  className="btn btn-default dropdown-toggle"
-                  data-toggle="dropdown"
-                  id="unalOpenMenuPerfiles"
-                  data-target="#profiles"
-                >
-                  Perfiles<span className="caret"> </span>
-                </div>
-              </div>
             </div>
           </header>
 
@@ -278,7 +270,7 @@ class UnalCanvas extends Component {
           style={{
             marginTop: "0px",
             lineHeight: "normal",
-            overflow: "hidden"
+            overflow: "hidden",
           }}
         >
           <nav className="col-md-3 col-lg-3 col-sm-3 col-xs-4 col-xxs-6 gobiernoLinea">
@@ -355,7 +347,7 @@ class UnalCanvas extends Component {
               (+57 1) 316 5000 Ext. 13578
             </p>
             <p className="col-sm-12 col-md-6 derechos">
-              © Copyright 2019
+              © Copyright 2020
               <br /> Algunos derechos reservados.
               <br />
               <a
@@ -366,7 +358,7 @@ class UnalCanvas extends Component {
               </a>
               <br />
               <a href="index.html#">Acerca de este sitio web</a>
-              <br /> Última actualización: 22/04/2020
+              <br /> Última actualización: 11/06/2020
             </p>
           </div>
           <div className="col-md-2 col-lg-2 col-sm-2 col-xs-12 logos">
