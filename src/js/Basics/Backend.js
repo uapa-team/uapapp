@@ -1,6 +1,6 @@
 export default class Backend {
-  //static backEndUrl = 'https://ingenieria.bogota.unal.edu.co/actas-api/';
-  static backEndUrl = "http://localhost:3000/";
+  static backEndUrl = "https://www.ingenieria.bogota.unal.edu.co/uapapp_api";
+  //static backEndUrl = "http://localhost:3000/";
 
   static openLink(url) {
     window.open(this.backEndUrl + url, "_blank");
