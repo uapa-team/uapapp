@@ -71,14 +71,21 @@ class RecFormat extends React.Component {
       level: value,
     }).then(async (response) => {
       let res = await response.json();
-      let loadedPrograms = [];
+      let loadedPrograms = [
+        {
+          title: "Todos los disponibles",
+          value: "all",
+          key: "all",
+          children: [],
+        },
+      ];
       for (let i = 0; i < res.length; i++) {
         let program = {
           title: res[i].data["programa"],
           value: res[i].data["programa"],
           key: res[i].data["programa"],
         };
-        loadedPrograms.push(program);
+        loadedPrograms[0].children.push(program);
       }
       this.setState({
         recievedPrograms: loadedPrograms,
@@ -112,15 +119,22 @@ class RecFormat extends React.Component {
       sub_format: value,
     }).then(async (response) => {
       let res = await response.json();
-      console.log(res);
-      let loadedPeriods = [];
+
+      let loadedPeriods = [
+        {
+          title: "Todos los disponibles",
+          value: "all",
+          key: "all",
+          children: [],
+        },
+      ];
       for (let i = 0; i < res.length; i++) {
         let period = {
           title: res[i],
           value: res[i],
           key: res[i],
         };
-        loadedPeriods.push(period);
+        loadedPeriods[0].children.push(period);
       }
       this.setState({
         recievedPeriods: loadedPeriods,
@@ -149,12 +163,34 @@ class RecFormat extends React.Component {
   };
 
   onFinish = (values) => {
-    console.log(values);
     const key = "updatable";
     message.loading({ content: "Obteniendo formato...", key });
+
+    let periods = [];
+
+    if (values["periods"].includes("all")) {
+      this.state.recievedPeriods[0].children.forEach((element) => {
+        periods = periods.concat(element["key"]);
+      });
+      periods = Array.from(new Set(periods));
+    } else {
+      periods = values["periods"];
+    }
+
+    let programs = [];
+
+    if (values["programs"].includes("all")) {
+      this.state.recievedPrograms[0].children.forEach((element) => {
+        programs = programs.concat(element["key"]);
+      });
+      programs = Array.from(new Set(programs));
+    } else {
+      programs = values["programs"];
+    }
+
     Backend.sendRequest("POST", this.state.formatName, {
-      periodos: values["periods"],
-      programas: values["programs"],
+      periodos: periods,
+      programas: programs,
     })
       .then(async (response) => {
         if (response.status === 200) {
@@ -255,6 +291,8 @@ class RecFormat extends React.Component {
                   value={this.state.selectedPeriods}
                   placeholder="Seleccione el periodo"
                   treeCheckable={true}
+                  treeDefaultExpandAll={true}
+                  showCheckedStrategy={"SHOW_PARENT"}
                   onChange={this.handleChangePeriod}
                   disabled={this.state.selectedSubformat === undefined}
                 ></TreeSelect>
@@ -269,6 +307,8 @@ class RecFormat extends React.Component {
                   value={this.state.selectedPrograms}
                   placeholder="Seleccione el programa"
                   treeCheckable={true}
+                  treeDefaultExpandAll={true}
+                  showCheckedStrategy={"SHOW_PARENT"}
                   onChange={this.handleChangeProgram}
                   disabled={this.state.selectedPeriods === undefined}
                 ></TreeSelect>
