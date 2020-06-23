@@ -149,6 +149,7 @@ class RecFormat extends React.Component {
   };
 
   onFinish = (values) => {
+    console.log(values);
     const key = "updatable";
     message.loading({ content: "Obteniendo formato...", key });
     Backend.sendRequest("POST", this.state.formatName, {
@@ -172,10 +173,10 @@ class RecFormat extends React.Component {
         const href = window.URL.createObjectURL(blob);
         const a = this.linkRef.current;
         a.download =
-          "Formato" +
-          this.state.selectedLevel +
-          this.state.selectedReport +
+          "Formato " +
           this.state.selectedSubformat +
+          " " +
+          this.state.selectedLevel +
           ".xls";
         a.href = href;
         a.click();
@@ -187,6 +188,8 @@ class RecFormat extends React.Component {
   onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
+
+  linkRef = React.createRef();
 
   render() {
     return (
@@ -201,7 +204,11 @@ class RecFormat extends React.Component {
               onFinishFailed={this.onFinishFailed}
               layout="vertical"
             >
-              <Form.Item label="Nivel" className="rec-format-formitem">
+              <Form.Item
+                name="level"
+                label="Nivel"
+                className="rec-format-formitem"
+              >
                 <Select
                   className="select-props"
                   placeholder="Seleccione el nivel"
@@ -210,7 +217,11 @@ class RecFormat extends React.Component {
                   {this.state.recievedLevels}
                 </Select>
               </Form.Item>
-              <Form.Item label="Formato" className="rec-format-formitem">
+              <Form.Item
+                name="format"
+                label="Formato"
+                className="rec-format-formitem"
+              >
                 <Select
                   className="select-props"
                   placeholder="Seleccione el formato"
@@ -220,7 +231,11 @@ class RecFormat extends React.Component {
                   {this.state.recievedFormats}
                 </Select>
               </Form.Item>
-              <Form.Item label="Sub-formato" className="rec-format-formitem">
+              <Form.Item
+                name="subformat"
+                label="Sub-formato"
+                className="rec-format-formitem"
+              >
                 <Select
                   className="select-props"
                   placeholder="Seleccione el sub-formato"
@@ -230,7 +245,11 @@ class RecFormat extends React.Component {
                   {this.state.recievedSubformats}
                 </Select>
               </Form.Item>
-              <Form.Item label="Periodo" className="rec-format-formitem">
+              <Form.Item
+                name="periods"
+                label="Periodo"
+                className="rec-format-formitem"
+              >
                 <TreeSelect
                   treeData={this.state.recievedPeriods}
                   value={this.state.selectedPeriods}
@@ -240,7 +259,11 @@ class RecFormat extends React.Component {
                   disabled={this.state.selectedSubformat === undefined}
                 ></TreeSelect>
               </Form.Item>
-              <Form.Item label="Programa" className="rec-format-formitem">
+              <Form.Item
+                name="programs"
+                label="Programa"
+                className="rec-format-formitem"
+              >
                 <TreeSelect
                   treeData={this.state.recievedPrograms}
                   value={this.state.selectedPrograms}
@@ -257,6 +280,9 @@ class RecFormat extends React.Component {
                 </Button>
               </Form.Item>
             </Form>
+            <a href="null" ref={this.linkRef} style={{ visibility: "hidden" }}>
+              .
+            </a>
           </Col>
           <Col span={12}>
             <Form layout="vertical">
