@@ -98,7 +98,7 @@ class AdminUsers extends React.Component {
   };
 
   getRecord = (record) => {
-    let users = this.state.dataSourceUsers;
+    let users = this.state.dataSourceUsers.slice();
     users.forEach((user) => {
       if (user["username"] === record["username"]) {
         return user;
@@ -207,6 +207,16 @@ class AdminUsers extends React.Component {
       console.log(res);
       if (res.status === 200) {
         message.success({ content: "Usuario creado correctamente.", key });
+        let users = this.state.dataSourceUsers.slice();
+        users.push({
+          key: users.length,
+          nombre: values["names"] + " " + values["lastnames"],
+          correo: values["usernameUN"] + "@unal.edu.co",
+          username: values["usernameUN"],
+          role: values["userType"],
+        });
+        users = users.sort((a, b) => a.username.localeCompare(b.username));
+        this.setState({ dataSourceUsers: users });
       } else if (res.status === 204) {
         message.warning({ content: "El usuario ingresado ya existe.", key });
       } else {
@@ -244,6 +254,7 @@ class AdminUsers extends React.Component {
         user["role"] = res[i].data["role"];
         users.push(user);
       }
+      users = users.sort((a, b) => a.username.localeCompare(b.username));
       this.setState({ dataSourceUsers: users });
     });
 
@@ -303,6 +314,13 @@ class AdminUsers extends React.Component {
       async (response) => {
         const key = "updatable";
         if (response.status === 200) {
+          let users = this.state.dataSourceUsers.slice();
+          for (let i = 0; i < users.length; i++){
+            if(users[i].username === user){
+              users.splice(i,1);
+            }
+          }
+          this.setState({dataSourceUsers: users});
           message.success({ content: "Usuario eliminado correctamente.", key });
         } else {
           message.error({
