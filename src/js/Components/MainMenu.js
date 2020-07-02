@@ -40,11 +40,11 @@ class MainMenu extends React.Component {
             </Menu.Item>
             <Menu.Item key="au">
               <ScheduleOutlined />
-              Administración
+              Admin. Usuarios
             </Menu.Item>
             <Menu.Item key="ap">
               <AppstoreOutlined />
-              Administración - Programas
+              Admin. Programas
             </Menu.Item>
             <Menu.Item key="gr">
               <AuditOutlined />

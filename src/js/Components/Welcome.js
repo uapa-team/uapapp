@@ -16,7 +16,6 @@ class Welcome extends React.Component {
           <div className="player-wrapper">
             <ReactPlayer
               url="https://www.youtube.com/watch?v=XhyjiFEB5TY"
-              playing
               controls
               width="100%"
               height="100%"

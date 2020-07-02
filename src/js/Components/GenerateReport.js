@@ -28,6 +28,7 @@ class GenerateReport extends React.Component {
       let res = await response.json();
       let loadedOptions = [];
       let routesRecieved = {};
+
       for (let i = 0; i < res.length; i++) {
         routesRecieved[res[i].data["report_name"]] = res[i].data["ruta_back"];
         loadedOptions.push(
@@ -36,6 +37,7 @@ class GenerateReport extends React.Component {
           </Option>
         );
       }
+
       this.setState({
         reportOptions: loadedOptions,
         rutasBack: routesRecieved,
@@ -59,9 +61,32 @@ class GenerateReport extends React.Component {
   onFinish = (values) => {
     const key = "updatable";
     message.loading({ content: "Descargando reporte...", key });
+
+    let periods = [];
+
+    if (values["periods"].includes("all")) {
+      this.state.periodsAvailable[0].children.forEach((element) => {
+        periods = periods.concat(element["key"]);
+      });
+      periods = Array.from(new Set(periods));
+    } else {
+      periods = values["periods"];
+    }
+
+    let programs = [];
+
+    if (values["programs"].includes("all")) {
+      this.state.programsAvailable[0].children.forEach((element) => {
+        programs = programs.concat(element["key"]);
+      });
+      programs = Array.from(new Set(programs));
+    } else {
+      programs = values["programs"];
+    }
+
     Backend.sendRequest("POST", this.state.rutasBack[values.report], {
-      periodos: values["periods"],
-      programas: values["programs"],
+      periodos: periods,
+      programas: programs,
     })
       .then(async (response) => {
         if (response.status === 200) {
@@ -102,15 +127,24 @@ class GenerateReport extends React.Component {
         username: localStorage.getItem("username"),
       }).then(async (response) => {
         let res = await response.json();
-        let loadedPrograms = [];
+        let loadedPrograms = [
+          {
+            title: "Todos los disponibles",
+            value: "all",
+            key: "all",
+            children: [],
+          },
+        ];
+
         for (let i = 0; i < res.length; i++) {
           let program = {
             title: res[i].data["programa"],
             value: res[i].data["programa"],
             key: res[i].data["programa"],
           };
-          loadedPrograms.push(program);
+          loadedPrograms[0].children.push(program);
         }
+
         this.setState({
           selectedLevel: value,
           programsAvailable: loadedPrograms,
@@ -125,15 +159,24 @@ class GenerateReport extends React.Component {
         report_name: value,
       }).then(async (response) => {
         let res = await response.json();
-        let loadedPeriods = [];
+        let loadedPeriods = [
+          {
+            title: "Todos los disponibles",
+            value: "all",
+            key: "all",
+            children: [],
+          },
+        ];
+
         for (let i = 0; i < res.length; i++) {
           let period = {
             title: res[i].data["periodo"],
             value: res[i].data["periodo"],
             key: res[i].data["periodo"],
           };
-          loadedPeriods.push(period);
+          loadedPeriods[0].children.push(period);
         }
+
         this.setState({
           selectedReport: value,
           periodsAvailable: loadedPeriods,
@@ -217,6 +260,8 @@ class GenerateReport extends React.Component {
               value={this.state.selectedPeriods}
               placeholder="Seleccione el periodo"
               treeCheckable={true}
+              treeDefaultExpandAll={true}
+              showCheckedStrategy={"SHOW_PARENT"}
               onChange={this.onChangePeriod}
               disabled={
                 this.state.selectedLevel === undefined ||
@@ -240,6 +285,7 @@ class GenerateReport extends React.Component {
               value={this.state.selectedPrograms}
               placeholder="Seleccione el programa"
               treeCheckable={true}
+              treeDefaultExpandAll={true}
               onChange={this.onChangePrograms}
               showCheckedStrategy={"SHOW_PARENT"}
               disabled={
