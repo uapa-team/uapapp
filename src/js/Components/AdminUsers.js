@@ -46,6 +46,7 @@ class AdminUsers extends React.Component {
       searchText: "",
       searchedColumn: "",
       visibleModal: false,
+      userWritten: undefined,
     };
   }
 
@@ -306,6 +307,15 @@ class AdminUsers extends React.Component {
     );
   }
 
+  recordUsername = (value) => {
+    console.log(value);
+    this.setState({ userWritten: value });
+  };
+
+  autoFillUser = () => {
+    console.log("Holi");
+  };
+
   handleDeleteUser = (mail) => {
     const key = "updatable";
     message.loading({ content: "Eliminando usuario...", key });
@@ -315,12 +325,12 @@ class AdminUsers extends React.Component {
         const key = "updatable";
         if (response.status === 200) {
           let users = this.state.dataSourceUsers.slice();
-          for (let i = 0; i < users.length; i++){
-            if(users[i].username === user){
-              users.splice(i,1);
+          for (let i = 0; i < users.length; i++) {
+            if (users[i].username === user) {
+              users.splice(i, 1);
             }
           }
-          this.setState({dataSourceUsers: users});
+          this.setState({ dataSourceUsers: users });
           message.success({ content: "Usuario eliminado correctamente.", key });
         } else {
           message.error({
@@ -490,6 +500,27 @@ class AdminUsers extends React.Component {
             <Row gutter={16}>
               <Col span={12}>
                 <Form.Item
+                  label="Usuario UNAL"
+                  name="usernameUN"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Por favor ingrese el usuario.",
+                    },
+                  ]}
+                >
+                  <Input placeholder="Usuario institucional" />
+                </Form.Item>
+              </Col>
+              <Col span={12}>
+                <Button onClick={this.autoFillUser} icon={<SearchOutlined />}>
+                  Autocompletar
+                </Button>
+              </Col>
+            </Row>
+            <Row gutter={16}>
+              <Col span={12}>
+                <Form.Item
                   label="Nombres"
                   name="names"
                   rules={[
@@ -504,22 +535,6 @@ class AdminUsers extends React.Component {
               </Col>
               <Col span={12}>
                 <Form.Item
-                  label="Usuario UNAL"
-                  name="usernameUN"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Por favor ingrese el usuario.",
-                    },
-                  ]}
-                >
-                  <Input placeholder="Usuario institucional" />
-                </Form.Item>
-              </Col>
-            </Row>
-            <Row gutter={16}>
-              <Col span={12}>
-                <Form.Item
                   label="Apellidos"
                   name="lastnames"
                   rules={[
@@ -530,11 +545,6 @@ class AdminUsers extends React.Component {
                   ]}
                 >
                   <Input placeholder="Apellidos" />
-                </Form.Item>
-              </Col>
-              <Col span={12}>
-                <Form.Item label="Usuario UAPA" name="usernameUAPA">
-                  <Input placeholder="Nombre de usuario (UAPA)" />
                 </Form.Item>
               </Col>
             </Row>

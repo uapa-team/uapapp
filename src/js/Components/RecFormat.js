@@ -13,6 +13,7 @@ import {
 } from "antd";
 import { DownloadOutlined } from "@ant-design/icons";
 import Backend from "../Basics/Backend";
+import ReactPlayer from "react-player";
 
 const { Option } = Select;
 const { Title } = Typography;
@@ -32,6 +33,9 @@ class RecFormat extends React.Component {
       selectedPeriods: undefined,
       selectedPrograms: undefined,
       formatName: undefined,
+      whichVideo: "Descripción",
+      youtubeURLDes: undefined,
+      youtubeURLCar: undefined,
     };
   }
 
@@ -112,6 +116,7 @@ class RecFormat extends React.Component {
   };
 
   handleChangeSubformat = (value) => {
+    console.log(value);
     Backend.sendRequest("POST", "FR_periods", {
       username: localStorage.getItem("username"),
       level: this.state.selectedLevel,
@@ -119,7 +124,6 @@ class RecFormat extends React.Component {
       sub_format: value,
     }).then(async (response) => {
       let res = await response.json();
-
       let loadedPeriods = [
         {
           title: "Todos los disponibles",
@@ -136,6 +140,7 @@ class RecFormat extends React.Component {
         };
         loadedPeriods[0].children.push(period);
       }
+
       this.setState({
         recievedPeriods: loadedPeriods,
         selectedSubformat: value,
@@ -151,6 +156,16 @@ class RecFormat extends React.Component {
       this.setState({
         formatName: res,
       });
+
+      Backend.sendRequest("POST", "get_video_url", {
+        recname: res[0],
+      }).then(async (response) => {
+        let res = await response.json();
+        this.setState({
+          youtubeURLCar: res[0].data.url_video_cargue,
+          youtubeURLDes: res[0].data.url_video_descripcion,
+        });
+      });
     });
   };
 
@@ -160,6 +175,10 @@ class RecFormat extends React.Component {
 
   handleChangeProgram = (value) => {
     this.setState({ selectedPrograms: value });
+  };
+
+  handleChangeVideo = (value) => {
+    this.setState({ whichVideo: value.target.value });
   };
 
   onFinish = (values) => {
@@ -328,8 +347,10 @@ class RecFormat extends React.Component {
             <Form layout="vertical">
               <Form.Item label="Tutoriales">
                 <Radio.Group
-                  onChange={this.handleFormLayoutChange}
+                  onChange={this.handleChangeVideo}
                   className="rec-format-radiogroup"
+                  defaultValue="Descripción"
+                  value={this.state.whichVideo}
                 >
                   <Radio.Button
                     value="Descripción"
@@ -342,6 +363,35 @@ class RecFormat extends React.Component {
                   </Radio.Button>
                 </Radio.Group>
               </Form.Item>
+              {this.state.youtubeURLDes !== undefined ? (
+                <div className="rec-format-video">
+                  <div className="player-wrapper">
+                    {this.state.whichVideo === "Descripción" ? (
+                      <ReactPlayer
+                        url={
+                          "https://www.youtube.com/watch?v=" +
+                          this.state.youtubeURLDes
+                        }
+                        controls
+                        width="100%"
+                        height="100%"
+                        className="react-player"
+                      />
+                    ) : (
+                      <ReactPlayer
+                        url={
+                          "https://www.youtube.com/watch?v=" +
+                          this.state.youtubeURLCar
+                        }
+                        controls
+                        width="100%"
+                        height="100%"
+                        className="react-player"
+                      />
+                    )}
+                  </div>
+                </div>
+              ) : null}
             </Form>
           </Col>
         </Row>
