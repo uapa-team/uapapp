@@ -109,7 +109,8 @@ code {
   text-align: center;
 }
 
-.welcome-video {
+.welcome-video,
+.rec-format-video {
   margin-bottom: 1.5em;
   width: 100%;
 }

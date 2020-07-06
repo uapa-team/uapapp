@@ -13,6 +13,7 @@ import {
 } from "antd";
 import { DownloadOutlined } from "@ant-design/icons";
 import Backend from "../Basics/Backend";
+import ReactPlayer from "react-player";
 
 const { Option } = Select;
 const { Title } = Typography;
@@ -32,6 +33,9 @@ class RecFormat extends React.Component {
       selectedPeriods: undefined,
       selectedPrograms: undefined,
       formatName: undefined,
+      whichVideo: "Descripción",
+      youtubeURLDes: undefined,
+      youtubeURLCar: undefined,
     };
   }
 
@@ -71,14 +75,21 @@ class RecFormat extends React.Component {
       level: value,
     }).then(async (response) => {
       let res = await response.json();
-      let loadedPrograms = [];
+      let loadedPrograms = [
+        {
+          title: "Todos los disponibles",
+          value: "all",
+          key: "all",
+          children: [],
+        },
+      ];
       for (let i = 0; i < res.length; i++) {
         let program = {
           title: res[i].data["programa"],
           value: res[i].data["programa"],
           key: res[i].data["programa"],
         };
-        loadedPrograms.push(program);
+        loadedPrograms[0].children.push(program);
       }
       this.setState({
         recievedPrograms: loadedPrograms,
@@ -105,6 +116,7 @@ class RecFormat extends React.Component {
   };
 
   handleChangeSubformat = (value) => {
+    console.log(value);
     Backend.sendRequest("POST", "FR_periods", {
       username: localStorage.getItem("username"),
       level: this.state.selectedLevel,
@@ -112,16 +124,23 @@ class RecFormat extends React.Component {
       sub_format: value,
     }).then(async (response) => {
       let res = await response.json();
-      console.log(res);
-      let loadedPeriods = [];
+      let loadedPeriods = [
+        {
+          title: "Todos los disponibles",
+          value: "all",
+          key: "all",
+          children: [],
+        },
+      ];
       for (let i = 0; i < res.length; i++) {
         let period = {
           title: res[i],
           value: res[i],
           key: res[i],
         };
-        loadedPeriods.push(period);
+        loadedPeriods[0].children.push(period);
       }
+
       this.setState({
         recievedPeriods: loadedPeriods,
         selectedSubformat: value,
@@ -137,6 +156,16 @@ class RecFormat extends React.Component {
       this.setState({
         formatName: res,
       });
+
+      Backend.sendRequest("POST", "get_video_url", {
+        recname: res[0],
+      }).then(async (response) => {
+        let res = await response.json();
+        this.setState({
+          youtubeURLCar: res[0].data.url_video_cargue,
+          youtubeURLDes: res[0].data.url_video_descripcion,
+        });
+      });
     });
   };
 
@@ -148,12 +177,39 @@ class RecFormat extends React.Component {
     this.setState({ selectedPrograms: value });
   };
 
+  handleChangeVideo = (value) => {
+    this.setState({ whichVideo: value.target.value });
+  };
+
   onFinish = (values) => {
     const key = "updatable";
     message.loading({ content: "Obteniendo formato...", key });
+
+    let periods = [];
+
+    if (values["periods"].includes("all")) {
+      this.state.recievedPeriods[0].children.forEach((element) => {
+        periods = periods.concat(element["key"]);
+      });
+      periods = Array.from(new Set(periods));
+    } else {
+      periods = values["periods"];
+    }
+
+    let programs = [];
+
+    if (values["programs"].includes("all")) {
+      this.state.recievedPrograms[0].children.forEach((element) => {
+        programs = programs.concat(element["key"]);
+      });
+      programs = Array.from(new Set(programs));
+    } else {
+      programs = values["programs"];
+    }
+
     Backend.sendRequest("POST", this.state.formatName, {
-      periodos: values["periods"],
-      programas: values["programs"],
+      periodos: periods,
+      programas: programs,
     })
       .then(async (response) => {
         if (response.status === 200) {
@@ -172,10 +228,10 @@ class RecFormat extends React.Component {
         const href = window.URL.createObjectURL(blob);
         const a = this.linkRef.current;
         a.download =
-          "Formato" +
-          this.state.selectedLevel +
-          this.state.selectedReport +
+          "Formato " +
           this.state.selectedSubformat +
+          " " +
+          this.state.selectedLevel +
           ".xls";
         a.href = href;
         a.click();
@@ -187,6 +243,8 @@ class RecFormat extends React.Component {
   onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
+
+  linkRef = React.createRef();
 
   render() {
     return (
@@ -201,7 +259,11 @@ class RecFormat extends React.Component {
               onFinishFailed={this.onFinishFailed}
               layout="vertical"
             >
-              <Form.Item label="Nivel" className="rec-format-formitem">
+              <Form.Item
+                name="level"
+                label="Nivel"
+                className="rec-format-formitem"
+              >
                 <Select
                   className="select-props"
                   placeholder="Seleccione el nivel"
@@ -210,7 +272,11 @@ class RecFormat extends React.Component {
                   {this.state.recievedLevels}
                 </Select>
               </Form.Item>
-              <Form.Item label="Formato" className="rec-format-formitem">
+              <Form.Item
+                name="format"
+                label="Formato"
+                className="rec-format-formitem"
+              >
                 <Select
                   className="select-props"
                   placeholder="Seleccione el formato"
@@ -220,7 +286,11 @@ class RecFormat extends React.Component {
                   {this.state.recievedFormats}
                 </Select>
               </Form.Item>
-              <Form.Item label="Sub-formato" className="rec-format-formitem">
+              <Form.Item
+                name="subformat"
+                label="Sub-formato"
+                className="rec-format-formitem"
+              >
                 <Select
                   className="select-props"
                   placeholder="Seleccione el sub-formato"
@@ -230,22 +300,34 @@ class RecFormat extends React.Component {
                   {this.state.recievedSubformats}
                 </Select>
               </Form.Item>
-              <Form.Item label="Periodo" className="rec-format-formitem">
+              <Form.Item
+                name="periods"
+                label="Periodo"
+                className="rec-format-formitem"
+              >
                 <TreeSelect
                   treeData={this.state.recievedPeriods}
                   value={this.state.selectedPeriods}
                   placeholder="Seleccione el periodo"
                   treeCheckable={true}
+                  treeDefaultExpandAll={true}
+                  showCheckedStrategy={"SHOW_PARENT"}
                   onChange={this.handleChangePeriod}
                   disabled={this.state.selectedSubformat === undefined}
                 ></TreeSelect>
               </Form.Item>
-              <Form.Item label="Programa" className="rec-format-formitem">
+              <Form.Item
+                name="programs"
+                label="Programa"
+                className="rec-format-formitem"
+              >
                 <TreeSelect
                   treeData={this.state.recievedPrograms}
                   value={this.state.selectedPrograms}
                   placeholder="Seleccione el programa"
                   treeCheckable={true}
+                  treeDefaultExpandAll={true}
+                  showCheckedStrategy={"SHOW_PARENT"}
                   onChange={this.handleChangeProgram}
                   disabled={this.state.selectedPeriods === undefined}
                 ></TreeSelect>
@@ -257,13 +339,18 @@ class RecFormat extends React.Component {
                 </Button>
               </Form.Item>
             </Form>
+            <a href="null" ref={this.linkRef} style={{ visibility: "hidden" }}>
+              .
+            </a>
           </Col>
           <Col span={12}>
             <Form layout="vertical">
               <Form.Item label="Tutoriales">
                 <Radio.Group
-                  onChange={this.handleFormLayoutChange}
+                  onChange={this.handleChangeVideo}
                   className="rec-format-radiogroup"
+                  defaultValue="Descripción"
+                  value={this.state.whichVideo}
                 >
                   <Radio.Button
                     value="Descripción"
@@ -276,6 +363,35 @@ class RecFormat extends React.Component {
                   </Radio.Button>
                 </Radio.Group>
               </Form.Item>
+              {this.state.youtubeURLDes !== undefined ? (
+                <div className="rec-format-video">
+                  <div className="player-wrapper">
+                    {this.state.whichVideo === "Descripción" ? (
+                      <ReactPlayer
+                        url={
+                          "https://www.youtube.com/watch?v=" +
+                          this.state.youtubeURLDes
+                        }
+                        controls
+                        width="100%"
+                        height="100%"
+                        className="react-player"
+                      />
+                    ) : (
+                      <ReactPlayer
+                        url={
+                          "https://www.youtube.com/watch?v=" +
+                          this.state.youtubeURLCar
+                        }
+                        controls
+                        width="100%"
+                        height="100%"
+                        className="react-player"
+                      />
+                    )}
+                  </div>
+                </div>
+              ) : null}
             </Form>
           </Col>
         </Row>

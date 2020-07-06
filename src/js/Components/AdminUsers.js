@@ -28,6 +28,7 @@ const { Title } = Typography;
 
 class AdminUsers extends React.Component {
   formRef = React.createRef();
+  formModalRef = React.createRef();
 
   constructor(props) {
     super(props);
@@ -46,6 +47,7 @@ class AdminUsers extends React.Component {
       searchText: "",
       searchedColumn: "",
       visibleModal: false,
+      userWritten: undefined,
     };
   }
 
@@ -98,7 +100,7 @@ class AdminUsers extends React.Component {
   };
 
   getRecord = (record) => {
-    let users = this.state.dataSourceUsers;
+    let users = this.state.dataSourceUsers.slice();
     users.forEach((user) => {
       if (user["username"] === record["username"]) {
         return user;
@@ -207,6 +209,16 @@ class AdminUsers extends React.Component {
       console.log(res);
       if (res.status === 200) {
         message.success({ content: "Usuario creado correctamente.", key });
+        let users = this.state.dataSourceUsers.slice();
+        users.push({
+          key: users.length,
+          nombre: values["names"] + " " + values["lastnames"],
+          correo: values["usernameUN"] + "@unal.edu.co",
+          username: values["usernameUN"],
+          role: values["userType"],
+        });
+        users = users.sort((a, b) => a.username.localeCompare(b.username));
+        this.setState({ dataSourceUsers: users });
       } else if (res.status === 204) {
         message.warning({ content: "El usuario ingresado ya existe.", key });
       } else {
@@ -244,6 +256,7 @@ class AdminUsers extends React.Component {
         user["role"] = res[i].data["role"];
         users.push(user);
       }
+      users = users.sort((a, b) => a.username.localeCompare(b.username));
       this.setState({ dataSourceUsers: users });
     });
 
@@ -295,6 +308,35 @@ class AdminUsers extends React.Component {
     );
   }
 
+  recordUsername = (value) => {
+    console.log(value);
+    this.setState({ userWritten: value });
+  };
+
+  autoFillUser = () => {
+    Backend.sendRequest("POST", "person", {
+      correo_unal:
+        this.formModalRef.current.getFieldValue("usernameUN") + "@unal.edu.co",
+    }).then(async (response) => {
+      let res = await response.json();
+      console.log(res);
+      if (res.length !== 0) {
+        //Backend should reply != 200 when user not found. Temporal fix.
+        this.formModalRef.current.setFieldsValue({
+          names: res[0].data.nombres,
+          lastnames: res[0].data.apellidos,
+        });
+        message.success("Se han completado los campos exitosamente.");
+      } else {
+        this.formModalRef.current.setFieldsValue({
+          names: "",
+          lastnames: "",
+        });
+        message.warning("El usuario no ha sido encontrado.");
+      }
+    });
+  };
+
   handleDeleteUser = (mail) => {
     const key = "updatable";
     message.loading({ content: "Eliminando usuario...", key });
@@ -303,6 +345,13 @@ class AdminUsers extends React.Component {
       async (response) => {
         const key = "updatable";
         if (response.status === 200) {
+          let users = this.state.dataSourceUsers.slice();
+          for (let i = 0; i < users.length; i++) {
+            if (users[i].username === user) {
+              users.splice(i, 1);
+            }
+          }
+          this.setState({ dataSourceUsers: users });
           message.success({ content: "Usuario eliminado correctamente.", key });
         } else {
           message.error({
@@ -399,6 +448,118 @@ class AdminUsers extends React.Component {
     return form;
   };
 
+  renderFormModal = () => {
+    let form = (
+      <Form
+        ref={this.formModalRef}
+        onFinish={this.handleNewUser}
+        onFinishFailed={this.handleNewUserFailed}
+      >
+        <Row gutter={16}>
+          <Col span={12}>
+            <Form.Item
+              label="Usuario UNAL"
+              name="usernameUN"
+              rules={[
+                {
+                  required: true,
+                  message: "Por favor ingrese el usuario.",
+                },
+              ]}
+            >
+              <Input placeholder="Usuario institucional" />
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Button onClick={this.autoFillUser} icon={<SearchOutlined />}>
+              Autocompletar
+            </Button>
+          </Col>
+        </Row>
+        <Row gutter={16}>
+          <Col span={12}>
+            <Form.Item
+              label="Nombres"
+              name="names"
+              rules={[
+                {
+                  required: true,
+                  message: "Por favor ingrese el nombre.",
+                },
+              ]}
+            >
+              <Input placeholder="Nombres" />
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Form.Item
+              label="Apellidos"
+              name="lastnames"
+              rules={[
+                {
+                  required: true,
+                  message: "Por favor ingrese los apellidos.",
+                },
+              ]}
+            >
+              <Input placeholder="Apellidos" />
+            </Form.Item>
+          </Col>
+        </Row>
+        <Form.Item
+          name="userType"
+          label="Tipo de usuario"
+          rules={[
+            {
+              required: true,
+              message: "Por favor seleccione el tipo de usuario.",
+            },
+          ]}
+        >
+          <Radio.Group
+            buttonStyle="solid"
+            onChange={this.handleFormLayoutChange}
+          >
+            <Radio.Button value="0">Sin rol asignado</Radio.Button>
+            <Radio.Button value="1">Administrador</Radio.Button>
+            <Radio.Button value="2">Auxiliar</Radio.Button>
+            <Radio.Button value="3">Coordinador</Radio.Button>
+            <Radio.Button value="4">UAPA</Radio.Button>
+            <Radio.Button value="5">Dependencia</Radio.Button>
+          </Radio.Group>
+        </Form.Item>
+        <Form.Item name="programsPre" label="Permisos de pregrado">
+          <TreeSelect
+            treeData={this.state.ProgramsPre}
+            value={this.state.programasPreSelected}
+            treeCheckable={true}
+            showCheckedStrategy={"SHOW_PARENT"}
+            placeholder="Por favor seleccione programas."
+            filterTreeNode={filterTreeNode}
+          />
+        </Form.Item>
+        <Form.Item name="programsPos" label="Permisos de posgrado">
+          <TreeSelect
+            treeData={this.state.ProgramsPos}
+            value={this.state.programasPosSelected}
+            treeCheckable={true}
+            showCheckedStrategy={"SHOW_PARENT"}
+            placeholder="Por favor seleccione programas."
+            filterTreeNode={filterTreeNode}
+          />
+        </Form.Item>
+        <Button
+          type="primary"
+          htmlType="submit"
+          className="admin-users-add-finish-btn"
+        >
+          Crear usuario
+        </Button>
+      </Form>
+    );
+    return form;
+  };
+
   render() {
     var columns = [
       {
@@ -465,111 +626,7 @@ class AdminUsers extends React.Component {
           footer={null}
           width={800}
         >
-          <Form
-            onFinish={this.handleNewUser}
-            onFinishFailed={this.handleNewUserFailed}
-          >
-            <Row gutter={16}>
-              <Col span={12}>
-                <Form.Item
-                  label="Nombres"
-                  name="names"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Por favor ingrese el nombre.",
-                    },
-                  ]}
-                >
-                  <Input placeholder="Nombres" />
-                </Form.Item>
-              </Col>
-              <Col span={12}>
-                <Form.Item
-                  label="Usuario UNAL"
-                  name="usernameUN"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Por favor ingrese el usuario.",
-                    },
-                  ]}
-                >
-                  <Input placeholder="Usuario institucional" />
-                </Form.Item>
-              </Col>
-            </Row>
-            <Row gutter={16}>
-              <Col span={12}>
-                <Form.Item
-                  label="Apellidos"
-                  name="lastnames"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Por favor ingrese los apellidos.",
-                    },
-                  ]}
-                >
-                  <Input placeholder="Apellidos" />
-                </Form.Item>
-              </Col>
-              <Col span={12}>
-                <Form.Item label="Usuario UAPA" name="usernameUAPA">
-                  <Input placeholder="Nombre de usuario (UAPA)" />
-                </Form.Item>
-              </Col>
-            </Row>
-            <Form.Item
-              name="userType"
-              label="Tipo de usuario"
-              rules={[
-                {
-                  required: true,
-                  message: "Por favor seleccione el tipo de usuario.",
-                },
-              ]}
-            >
-              <Radio.Group
-                buttonStyle="solid"
-                onChange={this.handleFormLayoutChange}
-              >
-                <Radio.Button value="0">Sin rol asignado</Radio.Button>
-                <Radio.Button value="1">Administrador</Radio.Button>
-                <Radio.Button value="2">Auxiliar</Radio.Button>
-                <Radio.Button value="3">Coordinador</Radio.Button>
-                <Radio.Button value="4">UAPA</Radio.Button>
-                <Radio.Button value="5">Dependencia</Radio.Button>
-              </Radio.Group>
-            </Form.Item>
-            <Form.Item name="programsPre" label="Permisos de pregrado">
-              <TreeSelect
-                treeData={this.state.ProgramsPre}
-                value={this.state.programasPreSelected}
-                treeCheckable={true}
-                showCheckedStrategy={"SHOW_PARENT"}
-                placeholder="Por favor seleccione programas."
-                filterTreeNode={filterTreeNode}
-              />
-            </Form.Item>
-            <Form.Item name="programsPos" label="Permisos de posgrado">
-              <TreeSelect
-                treeData={this.state.ProgramsPos}
-                value={this.state.programasPosSelected}
-                treeCheckable={true}
-                showCheckedStrategy={"SHOW_PARENT"}
-                placeholder="Por favor seleccione programas."
-                filterTreeNode={filterTreeNode}
-              />
-            </Form.Item>
-            <Button
-              type="primary"
-              htmlType="submit"
-              className="admin-users-add-finish-btn"
-            >
-              Crear usuario
-            </Button>
-          </Form>
+          {this.renderFormModal()}
         </Modal>
       </div>
     );
