@@ -63,13 +63,6 @@ class NormalLoginForm extends React.Component {
   render() {
     return (
       <div>
-        <div className="breadcrumb-class">
-          Está en:
-          <a href="/" target="_self" title="Inicio">
-            Inicio
-          </a>
-        </div>
-
         <Row>
           <Col xs={4} sm={4} md={6} lg={8} xl={8}></Col>
           <Col xs={16} sm={16} md={12} lg={8} xl={8}>

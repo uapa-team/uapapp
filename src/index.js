@@ -41,7 +41,7 @@ const LoginRoute = ({ component: Component, ...rest }) => (
 );
 
 ReactDOM.render(
-  <BrowserRouter>
+  <BrowserRouter basename={"/uapapp"}>
     <UnalCanvas>
       <Switch>
         <LoginRoute exact path="/" component={LoginForm} />
