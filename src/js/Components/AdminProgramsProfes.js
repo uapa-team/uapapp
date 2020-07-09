@@ -61,7 +61,9 @@ class AdminProgramsProfes extends React.Component {
         nombre: this.props.teachers[i].data["nombre_completo"],
       });
     }
-    recievedProfes = recievedProfes.sort((a, b) => a.nombre.localeCompare(b.nombre));
+    recievedProfes = recievedProfes.sort((a, b) =>
+      a.nombre.localeCompare(b.nombre)
+    );
     this.setState({ dataSourceProfes: recievedProfes });
 
     Backend.sendRequest("POST", "get_professors_list").then(
@@ -202,13 +204,6 @@ class AdminProgramsProfes extends React.Component {
     });
   };
 
-  handleNewProfe = (values) => {
-    console.log(values);
-    this.setState({
-      visibleModal: false,
-    });
-  };
-
   handleCancel = () => {
     this.setState({
       visibleModal: false,
@@ -230,7 +225,8 @@ class AdminProgramsProfes extends React.Component {
         });
       } else {
         message.error({
-          content: "Ha ocurrido un error actualizando los periodos del profesor.",
+          content:
+            "Ha ocurrido un error actualizando los periodos del profesor.",
           key,
         });
       }
@@ -249,14 +245,16 @@ class AdminProgramsProfes extends React.Component {
         Backend.sendRequest("POST", "get_professor_dni", {
           dni_professor: values.names,
         }).then(async (response) => {
-          response.json().then(response => {
+          response.json().then((response) => {
             let dataSourceProfes = this.state.dataSourceProfes.slice();
             dataSourceProfes.push({
               key: response[0].data.dni_docente,
               correo: response[0].data.correo_unal,
-              nombre: response[0].data.nombres, 
+              nombre: response[0].data.nombres,
             });
-            dataSourceProfes = dataSourceProfes.sort((a, b) => a.nombre.localeCompare(b.nombre));
+            dataSourceProfes = dataSourceProfes.sort((a, b) =>
+              a.nombre.localeCompare(b.nombre)
+            );
             this.setState({ dataSourceProfes: dataSourceProfes });
           });
         });
@@ -285,12 +283,12 @@ class AdminProgramsProfes extends React.Component {
     }).then(async (response) => {
       if (response.status === 200) {
         let dataSourceProfes = this.state.dataSourceProfes.slice();
-        for (let i = 0; i < dataSourceProfes.length; i++){
-          if(dataSourceProfes[i].key === dni){
-            dataSourceProfes.splice(i,1);
+        for (let i = 0; i < dataSourceProfes.length; i++) {
+          if (dataSourceProfes[i].key === dni) {
+            dataSourceProfes.splice(i, 1);
           }
         }
-        this.setState({dataSourceProfes: dataSourceProfes});
+        this.setState({ dataSourceProfes: dataSourceProfes });
         message.success({
           content: "El profesor se ha desvinculado correctamente.",
           key,
@@ -345,7 +343,6 @@ class AdminProgramsProfes extends React.Component {
     }).then(async (response) => {
       response.json().then(async (response) => {
         let periods_professor = response.map((data) => data["data"]["periodo"]);
-        console.log(periods_professor);
         this.formRef.current.setFieldsValue({
           periods: periods_professor,
         });
@@ -356,7 +353,6 @@ class AdminProgramsProfes extends React.Component {
   };
 
   onChangeInput = (value) => {
-    console.log(value.toString());
     Backend.sendRequest("POST", "get_professor_dni", {
       dni_professor: value.toString(),
     }).then(async (response) => {
@@ -522,7 +518,8 @@ class AdminProgramsProfes extends React.Component {
                     <Text>
                       Profesor seleccionado:{" "}
                       {this.state.selectedProfe[0].data.nombre_completo}. Correo
-                      institucional: {this.state.selectedProfe[0].data.correo_unal}.
+                      institucional:{" "}
+                      {this.state.selectedProfe[0].data.correo_unal}.
                     </Text>
                     <Form.Item>
                       <Button
