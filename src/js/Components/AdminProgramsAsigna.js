@@ -60,7 +60,6 @@ class AdminProgramsAsigna extends React.Component {
 
     Backend.sendRequest("GET", "subjects").then(async (response) => {
       let res = await response.json();
-      console.log(res);
       let recievedAsignaCodes = [];
       let recievedAsignaNames = [];
       for (let i = 0; i < res.length; i++) {
@@ -91,7 +90,6 @@ class AdminProgramsAsigna extends React.Component {
   };
 
   onChangeInput = (value) => {
-    console.log(value.toString());
     Backend.sendRequest("POST", "subject", {
       cod_subject: value.toString(),
     }).then(async (response) => {
@@ -200,7 +198,9 @@ class AdminProgramsAsigna extends React.Component {
           código: this.state.selectedAsigna.data.cod_materia,
           nombre: this.state.selectedAsigna.data.nombre_materia,
         });
-        dataSourceAsigna = dataSourceAsigna.sort((a, b) => a.key.localeCompare(b.key));
+        dataSourceAsigna = dataSourceAsigna.sort((a, b) =>
+          a.key.localeCompare(b.key)
+        );
         this.setState({ dataSourceAsigna: dataSourceAsigna });
         message.success({
           content: "La asignatura se ha añadido correctamente.",
@@ -244,12 +244,12 @@ class AdminProgramsAsigna extends React.Component {
     }).then(async (response) => {
       if (response.status === 200) {
         let dataSourceAsigna = this.state.dataSourceAsigna.slice();
-        for (let i = 0; i < dataSourceAsigna.length; i++){
-          if(dataSourceAsigna[i].key === código){
-            dataSourceAsigna.splice(i,1);
+        for (let i = 0; i < dataSourceAsigna.length; i++) {
+          if (dataSourceAsigna[i].key === código) {
+            dataSourceAsigna.splice(i, 1);
           }
         }
-        this.setState({dataSourceAsigna: dataSourceAsigna});
+        this.setState({ dataSourceAsigna: dataSourceAsigna });
         message.success({
           content: "La asignatura se ha eliminado correctamente.",
           key,

@@ -109,7 +109,7 @@ class AdminUsers extends React.Component {
   };
 
   onFinishEditUserFailed = (values) => {
-    console.log(values);
+    console.log("Failed:", values);
   };
 
   getColumnSearchProps = (dataIndex) => ({
@@ -206,7 +206,7 @@ class AdminUsers extends React.Component {
       role: values["userType"],
     }).then(async (response) => {
       let res = await response.json();
-      console.log(res);
+
       if (res.status === 200) {
         message.success({ content: "Usuario creado correctamente.", key });
         let users = this.state.dataSourceUsers.slice();
@@ -309,7 +309,6 @@ class AdminUsers extends React.Component {
   }
 
   recordUsername = (value) => {
-    console.log(value);
     this.setState({ userWritten: value });
   };
 
@@ -319,7 +318,7 @@ class AdminUsers extends React.Component {
         this.formModalRef.current.getFieldValue("usernameUN") + "@unal.edu.co",
     }).then(async (response) => {
       let res = await response.json();
-      console.log(res);
+
       if (res.length !== 0) {
         //Backend should reply != 200 when user not found. Temporal fix.
         this.formModalRef.current.setFieldsValue({

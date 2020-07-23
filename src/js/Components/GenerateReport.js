@@ -8,6 +8,8 @@ const { Option } = Select;
 const { Title } = Typography;
 
 class GenerateReport extends React.Component {
+  formRef = React.createRef();
+
   constructor(props) {
     super(props);
     this.state = {
@@ -108,7 +110,7 @@ class GenerateReport extends React.Component {
           "reporte" +
           this.state.selectedLevel +
           this.state.selectedReport +
-          ".xls";
+          ".xlsx";
         a.href = href;
         a.click();
         a.href = "";
@@ -121,68 +123,74 @@ class GenerateReport extends React.Component {
   };
 
   handleChangeLevel = (value) => {
-    if (value !== undefined) {
-      Backend.sendRequest("POST", "app_user_programs_levels", {
-        level: value,
-        username: localStorage.getItem("username"),
-      }).then(async (response) => {
-        let res = await response.json();
-        let loadedPrograms = [
-          {
-            title: "Todos los disponibles",
-            value: "all",
-            key: "all",
-            children: [],
-          },
-        ];
+    Backend.sendRequest("POST", "app_user_programs_levels", {
+      level: value,
+      username: localStorage.getItem("username"),
+    }).then(async (response) => {
+      let res = await response.json();
+      let loadedPrograms = [
+        {
+          title: "Todos los disponibles",
+          value: "all",
+          key: "all",
+          children: [],
+        },
+      ];
 
-        for (let i = 0; i < res.length; i++) {
-          let program = {
-            title: res[i].data["programa"],
-            value: res[i].data["programa"],
-            key: res[i].data["programa"],
-          };
-          loadedPrograms[0].children.push(program);
-        }
+      for (let i = 0; i < res.length; i++) {
+        let program = {
+          title: res[i].data["programa"],
+          value: res[i].data["programa"],
+          key: res[i].data["programa"],
+        };
+        loadedPrograms[0].children.push(program);
+      }
 
-        this.setState({
-          selectedLevel: value,
-          programsAvailable: loadedPrograms,
-        });
+      this.setState({
+        selectedLevel: value,
+        programsAvailable: loadedPrograms,
       });
-    }
+    });
+
+    this.formRef.current.setFieldsValue({
+      report: undefined,
+      periods: undefined,
+      programs: undefined,
+    });
   };
 
   handleChangeReport = (value) => {
-    if (value !== undefined) {
-      Backend.sendRequest("POST", "reports_periods", {
-        report_name: value,
-      }).then(async (response) => {
-        let res = await response.json();
-        let loadedPeriods = [
-          {
-            title: "Todos los disponibles",
-            value: "all",
-            key: "all",
-            children: [],
-          },
-        ];
+    Backend.sendRequest("POST", "reports_periods", {
+      report_name: value,
+    }).then(async (response) => {
+      let res = await response.json();
+      let loadedPeriods = [
+        {
+          title: "Todos los disponibles",
+          value: "all",
+          key: "all",
+          children: [],
+        },
+      ];
 
-        for (let i = 0; i < res.length; i++) {
-          let period = {
-            title: res[i].data["periodo"],
-            value: res[i].data["periodo"],
-            key: res[i].data["periodo"],
-          };
-          loadedPeriods[0].children.push(period);
-        }
+      for (let i = 0; i < res.length; i++) {
+        let period = {
+          title: res[i].data["periodo"],
+          value: res[i].data["periodo"],
+          key: res[i].data["periodo"],
+        };
+        loadedPeriods[0].children.push(period);
+      }
 
-        this.setState({
-          selectedReport: value,
-          periodsAvailable: loadedPeriods,
-        });
+      this.setState({
+        selectedReport: value,
+        periodsAvailable: loadedPeriods,
       });
-    }
+    });
+
+    this.formRef.current.setFieldsValue({
+      periods: undefined,
+    });
   };
 
   onChangePrograms = (value) => {
@@ -193,6 +201,112 @@ class GenerateReport extends React.Component {
     this.setState({ selectedPeriods: value });
   };
 
+  renderForm = () => {
+    let form = (
+      <Form
+        ref={this.formRef}
+        onFinish={this.onFinish}
+        onFinishFailed={this.onFinishFailed}
+        layout="vertical"
+      >
+        <Form.Item
+          name="level"
+          label="Nivel"
+          className="generate-report-formitem"
+          rules={[
+            {
+              required: true,
+              message: "Por favor seleccione un nivel.",
+            },
+          ]}
+        >
+          <Select
+            className="select-props"
+            placeholder="Seleccione el nivel"
+            onChange={this.handleChangeLevel}
+          >
+            {this.state.levelsOptions}
+          </Select>
+        </Form.Item>
+        <Form.Item
+          name="report"
+          label="Reporte"
+          className="generate-report-formitem"
+          rules={[
+            {
+              required: true,
+              message: "Por favor seleccione un reporte.",
+            },
+          ]}
+        >
+          <Select
+            className="select-props"
+            placeholder="Seleccione el reporte"
+            onChange={this.handleChangeReport}
+          >
+            {this.state.reportOptions}
+          </Select>
+        </Form.Item>
+        <Form.Item
+          name="periods"
+          label="Periodo"
+          className="generate-report-formitem"
+          rules={[
+            {
+              required: true,
+              message: "Por favor seleccione uno o varios periodos.",
+            },
+          ]}
+        >
+          <TreeSelect
+            treeData={this.state.periodsAvailable}
+            value={this.state.selectedPeriods}
+            placeholder="Seleccione el periodo"
+            treeCheckable={true}
+            treeDefaultExpandAll={true}
+            showCheckedStrategy={"SHOW_PARENT"}
+            onChange={this.onChangePeriod}
+            disabled={
+              this.state.selectedLevel === undefined ||
+              this.state.selectedReport === undefined
+            }
+          ></TreeSelect>
+        </Form.Item>
+        <Form.Item
+          name="programs"
+          label="Programa"
+          className="generate-report-formitem"
+          rules={[
+            {
+              required: true,
+              message: "Por favor seleccione uno o varios programas.",
+            },
+          ]}
+        >
+          <TreeSelect
+            treeData={this.state.programsAvailable}
+            value={this.state.selectedPrograms}
+            placeholder="Seleccione el programa"
+            treeCheckable={true}
+            treeDefaultExpandAll={true}
+            onChange={this.onChangePrograms}
+            showCheckedStrategy={"SHOW_PARENT"}
+            disabled={
+              this.state.selectedLevel === undefined ||
+              this.state.selectedReport === undefined
+            }
+          ></TreeSelect>
+        </Form.Item>
+        <Form.Item className="generate-report-formitem-button">
+          <Button block type="primary" htmlType="submit">
+            <DownloadOutlined /> Descargar
+          </Button>
+        </Form.Item>
+      </Form>
+    );
+    return form;
+  };
+
   linkRef = React.createRef();
 
   render() {
@@ -201,105 +315,7 @@ class GenerateReport extends React.Component {
         <div className="generate-report-div">
           <Title level={2}>Generador de reportes</Title>
         </div>
-        <Form
-          onFinish={this.onFinish}
-          onFinishFailed={this.onFinishFailed}
-          layout="vertical"
-        >
-          <Form.Item
-            name="level"
-            label="Nivel"
-            className="generate-report-formitem"
-            rules={[
-              {
-                required: true,
-                message: "Por favor seleccione un nivel.",
-              },
-            ]}
-          >
-            <Select
-              className="select-props"
-              placeholder="Seleccione el nivel"
-              onChange={this.handleChangeLevel}
-            >
-              {this.state.levelsOptions}
-            </Select>
-          </Form.Item>
-          <Form.Item
-            name="report"
-            label="Reporte"
-            className="generate-report-formitem"
-            rules={[
-              {
-                required: true,
-                message: "Por favor seleccione un reporte.",
-              },
-            ]}
-          >
-            <Select
-              className="select-props"
-              placeholder="Seleccione el reporte"
-              onChange={this.handleChangeReport}
-            >
-              {this.state.reportOptions}
-            </Select>
-          </Form.Item>
-          <Form.Item
-            name="periods"
-            label="Periodo"
-            className="generate-report-formitem"
-            rules={[
-              {
-                required: true,
-                message: "Por favor seleccione uno o varios periodos.",
-              },
-            ]}
-          >
-            <TreeSelect
-              treeData={this.state.periodsAvailable}
-              value={this.state.selectedPeriods}
-              placeholder="Seleccione el periodo"
-              treeCheckable={true}
-              treeDefaultExpandAll={true}
-              showCheckedStrategy={"SHOW_PARENT"}
-              onChange={this.onChangePeriod}
-              disabled={
-                this.state.selectedLevel === undefined ||
-                this.state.selectedReport === undefined
-              }
-            ></TreeSelect>
-          </Form.Item>
-          <Form.Item
-            name="programs"
-            label="Programa"
-            className="generate-report-formitem"
-            rules={[
-              {
-                required: true,
-                message: "Por favor seleccione uno o varios programas.",
-              },
-            ]}
-          >
-            <TreeSelect
-              treeData={this.state.programsAvailable}
-              value={this.state.selectedPrograms}
-              placeholder="Seleccione el programa"
-              treeCheckable={true}
-              treeDefaultExpandAll={true}
-              onChange={this.onChangePrograms}
-              showCheckedStrategy={"SHOW_PARENT"}
-              disabled={
-                this.state.selectedLevel === undefined ||
-                this.state.selectedReport === undefined
-              }
-            ></TreeSelect>
-          </Form.Item>
-          <Form.Item className="generate-report-formitem-button">
-            <Button block type="primary" htmlType="submit">
-              <DownloadOutlined /> Descargar
-            </Button>
-          </Form.Item>
-        </Form>
+        {this.renderForm()}
         <a href="null" ref={this.linkRef} style={{ visibility: "hidden" }}>
           .
         </a>

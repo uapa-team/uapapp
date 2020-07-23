@@ -198,14 +198,14 @@ class UnalCanvas extends Component {
               </div>
               <div className="mainMenu">
                 <div className="btn-group">
-                  <a href="/" className="btn btn-default dropdown-toggle">
+                  <a href="/uapapp" className="btn btn-default dropdown-toggle">
                     Inicio
                   </a>
                   <span className="caret-right" />
                 </div>
                 <div className="btn-group">
                   <a
-                    href="/contact"
+                    href="/uapapp/contact"
                     className="btn btn-default dropdown-toggle"
                   >
                     Contáctenos
@@ -358,7 +358,7 @@ class UnalCanvas extends Component {
               </a>
               <br />
               <a href="index.html#">Acerca de este sitio web</a>
-              <br /> Última actualización: 11/06/2020
+              <br /> Última actualización: 09/07/2020
             </p>
           </div>
           <div className="col-md-2 col-lg-2 col-sm-2 col-xs-12 logos">

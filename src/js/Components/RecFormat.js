@@ -19,6 +19,8 @@ const { Option } = Select;
 const { Title } = Typography;
 
 class RecFormat extends React.Component {
+  formRef = React.createRef();
+
   constructor(props) {
     super(props);
     this.state = {
@@ -95,6 +97,13 @@ class RecFormat extends React.Component {
         recievedPrograms: loadedPrograms,
       });
     });
+
+    this.formRef.current.setFieldsValue({
+      format: undefined,
+      subformat: undefined,
+      periods: undefined,
+      programs: undefined,
+    });
   };
 
   handleChangeFormat = (value) => {
@@ -113,10 +122,14 @@ class RecFormat extends React.Component {
         selectedFormat: value,
       });
     });
+
+    this.formRef.current.setFieldsValue({
+      subformat: undefined,
+      periods: undefined,
+    });
   };
 
   handleChangeSubformat = (value) => {
-    console.log(value);
     Backend.sendRequest("POST", "FR_periods", {
       username: localStorage.getItem("username"),
       level: this.state.selectedLevel,
@@ -145,6 +158,10 @@ class RecFormat extends React.Component {
         recievedPeriods: loadedPeriods,
         selectedSubformat: value,
       });
+
+      this.formRef.current.setFieldsValue({
+        periods: undefined,
+      });
     });
 
     Backend.sendRequest("POST", "FR_names", {
@@ -161,10 +178,17 @@ class RecFormat extends React.Component {
         recname: res[0],
       }).then(async (response) => {
         let res = await response.json();
-        this.setState({
-          youtubeURLCar: res[0].data.url_video_cargue,
-          youtubeURLDes: res[0].data.url_video_descripcion,
-        });
+        if (res.length !== 0) {
+          this.setState({
+            youtubeURLCar: res[0].data.url_video_cargue,
+            youtubeURLDes: res[0].data.url_video_descripcion,
+          });
+        } else {
+          this.setState({
+            youtubeURLCar: "XhyjiFEB5TY",
+            youtubeURLDes: "XhyjiFEB5TY",
+          });
+        }
       });
     });
   };
@@ -232,7 +256,7 @@ class RecFormat extends React.Component {
           this.state.selectedSubformat +
           " " +
           this.state.selectedLevel +
-          ".xls";
+          ".xlsx";
         a.href = href;
         a.click();
         a.href = "";
@@ -242,6 +266,94 @@ class RecFormat extends React.Component {
 
   onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
+  };
+
+  renderForm = () => {
+    let form = (
+      <Form
+        ref={this.formRef}
+        onFinish={this.onFinish}
+        onFinishFailed={this.onFinishFailed}
+        layout="vertical"
+      >
+        <Form.Item name="level" label="Nivel" className="rec-format-formitem">
+          <Select
+            className="select-props"
+            placeholder="Seleccione el nivel"
+            onChange={this.handleChangeLevel}
+          >
+            {this.state.recievedLevels}
+          </Select>
+        </Form.Item>
+        <Form.Item
+          name="format"
+          label="Formato"
+          className="rec-format-formitem"
+        >
+          <Select
+            className="select-props"
+            placeholder="Seleccione el formato"
+            onChange={this.handleChangeFormat}
+            disabled={this.state.selectedLevel === undefined}
+          >
+            {this.state.recievedFormats}
+          </Select>
+        </Form.Item>
+        <Form.Item
+          name="subformat"
+          label="Sub-formato"
+          className="rec-format-formitem"
+        >
+          <Select
+            className="select-props"
+            placeholder="Seleccione el sub-formato"
+            onChange={this.handleChangeSubformat}
+            disabled={this.state.selectedFormat === undefined}
+          >
+            {this.state.recievedSubformats}
+          </Select>
+        </Form.Item>
+        <Form.Item
+          name="periods"
+          label="Periodo"
+          className="rec-format-formitem"
+        >
+          <TreeSelect
+            treeData={this.state.recievedPeriods}
+            value={this.state.selectedPeriods}
+            placeholder="Seleccione el periodo"
+            treeCheckable={true}
+            treeDefaultExpandAll={true}
+            showCheckedStrategy={"SHOW_PARENT"}
+            onChange={this.handleChangePeriod}
+            disabled={this.state.selectedSubformat === undefined}
+          ></TreeSelect>
+        </Form.Item>
+        <Form.Item
+          name="programs"
+          label="Programa"
+          className="rec-format-formitem"
+        >
+          <TreeSelect
+            treeData={this.state.recievedPrograms}
+            value={this.state.selectedPrograms}
+            placeholder="Seleccione el programa"
+            treeCheckable={true}
+            treeDefaultExpandAll={true}
+            showCheckedStrategy={"SHOW_PARENT"}
+            onChange={this.handleChangeProgram}
+            disabled={this.state.selectedPeriods === undefined}
+          ></TreeSelect>
+        </Form.Item>
+        <Form.Item className="rec-format-formitem-button">
+          <Button block type="primary" htmlType="submit">
+            <DownloadOutlined />
+            Descargar
+          </Button>
+        </Form.Item>
+      </Form>
+    );
+    return form;
   };
 
   linkRef = React.createRef();
@@ -254,91 +366,7 @@ class RecFormat extends React.Component {
         </div>
         <Row gutter={16}>
           <Col span={12}>
-            <Form
-              onFinish={this.onFinish}
-              onFinishFailed={this.onFinishFailed}
-              layout="vertical"
-            >
-              <Form.Item
-                name="level"
-                label="Nivel"
-                className="rec-format-formitem"
-              >
-                <Select
-                  className="select-props"
-                  placeholder="Seleccione el nivel"
-                  onChange={this.handleChangeLevel}
-                >
-                  {this.state.recievedLevels}
-                </Select>
-              </Form.Item>
-              <Form.Item
-                name="format"
-                label="Formato"
-                className="rec-format-formitem"
-              >
-                <Select
-                  className="select-props"
-                  placeholder="Seleccione el formato"
-                  onChange={this.handleChangeFormat}
-                  disabled={this.state.selectedLevel === undefined}
-                >
-                  {this.state.recievedFormats}
-                </Select>
-              </Form.Item>
-              <Form.Item
-                name="subformat"
-                label="Sub-formato"
-                className="rec-format-formitem"
-              >
-                <Select
-                  className="select-props"
-                  placeholder="Seleccione el sub-formato"
-                  onChange={this.handleChangeSubformat}
-                  disabled={this.state.selectedFormat === undefined}
-                >
-                  {this.state.recievedSubformats}
-                </Select>
-              </Form.Item>
-              <Form.Item
-                name="periods"
-                label="Periodo"
-                className="rec-format-formitem"
-              >
-                <TreeSelect
-                  treeData={this.state.recievedPeriods}
-                  value={this.state.selectedPeriods}
-                  placeholder="Seleccione el periodo"
-                  treeCheckable={true}
-                  treeDefaultExpandAll={true}
-                  showCheckedStrategy={"SHOW_PARENT"}
-                  onChange={this.handleChangePeriod}
-                  disabled={this.state.selectedSubformat === undefined}
-                ></TreeSelect>
-              </Form.Item>
-              <Form.Item
-                name="programs"
-                label="Programa"
-                className="rec-format-formitem"
-              >
-                <TreeSelect
-                  treeData={this.state.recievedPrograms}
-                  value={this.state.selectedPrograms}
-                  placeholder="Seleccione el programa"
-                  treeCheckable={true}
-                  treeDefaultExpandAll={true}
-                  showCheckedStrategy={"SHOW_PARENT"}
-                  onChange={this.handleChangeProgram}
-                  disabled={this.state.selectedPeriods === undefined}
-                ></TreeSelect>
-              </Form.Item>
-              <Form.Item className="rec-format-formitem-button">
-                <Button block type="primary" htmlType="submit">
-                  <DownloadOutlined />
-                  Descargar
-                </Button>
-              </Form.Item>
-            </Form>
+            {this.renderForm()}
             <a href="null" ref={this.linkRef} style={{ visibility: "hidden" }}>
               .
             </a>
