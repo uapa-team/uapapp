@@ -256,7 +256,7 @@ class RecFormat extends React.Component {
           this.state.selectedSubformat +
           " " +
           this.state.selectedLevel +
-          ".xls";
+          ".xlsx";
         a.href = href;
         a.click();
         a.href = "";

@@ -110,7 +110,7 @@ class GenerateReport extends React.Component {
           "reporte" +
           this.state.selectedLevel +
           this.state.selectedReport +
-          ".xls";
+          ".xlsx";
         a.href = href;
         a.click();
         a.href = "";
