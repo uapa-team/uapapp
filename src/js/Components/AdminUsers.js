@@ -208,6 +208,45 @@ class AdminUsers extends React.Component {
       let res = await response.json();
 
       if (res.status === 200) {
+        //Add permissions:
+        let username = values["usernameUN"];
+        let programs = [];
+
+        values["programsPre"].forEach((element) => {
+          programs = programs.concat(element);
+        });
+        values["programsPos"].forEach((element) => {
+          programs = programs.concat(element);
+        });
+        programs = Array.from(new Set(programs));
+
+        let rol = values["userType"];
+
+        const key = "updatable";
+        message.loading({ content: "Guardando permisos...", key });
+        Backend.sendRequest(
+          "POST",
+          "app_user_programs/add_programs_with_delete",
+          {
+            username: username,
+            programs: programs,
+          }
+        ).then(async (response) => {
+          if (response.status === 200) {
+            Backend.sendRequest("POST", "change_role", {
+              username: username,
+              role: rol,
+            }).then(async (response) => {
+              if (response.status === 200) {
+                //Todo correcto.
+              } else {
+                //Hay un error actualizando los permisos.
+              }
+            });
+          }
+        });
+
+        //Prompt new user:
         message.success({ content: "Usuario creado correctamente.", key });
         let users = this.state.dataSourceUsers.slice();
         users.push({
