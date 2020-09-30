@@ -63,6 +63,10 @@ class MainMenu extends React.Component {
             selectedKeys={[this.state.current]}
             mode="horizontal"
           >
+            <Menu.Item key="we">
+              <HomeOutlined />
+              Home
+            </Menu.Item>
             <Menu.Item key="gr">
               <AuditOutlined />
               Generar Reporte
@@ -80,6 +84,10 @@ class MainMenu extends React.Component {
             selectedKeys={[this.state.current]}
             mode="horizontal"
           >
+            <Menu.Item key="we">
+              <HomeOutlined />
+              Home
+            </Menu.Item>
             <Menu.Item key="ap">
               <AppstoreOutlined />
               Administración - Programas
@@ -130,6 +138,10 @@ class MainMenu extends React.Component {
             selectedKeys={[this.state.current]}
             mode="horizontal"
           >
+            <Menu.Item key="we">
+              <HomeOutlined />
+              Home
+            </Menu.Item>
             <Menu.Item key="gr">
               <AuditOutlined />
               Generar Reporte
@@ -146,7 +158,12 @@ class MainMenu extends React.Component {
             onClick={this.handleClick}
             selectedKeys={[this.state.current]}
             mode="horizontal"
-          ></Menu>
+          >
+            <Menu.Item key="we">
+              <HomeOutlined />
+              Home
+            </Menu.Item>
+          </Menu>
         );
     }
   };
