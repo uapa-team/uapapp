@@ -54,14 +54,6 @@ code {
   box-shadow: -1px 0 0 0 #2d2656 !important;
 }
 
-.ant-table-tbody tr:nth-child(odd) {
-  background-color: white;
-}
-
-.ant-table-tbody tr:nth-child(even) {
-  background-color: whitesmoke;
-}
-
 /* Estilos de Login */
 .login-general {
   padding: 1em;

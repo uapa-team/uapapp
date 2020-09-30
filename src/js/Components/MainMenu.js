@@ -27,7 +27,7 @@ class MainMenu extends React.Component {
 
   handlePermissions = () => {
     switch (localStorage.getItem("type")) {
-      case "1":
+      case "1": //Administrador:
         return (
           <Menu
             onClick={this.handleClick}
@@ -56,20 +56,24 @@ class MainMenu extends React.Component {
             </Menu.Item>
           </Menu>
         );
-      case "2":
+      case "2": //Auxiliar
         return (
           <Menu
             onClick={this.handleClick}
             selectedKeys={[this.state.current]}
             mode="horizontal"
           >
+            <Menu.Item key="gr">
+              <AuditOutlined />
+              Generar Reporte
+            </Menu.Item>
             <Menu.Item key="fr">
               <BookOutlined />
               Formatos Recolección
             </Menu.Item>
           </Menu>
         );
-      case "3":
+      case "3": //Coordinador:
         return (
           <Menu
             onClick={this.handleClick}
@@ -90,7 +94,36 @@ class MainMenu extends React.Component {
             </Menu.Item>
           </Menu>
         );
-      case "4":
+      case "4": //UAPA:
+        return (
+          <Menu
+            onClick={this.handleClick}
+            selectedKeys={[this.state.current]}
+            mode="horizontal"
+          >
+            <Menu.Item key="we">
+              <HomeOutlined />
+              Home
+            </Menu.Item>
+            <Menu.Item key="au">
+              <ScheduleOutlined />
+              Admin. Usuarios
+            </Menu.Item>
+            <Menu.Item key="ap">
+              <AppstoreOutlined />
+              Admin. Programas
+            </Menu.Item>
+            <Menu.Item key="gr">
+              <AuditOutlined />
+              Generar Reporte
+            </Menu.Item>
+            <Menu.Item key="fr">
+              <BookOutlined />
+              Formatos Recolección
+            </Menu.Item>
+          </Menu>
+        );
+      case "5": //Dependencia
         return (
           <Menu
             onClick={this.handleClick}
