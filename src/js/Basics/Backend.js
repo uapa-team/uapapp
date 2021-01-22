@@ -1,6 +1,7 @@
 export default class Backend {
   static backEndUrl = "https://www.ingenieria.bogota.unal.edu.co/uapapp_api/";
   //static backEndUrl = "http://localhost:3000/";
+  static newBackend = "168.176.26.91:8002/uapapp/";
 
   static openLink(url) {
     window.open(this.backEndUrl + url, "_blank");
@@ -8,6 +9,23 @@ export default class Backend {
 
   static _request(method, path, headers, body) {
     let newurl = this.backEndUrl + path;
+    let answer = fetch(newurl, {
+      method: method,
+      headers: headers,
+      body: JSON.stringify(body),
+    });
+    answer.then((res) => {
+      if (res.status === 401) {
+        localStorage.removeItem("jwt");
+        localStorage.removeItem("type");
+        window.location.reload();
+      }
+    });
+    return answer;
+  }
+
+  static _newRequest(method, path, headers, body) {
+    let newurl = this.newBackend + path;
     let answer = fetch(newurl, {
       method: method,
       headers: headers,
@@ -37,7 +55,7 @@ export default class Backend {
   }
 
   static sendLogin(username, password) {
-    return this._request(
+    return this._newRequest(
       "POST",
       "login",
       {
@@ -52,7 +70,7 @@ export default class Backend {
   }
 
   static check_session() {
-    let newurl = this.backEndUrl + "check_session";
+    let newurl = this.newBackend + "refresh";
     let answer = fetch(newurl, {
       method: "POST",
       headers: {
