@@ -54,31 +54,17 @@ export default class Backend {
     );
   }
 
-  static newsendRequest(method, path, body) {
-    return this._newrequest(
-      method,
-      path,
-      {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + localStorage.getItem("jwt"),
-      },
-      body
-    );
-  }
-
   static sendLogin(username, password) {
-    return this.newsendRequest(
+    return this._newrequest(
       "POST",
       "login",
       {
-        Accept: "application/json",
         "Content-Type": "application/json",
       },
       {
         username: username,
-        password: password,
-      }
+        password: password,    
+    }
     );
   }
 
