@@ -7,6 +7,14 @@ export default class Backend {
     window.open(this.backEndUrl + url, "_blank");
   }
 
+  static clearLocalStorage() {
+    localStorage.removeItem("username")
+    localStorage.removeItem("access");
+    localStorage.removeItem("refresh");
+    localStorage.removeItem("type");
+    window.location.reload();
+  }
+
   static _request(method, path, headers, body) {
     let newurl = this.backEndUrl + path;
     let answer = fetch(newurl, {
@@ -16,9 +24,7 @@ export default class Backend {
     });
     answer.then((res) => {
       if (res.status === 401) {
-        localStorage.removeItem("jwt");
-        localStorage.removeItem("type");
-        window.location.reload();
+        this.clearLocalStorage();
       }
     });
     return answer;
@@ -33,9 +39,7 @@ export default class Backend {
     });
     answer.then((res) => {
       if (res.status === 401) {
-        localStorage.removeItem("jwt");
-        localStorage.removeItem("type");
-        window.location.reload();
+        this.clearLocalStorage();
       }
     });
     return answer;
@@ -48,7 +52,7 @@ export default class Backend {
       {
         Accept: "application/json",
         "Content-Type": "application/json",
-        Authorization: "Bearer " + localStorage.getItem("jwt"),
+        Authorization: "Bearer " + localStorage.getItem("access"),
       },
       body
     );
@@ -75,22 +79,17 @@ export default class Backend {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
-        Authorization: "Bearer " + localStorage.getItem("jwt"),
       },
-      body: JSON.stringify({ username: localStorage.getItem("username") }),
+      body: JSON.stringify({ refresh: localStorage.getItem("refresh") }),
     }).catch(function (error) {
-      localStorage.removeItem("username");
-      localStorage.removeItem("type");
-      localStorage.removeItem("jwt");
-      window.location.reload();
+      this.clearLocalStorage();
     });
 
     answer.then((res) => {
-      if (res.status !== 200) {
-        localStorage.removeItem("username");
-        localStorage.removeItem("type");
-        localStorage.removeItem("jwt");
-        window.location.reload();
+      if (res.status === 200) {
+        localStorage.setItem("access", res["access"]);
+      } else {
+        this.clearLocalStorage();
       }
     });
   }

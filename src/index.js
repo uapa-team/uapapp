@@ -18,7 +18,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
   <Route
     {...rest}
     render={(props) =>
-      localStorage.getItem("jwt") != null ? (
+      localStorage.getItem("access") != null ? (
         <Component {...props} />
       ) : (
         <Redirect to="/" />
@@ -31,7 +31,7 @@ const LoginRoute = ({ component: Component, ...rest }) => (
   <Route
     {...rest}
     render={(props) =>
-      localStorage.getItem("jwt") == null ? (
+      localStorage.getItem("access") == null ? (
         <Component {...props} />
       ) : (
         <Redirect to="/home" />
@@ -56,7 +56,7 @@ ReactDOM.render(
         />
         <PrivateRoute exact path="/rec_format" component={RecFormat} />
         <Route path="*" component={() => "404 NOT FOUND"}>
-          {localStorage.getItem("jwt") != null ? (
+          {localStorage.getItem("access") != null ? (
             <Redirect to="/home" />
           ) : (
             <Redirect to="/" />

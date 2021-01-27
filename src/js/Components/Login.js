@@ -25,15 +25,16 @@ class NormalLoginForm extends React.Component {
     Backend.sendLogin(values.username, values.password)
       .then(async (response) => {
         let res = await response.json();
-        if (res.status === 403) {
+        if (response.status === 403) {
           message.error({ content: "Acceso restringido.", key });
-        } else if (res.status === 404) {
+        } else if (response.status === 404) {
           message.error({ content: "Contraseña incorrecta.", key });
-        } else if (res.status === 200) {
+        } else if (response.status === 200) {
           message.success({ content: "Inicio de sesión exitoso.", key });
-          localStorage.setItem("username", res.user.data["username"]);
-          localStorage.setItem("jwt", res.user.data["auth_token"]);
-          localStorage.setItem("type", res.user.data["role"]);
+          localStorage.setItem("username", res["username"]);
+          localStorage.setItem("refresh", res["refresh"]);
+          localStorage.setItem("access", res["access"]);
+          localStorage.setItem("type", res["role"]);
           window.location.reload();
         } else {
           message.error({
