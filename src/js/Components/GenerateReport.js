@@ -79,10 +79,10 @@ class GenerateReport extends React.Component {
 
     Backend.sendRequest(
       "POST",
-      "reporte/".concat(this.state.infoReports[values].code),
+      "report/".concat(this.state.infoReports[values["report"]].code),
       {
-        periodos: periods,
-        programas: programs,
+        periods: periods,
+        programs: programs,
       }
     )
       .then(async (response) => {
@@ -164,7 +164,6 @@ class GenerateReport extends React.Component {
         children: [],
       },
     ];
-    console.log(this.state.infoReports[value]);
 
     if (this.state.infoReports[value].periods.length > 1) {
       for (let i = 0; i < this.state.infoReports[value].periods.length; i++) {

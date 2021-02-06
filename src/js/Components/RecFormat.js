@@ -38,33 +38,30 @@ class RecFormat extends React.Component {
       whichVideo: "Descripción",
       youtubeURLDes: undefined,
       youtubeURLCar: undefined,
+      infoSubreports: {},
     };
   }
 
   componentDidMount() {
-    Backend.sendRequest("POST", "FR_levels", {
-      username: localStorage.getItem("username"),
-    }).then(async (response) => {
-      let res = await response.json();
-      let loadedOptions = [];
-      for (let i = 0; i < res.length; i++) {
-        loadedOptions.push(<Option key={res[i]}>{res[i]}</Option>);
-      }
-      this.setState({
-        recievedLevels: loadedOptions,
-      });
+    let levels = [
+      <Option key={"Pregrado"}>Pregrado</Option>,
+      <Option key={"Posgrado"}>Posgrado</Option>,
+    ];
+
+    this.setState({
+      recievedLevels: levels,
     });
   }
 
   handleChangeLevel = (value) => {
-    Backend.sendRequest("POST", "FR_formats", {
-      username: localStorage.getItem("username"),
-      level: value,
-    }).then(async (response) => {
+    Backend.sendRequest("GET", "formats").then(async (response) => {
       let res = await response.json();
+      console.log(res);
       let loadedOptions = [];
-      for (let i = 0; i < res.length; i++) {
-        loadedOptions.push(<Option key={res[i]}>{res[i]}</Option>);
+      for (let i = 0; i < res["Formatos"].length; i++) {
+        loadedOptions.push(
+          <Option key={res["Formatos"][i]}>{res["Formatos"][i]}</Option>
+        );
       }
       this.setState({
         recievedFormats: loadedOptions,
@@ -72,31 +69,35 @@ class RecFormat extends React.Component {
       });
     });
 
-    Backend.sendRequest("POST", "app_user_programs_levels", {
-      username: localStorage.getItem("username"),
-      level: value,
-    }).then(async (response) => {
-      let res = await response.json();
-      let loadedPrograms = [
-        {
-          title: "Todos los disponibles",
-          value: "all",
-          key: "all",
-          children: [],
-        },
-      ];
-      for (let i = 0; i < res.length; i++) {
-        let program = {
-          title: res[i].data["programa"],
-          value: res[i].data["programa"],
-          key: res[i].data["programa"],
-        };
-        loadedPrograms[0].children.push(program);
+    let extension = value === "Pregrado" ? "PRE" : "POS";
+    Backend.sendRequest("GET", "programs?level=".concat(extension)).then(
+      async (response) => {
+        let res = await response.json();
+        let loadedPrograms = [
+          {
+            title: "Todos los disponibles",
+            value: "all",
+            key: "all",
+            children: [],
+          },
+        ];
+
+        for (let i = 0; i < res["Programs"].length; i++) {
+          let r_program = res["Programs"][i];
+          let program = {
+            title: r_program[1],
+            value: r_program[0],
+            key: r_program[0],
+          };
+          loadedPrograms[0].children.push(program);
+        }
+
+        this.setState({
+          selectedLevel: value,
+          recievedPrograms: loadedPrograms,
+        });
       }
-      this.setState({
-        recievedPrograms: loadedPrograms,
-      });
-    });
+    );
 
     this.formRef.current.setFieldsValue({
       format: undefined,
@@ -107,21 +108,24 @@ class RecFormat extends React.Component {
   };
 
   handleChangeFormat = (value) => {
-    Backend.sendRequest("POST", "FR_sub_formats", {
-      username: localStorage.getItem("username"),
-      level: this.state.selectedLevel,
-      format: value,
-    }).then(async (response) => {
-      let res = await response.json();
-      let loadedOptions = [];
-      for (let i = 0; i < res.length; i++) {
-        loadedOptions.push(<Option key={res[i]}>{res[i]}</Option>);
+    Backend.sendRequest("GET", "subformats/".concat(value)).then(
+      async (response) => {
+        let res = await response.json();
+
+        let info = {};
+        let loadedOptions = [];
+        for (var subreport in res) {
+          info[subreport] = res[subreport];
+          loadedOptions.push(<Option key={subreport}>{subreport}</Option>);
+        }
+
+        this.setState({
+          recievedSubformats: loadedOptions,
+          selectedFormat: value,
+          infoSubreports: info,
+        });
       }
-      this.setState({
-        recievedSubformats: loadedOptions,
-        selectedFormat: value,
-      });
-    });
+    );
 
     this.formRef.current.setFieldsValue({
       subformat: undefined,
@@ -130,66 +134,38 @@ class RecFormat extends React.Component {
   };
 
   handleChangeSubformat = (value) => {
-    Backend.sendRequest("POST", "FR_periods", {
-      username: localStorage.getItem("username"),
-      level: this.state.selectedLevel,
-      format: this.state.selectedFormat,
-      sub_format: value,
-    }).then(async (response) => {
-      let res = await response.json();
-      let loadedPeriods = [
-        {
-          title: "Todos los disponibles",
-          value: "all",
-          key: "all",
-          children: [],
-        },
-      ];
-      for (let i = 0; i < res.length; i++) {
+    let loadedPeriods = [
+      {
+        title: "Todos los disponibles",
+        value: "all",
+        key: "all",
+        children: [],
+      },
+    ];
+
+    if (this.state.infoSubreports[value].periods.length > 1) {
+      for (
+        let i = 0;
+        i < this.state.infoSubreports[value].periods.length;
+        i++
+      ) {
+        let r_period = this.state.infoSubreports[value].periods[i];
         let period = {
-          title: res[i],
-          value: res[i],
-          key: res[i],
+          title: r_period[1],
+          value: r_period[0],
+          key: r_period[0],
         };
         loadedPeriods[0].children.push(period);
       }
+    }
 
-      this.setState({
-        recievedPeriods: loadedPeriods,
-        selectedSubformat: value,
-      });
-
-      this.formRef.current.setFieldsValue({
-        periods: undefined,
-      });
+    this.setState({
+      recievedPeriods: loadedPeriods,
+      selectedSubformat: value,
     });
 
-    Backend.sendRequest("POST", "FR_names", {
-      username: localStorage.getItem("username"),
-      format: this.state.selectedFormat,
-      sub_format: value,
-    }).then(async (response) => {
-      let res = await response.json();
-      this.setState({
-        formatName: res,
-      });
-
-      Backend.sendRequest("POST", "get_video_url", {
-        recname: res[0],
-      }).then(async (response) => {
-        let res = await response.json();
-        if (res.length !== 0) {
-          this.setState({
-            youtubeURLCar: res[0].data.url_video_cargue,
-            youtubeURLDes: res[0].data.url_video_descripcion,
-          });
-        } else {
-          this.setState({
-            youtubeURLCar: "XhyjiFEB5TY",
-            youtubeURLDes: "XhyjiFEB5TY",
-          });
-        }
-      });
+    this.formRef.current.setFieldsValue({
+      periods: undefined,
     });
   };
 
@@ -231,10 +207,14 @@ class RecFormat extends React.Component {
       programs = values["programs"];
     }
 
-    Backend.sendRequest("POST", this.state.formatName, {
-      periodos: periods,
-      programas: programs,
-    })
+    Backend.sendRequest(
+      "POST",
+      "report/".concat(this.state.infoSubreports[values["report"]].code),
+      {
+        periods: periods,
+        programs: programs,
+      }
+    )
       .then(async (response) => {
         if (response.status === 200) {
           message.success({ content: "Formato obtenido correctamente.", key });
