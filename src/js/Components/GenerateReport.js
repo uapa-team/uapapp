@@ -21,7 +21,7 @@ class GenerateReport extends React.Component {
       selectedPeriods: [],
       programsAvailable: [],
       periodsAvailable: [],
-      rutasBack: {},
+      infoReports: {},
     };
   }
 
@@ -38,16 +38,15 @@ class GenerateReport extends React.Component {
     Backend.sendRequest("GET", "reports").then(async (response) => {
       let res = await response.json();
       let loadedOptions = [];
-      let infoReport = {};
+      let info = {};
       for (var report in res) {
-        infoReport[report] = res[report];
-        console.log(report);
+        info[report] = res[report];
         loadedOptions.push(<Option key={report}>{report}</Option>);
       }
 
       this.setState({
         reportOptions: loadedOptions,
-        rutasBack: infoReport,
+        infoReports: info,
       });
     });
   }
@@ -78,10 +77,14 @@ class GenerateReport extends React.Component {
       programs = values["programs"];
     }
 
-    Backend.sendRequest("POST", this.state.rutasBack[values.report], {
-      periodos: periods,
-      programas: programs,
-    })
+    Backend.sendRequest(
+      "POST",
+      "reporte/".concat(this.state.infoReports[values].code),
+      {
+        periodos: periods,
+        programas: programs,
+      }
+    )
       .then(async (response) => {
         if (response.status === 200) {
           message.success({ content: "Reporte creado correctamente.", key });
@@ -116,34 +119,34 @@ class GenerateReport extends React.Component {
 
   handleChangeLevel = (value) => {
     let extension = value === "Pregrado" ? "PRE" : "POS";
-    Backend.sendRequest("POST", "programs?level=".concat(extension), {
-      level: value,
-      username: localStorage.getItem("username"),
-    }).then(async (response) => {
-      let res = await response.json();
-      let loadedPrograms = [
-        {
-          title: "Todos los disponibles",
-          value: "all",
-          key: "all",
-          children: [],
-        },
-      ];
+    Backend.sendRequest("GET", "programs?level=".concat(extension)).then(
+      async (response) => {
+        let res = await response.json();
+        let loadedPrograms = [
+          {
+            title: "Todos los disponibles",
+            value: "all",
+            key: "all",
+            children: [],
+          },
+        ];
 
-      for (let i = 0; i < res.length; i++) {
-        let program = {
-          title: res[i].data["programa"],
-          value: res[i].data["programa"],
-          key: res[i].data["programa"],
-        };
-        loadedPrograms[0].children.push(program);
+        for (let i = 0; i < res["Programs"].length; i++) {
+          let r_program = res["Programs"][i];
+          let program = {
+            title: r_program[1],
+            value: r_program[0],
+            key: r_program[0],
+          };
+          loadedPrograms[0].children.push(program);
+        }
+
+        this.setState({
+          selectedLevel: value,
+          programsAvailable: loadedPrograms,
+        });
       }
-
-      this.setState({
-        selectedLevel: value,
-        programsAvailable: loadedPrograms,
-      });
-    });
+    );
 
     this.formRef.current.setFieldsValue({
       report: undefined,
@@ -153,32 +156,27 @@ class GenerateReport extends React.Component {
   };
 
   handleChangeReport = (value) => {
-    Backend.sendRequest("POST", "reports_periods", {
-      report_name: value,
-    }).then(async (response) => {
-      let res = await response.json();
-      let loadedPeriods = [
-        {
-          title: "Todos los disponibles",
-          value: "all",
-          key: "all",
-          children: [],
-        },
-      ];
+    let loadedPeriods = [
+      {
+        title: "Todos los disponibles",
+        value: "all",
+        key: "all",
+        children: [],
+      },
+    ];
 
-      for (let i = 0; i < res.length; i++) {
-        let period = {
-          title: res[i].data["periodo"],
-          value: res[i].data["periodo"],
-          key: res[i].data["periodo"],
-        };
-        loadedPeriods[0].children.push(period);
-      }
+    /*for (let i = 0; i < res.length; i++) {
+      let period = {
+        title: res[i].data["periodo"],
+        value: res[i].data["periodo"],
+        key: res[i].data["periodo"],
+      };
+      loadedPeriods[0].children.push(period);
+    }*/
 
-      this.setState({
-        selectedReport: value,
-        periodsAvailable: loadedPeriods,
-      });
+    this.setState({
+      selectedReport: value,
+      periodsAvailable: loadedPeriods,
     });
 
     this.formRef.current.setFieldsValue({
