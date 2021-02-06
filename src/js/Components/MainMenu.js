@@ -27,7 +27,7 @@ class MainMenu extends React.Component {
 
   handlePermissions = () => {
     switch (localStorage.getItem("type")) {
-      case "1": //Administrador:
+      case "Administrador": //Administrador:
         return (
           <Menu
             onClick={this.handleClick}
@@ -56,7 +56,7 @@ class MainMenu extends React.Component {
             </Menu.Item>
           </Menu>
         );
-      case "2": //Auxiliar
+      case "Auxiliar": //Auxiliar
         return (
           <Menu
             onClick={this.handleClick}
@@ -77,7 +77,7 @@ class MainMenu extends React.Component {
             </Menu.Item>
           </Menu>
         );
-      case "3": //Coordinador:
+      case "Coordinador": //Coordinador:
         return (
           <Menu
             onClick={this.handleClick}
@@ -102,7 +102,7 @@ class MainMenu extends React.Component {
             </Menu.Item>
           </Menu>
         );
-      case "4": //UAPA:
+      case "UAPA": //UAPA:
         return (
           <Menu
             onClick={this.handleClick}
@@ -131,7 +131,7 @@ class MainMenu extends React.Component {
             </Menu.Item>
           </Menu>
         );
-      case "5": //Dependencia
+      case "Dependencia": //Dependencia
         return (
           <Menu
             onClick={this.handleClick}

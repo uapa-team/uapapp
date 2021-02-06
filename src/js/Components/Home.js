@@ -10,7 +10,7 @@ import GenerateReport from "./GenerateReport";
 import RecFormat from "./RecFormat";
 import Welcome from "./Welcome";
 
-import Backend from "../Basics/Backend";
+//import Backend from "../Basics/Backend";
 
 const componentOf = {
   au: <AdminUsers />,
@@ -35,7 +35,7 @@ class Home extends React.Component {
   };
 
   componentDidMount() {
-    Backend.check_session();
+    //Backend.check_session();
   }
 
   render() {

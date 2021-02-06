@@ -26,36 +26,28 @@ class GenerateReport extends React.Component {
   }
 
   componentDidMount() {
-    Backend.sendRequest("GET", "reports_info").then(async (response) => {
+    let levels = [
+      <Option key={"Pregrado"}>Pregrado</Option>,
+      <Option key={"Posgrado"}>Posgrado</Option>,
+    ];
+
+    this.setState({
+      levelsOptions: levels,
+    });
+
+    Backend.sendRequest("GET", "reports").then(async (response) => {
       let res = await response.json();
       let loadedOptions = [];
-      let routesRecieved = {};
-
-      for (let i = 0; i < res.length; i++) {
-        routesRecieved[res[i].data["report_name"]] = res[i].data["ruta_back"];
-        loadedOptions.push(
-          <Option key={res[i].data["report_name"]}>
-            {res[i].data["report_name"]}
-          </Option>
-        );
+      let infoReport = {};
+      for (var report in res) {
+        infoReport[report] = res[report];
+        console.log(report);
+        loadedOptions.push(<Option key={report}>{report}</Option>);
       }
 
       this.setState({
         reportOptions: loadedOptions,
-        rutasBack: routesRecieved,
-      });
-    });
-
-    Backend.sendRequest("POST", "FR_levels", {
-      username: localStorage.getItem("username"),
-    }).then(async (response) => {
-      let res = await response.json();
-      let loadedOptions = [];
-      for (let i = 0; i < res.length; i++) {
-        loadedOptions.push(<Option key={res[i]}>{res[i]}</Option>);
-      }
-      this.setState({
-        levelsOptions: loadedOptions,
+        rutasBack: infoReport,
       });
     });
   }
@@ -123,7 +115,8 @@ class GenerateReport extends React.Component {
   };
 
   handleChangeLevel = (value) => {
-    Backend.sendRequest("POST", "app_user_programs_levels", {
+    let extension = value === "Pregrado" ? "PRE" : "POS";
+    Backend.sendRequest("POST", "programs?level=".concat(extension), {
       level: value,
       username: localStorage.getItem("username"),
     }).then(async (response) => {

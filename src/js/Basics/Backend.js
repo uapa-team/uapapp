@@ -46,7 +46,7 @@ export default class Backend {
   }
 
   static sendRequest(method, path, body) {
-    return this._request(
+    return this._newrequest(
       method,
       path,
       {
@@ -70,28 +70,6 @@ export default class Backend {
         password: password,    
     }
     );
-  }
-
-  static check_session() {
-    let newurl = this.newBackend + "refresh";
-    let answer = fetch(newurl, {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ refresh: localStorage.getItem("refresh") }),
-    }).catch(function (error) {
-      this.clearLocalStorage();
-    });
-
-    answer.then((res) => {
-      if (res.status === 200) {
-        localStorage.setItem("access", res["access"]);
-      } else {
-        this.clearLocalStorage();
-      }
-    });
   }
 }
 
