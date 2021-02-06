@@ -164,15 +164,19 @@ class GenerateReport extends React.Component {
         children: [],
       },
     ];
+    console.log(this.state.infoReports[value]);
 
-    /*for (let i = 0; i < res.length; i++) {
-      let period = {
-        title: res[i].data["periodo"],
-        value: res[i].data["periodo"],
-        key: res[i].data["periodo"],
-      };
-      loadedPeriods[0].children.push(period);
-    }*/
+    if (this.state.infoReports[value].periods.length > 1) {
+      for (let i = 0; i < this.state.infoReports[value].periods.length; i++) {
+        let r_period = this.state.infoReports[value].periods[i];
+        let period = {
+          title: r_period[1],
+          value: r_period[0],
+          key: r_period[0],
+        };
+        loadedPeriods[0].children.push(period);
+      }
+    }
 
     this.setState({
       selectedReport: value,
