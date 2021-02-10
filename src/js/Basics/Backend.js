@@ -8,45 +8,38 @@ export default class Backend {
   }
 
   static clearLocalStorage() {
-    localStorage.removeItem("username")
+    localStorage.removeItem("username");
     localStorage.removeItem("access");
     localStorage.removeItem("refresh");
     localStorage.removeItem("type");
     window.location.reload();
   }
 
-  static _request(method, path, headers, body) {
-    let newurl = this.backEndUrl + path;
-    let answer = fetch(newurl, {
-      method: method,
-      headers: headers,
-      body: JSON.stringify(body),
-    });
-    answer.then((res) => {
-      if (res.status === 401) {
-        this.clearLocalStorage();
+  static async refreshToken() {
+    return await this._request(
+      "POST",
+      "refresh",
+      {
+        "Content-Type": "application/json",
+      },
+      {
+        refresh: localStorage.getItem("refresh"),
       }
-    });
-    return answer;
+    );
   }
 
-  static _newrequest(method, path, headers, body) {
+  static _request(method, path, headers, body) {
     let newurl = this.newBackend + path;
     let answer = fetch(newurl, {
       method: method,
       headers: headers,
       body: JSON.stringify(body),
     });
-    answer.then((res) => {
-      if (res.status === 401) {
-        this.clearLocalStorage();
-      }
-    });
     return answer;
   }
 
-  static sendRequest(method, path, body) {
-    return this._newrequest(
+  static async sendRequest(method, path, body) {
+    let request = await this._request(
       method,
       path,
       {
@@ -56,10 +49,33 @@ export default class Backend {
       },
       body
     );
+
+    if (request.status === 401) {
+      let refresh = await this.refreshToken();
+      let res = await refresh.json();
+      if (refresh.status === 401) {
+        this.clearLocalStorage();
+      }
+      let newtoken = res["access"];
+      localStorage.setItem("access", newtoken);
+      let updatedRequest = await this._request(
+        method,
+        path,
+        {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + newtoken,
+        },
+        body
+      );
+      return updatedRequest;
+    } else {
+      return request;
+    }
   }
 
   static sendLogin(username, password) {
-    return this._newrequest(
+    return this._request(
       "POST",
       "login",
       {
@@ -67,8 +83,8 @@ export default class Backend {
       },
       {
         username: username,
-        password: password,    
-    }
+        password: password,
+      }
     );
   }
 }

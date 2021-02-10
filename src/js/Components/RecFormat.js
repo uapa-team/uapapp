@@ -54,22 +54,24 @@ class RecFormat extends React.Component {
   }
 
   handleChangeLevel = (value) => {
-    Backend.sendRequest("GET", "formats").then(async (response) => {
-      let res = await response.json();
-      console.log(res);
-      let loadedOptions = [];
-      for (let i = 0; i < res["Formatos"].length; i++) {
-        loadedOptions.push(
-          <Option key={res["Formatos"][i]}>{res["Formatos"][i]}</Option>
-        );
-      }
-      this.setState({
-        recievedFormats: loadedOptions,
-        selectedLevel: value,
-      });
-    });
-
     let extension = value === "Pregrado" ? "PRE" : "POS";
+
+    Backend.sendRequest("GET", "formats?level=".concat(extension)).then(
+      async (response) => {
+        let res = await response.json();
+        let loadedOptions = [];
+        for (let i = 0; i < res["Formatos"].length; i++) {
+          loadedOptions.push(
+            <Option key={res["Formatos"][i]}>{res["Formatos"][i]}</Option>
+          );
+        }
+        this.setState({
+          recievedFormats: loadedOptions,
+          selectedLevel: value,
+        });
+      }
+    );
+
     Backend.sendRequest("GET", "programs?level=".concat(extension)).then(
       async (response) => {
         let res = await response.json();
