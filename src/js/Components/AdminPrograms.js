@@ -105,24 +105,22 @@ class AdminPrograms extends React.Component {
       let preProgRec = [];
       let posProgRec = [];
       for (let i = 0; i < res.length; i++) {
-        if (res[i].data["cod_nivel"] !== 1) {
+        if (true) {
+          // TO DO: Replace with the line below when request is updated.
+          //if (res[i]["cod_nivel"] !== 1) {
           posProgRec.push(
             <TreeNode
-              key={res[i].data["cod_programa"]}
-              value={res[i].data["cod_programa"]}
-              title={
-                res[i].data["cod_programa"] + " - " + res[i].data["programa"]
-              }
+              key={res[i]["cod_programa"]}
+              value={res[i]["cod_programa"]}
+              title={res[i]["cod_programa"] + " - " + res[i]["programa"]}
             ></TreeNode>
           );
         } else {
           preProgRec.push(
             <TreeNode
-              key={res[i].data["cod_programa"]}
-              value={res[i].data["cod_programa"]}
-              title={
-                res[i].data["cod_programa"] + " - " + res[i].data["programa"]
-              }
+              key={res[i]["cod_programa"]}
+              value={res[i]["cod_programa"]}
+              title={res[i]["cod_programa"] + " - " + res[i]["programa"]}
             ></TreeNode>
           );
         }

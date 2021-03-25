@@ -56,9 +56,9 @@ class AdminProgramsProfes extends React.Component {
     let recievedProfes = [];
     for (let i = 0; i < this.props.teachers.length; i++) {
       recievedProfes.push({
-        key: this.props.teachers[i].data["dni_docente"],
-        correo: this.props.teachers[i].data["correo_unal"],
-        nombre: this.props.teachers[i].data["nombre_completo"],
+        key: this.props.teachers[i]["dni_docente"],
+        correo: this.props.teachers[i]["correo_unal"],
+        nombre: this.props.teachers[i]["nombre_completo"],
       });
     }
     recievedProfes = recievedProfes.sort((a, b) =>
@@ -66,30 +66,27 @@ class AdminProgramsProfes extends React.Component {
     );
     this.setState({ dataSourceProfes: recievedProfes });
 
-    Backend.sendRequest("POST", "get_professors_list").then(
+    Backend.sendRequest("POST", "get_professors_list", {}).then(
       async (response) => {
         let res = await response.json();
         let recievedProfesUsers = [];
         let recievedProfesNames = [];
         for (let i = 0; i < res.length; i++) {
           if (
-            res[i].data["nombre_completo"] !== "" ||
-            res[i].data["nombre_completo"] !== null
+            res[i]["nombre_completo"] !== "" ||
+            res[i]["nombre_completo"] !== null
           ) {
             recievedProfesNames.push(
-              <Option key={res[i].data["dni_persona"]}>
-                {res[i].data["nombre_completo"]}
+              <Option key={res[i]["dni_persona"]}>
+                {res[i]["nombre_completo"]}
               </Option>
             );
           }
 
-          if (
-            res[i].data["correo_unal"] !== "" ||
-            res[i].data["correo_unal"] !== null
-          ) {
+          if (res[i]["correo_unal"] !== "" || res[i]["correo_unal"] !== null) {
             recievedProfesUsers.push(
-              <Option key={res[i].data["dni_persona"]}>
-                {res[i].data["correo_unal"]}
+              <Option key={res[i]["dni_persona"]}>
+                {res[i]["correo_unal"]}
               </Option>
             );
           }
@@ -101,12 +98,12 @@ class AdminProgramsProfes extends React.Component {
       }
     );
 
-    Backend.sendRequest("GET", "periods").then(async (response) => {
+    Backend.sendRequest("POST", "periods", {}).then(async (response) => {
       let periods = await response.json();
       periods = periods.map((data) => {
         let ndata = {
-          title: data["data"]["periodo"],
-          value: data["data"]["periodo"],
+          title: data["periodo"],
+          value: data["periodo"],
         };
         return ndata;
       });
@@ -248,9 +245,9 @@ class AdminProgramsProfes extends React.Component {
           response.json().then((response) => {
             let dataSourceProfes = this.state.dataSourceProfes.slice();
             dataSourceProfes.push({
-              key: response[0].data.dni_docente,
-              correo: response[0].data.correo_unal,
-              nombre: response[0].data.nombres,
+              key: response[0].dni_docente,
+              correo: response[0].correo_unal,
+              nombre: response[0].nombres,
             });
             dataSourceProfes = dataSourceProfes.sort((a, b) =>
               a.nombre.localeCompare(b.nombre)
@@ -342,7 +339,7 @@ class AdminProgramsProfes extends React.Component {
       dni_docente: professor,
     }).then(async (response) => {
       response.json().then(async (response) => {
-        let periods_professor = response.map((data) => data["data"]["periodo"]);
+        let periods_professor = response.map((data) => data["periodo"]);
         this.formRef.current.setFieldsValue({
           periods: periods_professor,
         });
@@ -354,7 +351,7 @@ class AdminProgramsProfes extends React.Component {
 
   onChangeInput = (value) => {
     Backend.sendRequest("POST", "get_professor_dni", {
-      dni_professor: value.toString(),
+      dni_docente: value.toString(),
     }).then(async (response) => {
       let res = await response.json();
       this.setState({ selectedProfe: res });
@@ -517,9 +514,8 @@ class AdminProgramsProfes extends React.Component {
                   <>
                     <Text>
                       Profesor seleccionado:{" "}
-                      {this.state.selectedProfe[0].data.nombre_completo}. Correo
-                      institucional:{" "}
-                      {this.state.selectedProfe[0].data.correo_unal}.
+                      {this.state.selectedProfe[0].nombre_completo}. Correo
+                      institucional: {this.state.selectedProfe[0].correo_unal}.
                     </Text>
                     <Form.Item>
                       <Button

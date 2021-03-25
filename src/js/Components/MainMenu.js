@@ -27,7 +27,7 @@ class MainMenu extends React.Component {
 
   handlePermissions = () => {
     switch (localStorage.getItem("type")) {
-      case "Administrador": //Administrador:
+      case "Auxiliar": //Administrador:
         return (
           <Menu
             onClick={this.handleClick}
@@ -56,7 +56,7 @@ class MainMenu extends React.Component {
             </Menu.Item>
           </Menu>
         );
-      case "Auxiliar": //Auxiliar
+      case "Administrador": //Auxiliar
         return (
           <Menu
             onClick={this.handleClick}

@@ -50,9 +50,9 @@ class AdminProgramsAsigna extends React.Component {
     let recievedAsigna = [];
     for (let i = 0; i < this.props.subjects.length; i++) {
       recievedAsigna.push({
-        key: this.props.subjects[i].data["cod_asignatura"],
-        código: this.props.subjects[i].data["cod_asignatura"],
-        nombre: this.props.subjects[i].data["nombre_materia"],
+        key: this.props.subjects[i]["cod_asignatura"].toString(),
+        código: this.props.subjects[i]["cod_asignatura"],
+        nombre: this.props.subjects[i]["nombre_materia"],
       });
     }
     recievedAsigna = recievedAsigna.sort((a, b) => a.key.localeCompare(b.key));
@@ -64,13 +64,11 @@ class AdminProgramsAsigna extends React.Component {
       let recievedAsignaNames = [];
       for (let i = 0; i < res.length; i++) {
         recievedAsignaCodes.push(
-          <Option key={res[i].data["cod_materia"]}>
-            {res[i].data["cod_materia"]}
-          </Option>
+          <Option key={res[i]["cod_materia"]}>{res[i]["cod_materia"]}</Option>
         );
         recievedAsignaNames.push(
-          <Option key={res[i].data["cod_materia"]}>
-            {res[i].data["nombre_materia"] + " - " + res[i].data["cod_materia"]}
+          <Option key={res[i]["cod_materia"]}>
+            {res[i]["nombre_materia"] + " - " + res[i]["cod_materia"]}
           </Option>
         );
       }
@@ -194,7 +192,7 @@ class AdminProgramsAsigna extends React.Component {
       if (response.status === 200) {
         let dataSourceAsigna = this.state.dataSourceAsigna.slice();
         dataSourceAsigna.push({
-          key: this.state.selectedAsigna.data.cod_materia,
+          key: this.state.selectedAsigna.data.cod_materia.toString(),
           código: this.state.selectedAsigna.data.cod_materia,
           nombre: this.state.selectedAsigna.data.nombre_materia,
         });

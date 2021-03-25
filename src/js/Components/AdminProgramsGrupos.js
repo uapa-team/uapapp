@@ -50,9 +50,9 @@ class AdminProgramsGrupos extends React.Component {
     let recievedGroups = [];
     for (let i = 0; i < this.props.groups.length; i++) {
       recievedGroups.push({
-        key: this.props.groups[i].data["cod_hermes"],
-        código: this.props.groups[i].data["cod_hermes"],
-        nombre: this.props.groups[i].data["nombre"],
+        key: this.props.groups[i]["cod_hermes"],
+        código: this.props.groups[i]["cod_hermes"],
+        nombre: this.props.groups[i]["nombre"],
       });
     }
     recievedGroups = recievedGroups.sort((a, b) =>
@@ -60,21 +60,19 @@ class AdminProgramsGrupos extends React.Component {
     );
     this.setState({ dataSourceGrupos: recievedGroups });
 
-    Backend.sendRequest("GET", "investigation_groups").then(
+    Backend.sendRequest("POST", "investigation_groups", {}).then(
       async (response) => {
         let res = await response.json();
         let recievedGruposCodes = [];
         let recievedGruposNames = [];
         for (let i = 0; i < res.length; i++) {
           recievedGruposCodes.push(
-            <Option key={res[i].data["cod_hermes"]}>
-              {res[i].data["cod_hermes"].toString()}
+            <Option key={res[i]["cod_hermes"]}>
+              {res[i]["cod_hermes"].toString()}
             </Option>
           );
           recievedGruposNames.push(
-            <Option key={res[i].data["cod_hermes"]}>
-              {res[i].data["nombre"]}
-            </Option>
+            <Option key={res[i]["cod_hermes"]}>{res[i]["nombre"]}</Option>
           );
         }
         this.setState({
@@ -105,14 +103,14 @@ class AdminProgramsGrupos extends React.Component {
     const key = "updatable";
     message.loading({ content: "Añadiendo grupo...", key });
     Backend.sendRequest("POST", "program_groups/add", {
-      cod_hermes: this.state.selectedGrupo.data.cod_hermes,
+      cod_hermes: this.state.selectedGrupo.cod_hermes,
       cod_programa: this.props.programa,
     }).then(async (response) => {
       let dataSourceGrupos = this.state.dataSourceGrupos.slice();
       dataSourceGrupos.push({
-        key: this.state.selectedGrupo.data.cod_hermes,
-        código: this.state.selectedGrupo.data.cod_hermes,
-        nombre: this.state.selectedGrupo.data.nombre,
+        key: this.state.selectedGrupo.cod_hermes,
+        código: this.state.selectedGrupo.cod_hermes,
+        nombre: this.state.selectedGrupo.nombre,
       });
       dataSourceGrupos = dataSourceGrupos.sort((a, b) =>
         a.nombre.localeCompare(b.nombre)
@@ -389,8 +387,8 @@ class AdminProgramsGrupos extends React.Component {
           ) : (
             <>
               <Text>
-                Grupo seleccionado: {this.state.selectedGrupo.data.nombre}.
-                Código Hermes: {this.state.selectedGrupo.data.cod_hermes}.
+                Grupo seleccionado: {this.state.selectedGrupo[0].nombre}. Código
+                Hermes: {this.state.selectedGrupo[0].cod_hermes}.
               </Text>
               <Button
                 type="primary"
