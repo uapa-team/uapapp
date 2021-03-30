@@ -1,7 +1,6 @@
 import React from "react";
 import { Menu } from "antd";
 import {
-  ScheduleOutlined,
   AppstoreOutlined,
   BookOutlined,
   AuditOutlined,
@@ -27,7 +26,7 @@ class MainMenu extends React.Component {
 
   handlePermissions = () => {
     switch (localStorage.getItem("type")) {
-      case "Auxiliar": //Administrador:
+      case "Administrador": //Administrador:
         return (
           <Menu
             onClick={this.handleClick}
@@ -37,10 +36,6 @@ class MainMenu extends React.Component {
             <Menu.Item key="we">
               <HomeOutlined />
               Home
-            </Menu.Item>
-            <Menu.Item key="au">
-              <ScheduleOutlined />
-              Admin. Usuarios
             </Menu.Item>
             <Menu.Item key="ap">
               <AppstoreOutlined />
@@ -56,7 +51,7 @@ class MainMenu extends React.Component {
             </Menu.Item>
           </Menu>
         );
-      case "Administrador": //Auxiliar
+      case "Auxiliar": //Auxiliar
         return (
           <Menu
             onClick={this.handleClick}
@@ -112,10 +107,6 @@ class MainMenu extends React.Component {
             <Menu.Item key="we">
               <HomeOutlined />
               Home
-            </Menu.Item>
-            <Menu.Item key="au">
-              <ScheduleOutlined />
-              Admin. Usuarios
             </Menu.Item>
             <Menu.Item key="ap">
               <AppstoreOutlined />

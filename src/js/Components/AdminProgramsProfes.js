@@ -2,7 +2,6 @@ import React from "react";
 import { withRouter } from "react-router-dom";
 import {
   Button,
-  Popconfirm,
   Table,
   Form,
   TreeSelect,
@@ -10,23 +9,12 @@ import {
   Space,
   Row,
   Typography,
-  Modal,
-  Col,
-  message,
-  Select,
-  Radio,
 } from "antd";
 import Highlighter from "react-highlight-words";
-import {
-  DeleteOutlined,
-  SearchOutlined,
-  UserAddOutlined,
-} from "@ant-design/icons";
+import { SearchOutlined } from "@ant-design/icons";
 import Backend from "../Basics/Backend";
-import { filterSelect } from "../Basics/Backend";
 
-const { Option } = Select;
-const { Title, Text } = Typography;
+const { Title } = Typography;
 
 class AdminProgramsProfes extends React.Component {
   formRef = React.createRef();
@@ -43,12 +31,6 @@ class AdminProgramsProfes extends React.Component {
       ],
       periods: undefined,
       periodsSelected: [],
-      visibleModal: false,
-      selectedProfe: undefined,
-      optionsUsers: [],
-      optionsNames: [],
-      currentOptions: [],
-      searchCriteria: "nombre",
     };
   }
 
@@ -65,38 +47,6 @@ class AdminProgramsProfes extends React.Component {
       a.nombre.localeCompare(b.nombre)
     );
     this.setState({ dataSourceProfes: recievedProfes });
-
-    Backend.sendRequest("POST", "get_professors_list", {}).then(
-      async (response) => {
-        let res = await response.json();
-        let recievedProfesUsers = [];
-        let recievedProfesNames = [];
-        for (let i = 0; i < res.length; i++) {
-          if (
-            res[i]["nombre_completo"] !== "" ||
-            res[i]["nombre_completo"] !== null
-          ) {
-            recievedProfesNames.push(
-              <Option key={res[i]["dni_persona"]}>
-                {res[i]["nombre_completo"]}
-              </Option>
-            );
-          }
-
-          if (res[i]["correo_unal"] !== "" || res[i]["correo_unal"] !== null) {
-            recievedProfesUsers.push(
-              <Option key={res[i]["dni_persona"]}>
-                {res[i]["correo_unal"]}
-              </Option>
-            );
-          }
-        }
-        this.setState({
-          optionsUsers: recievedProfesUsers,
-          optionsNames: recievedProfesNames,
-        });
-      }
-    );
 
     Backend.sendRequest("POST", "periods", {}).then(async (response) => {
       let periods = await response.json();
@@ -189,116 +139,6 @@ class AdminProgramsProfes extends React.Component {
       ),
   });
 
-  showModal = () => {
-    this.setState({
-      visibleModal: true,
-    });
-  };
-
-  changeCriteria = (value) => {
-    this.setState({
-      searchCriteria: value.target.value,
-    });
-  };
-
-  handleCancel = () => {
-    this.setState({
-      visibleModal: false,
-    });
-  };
-
-  onFinishPeriods = (record, values) => {
-    const key = "updatable";
-    message.loading({ content: "Actualizando periodos...", key });
-    Backend.sendRequest("POST", "set_professor_periods", {
-      dni_docente: record.key,
-      cod_programa: this.props.programa,
-      periods: values.periods,
-    }).then(async (response) => {
-      if (response.status === 200) {
-        message.success({
-          content: "Los periodos fueron asignados correctamente.",
-          key,
-        });
-      } else {
-        message.error({
-          content:
-            "Ha ocurrido un error actualizando los periodos del profesor.",
-          key,
-        });
-      }
-    });
-  };
-
-  addProfe = (values) => {
-    const key = "updatable";
-    message.loading({ content: "Vinculando profesor...", key });
-    Backend.sendRequest("POST", "program_profressors/add", {
-      cod_programa: this.props.programa,
-      dni_docente: values.names,
-      periodos: values.periods,
-    }).then(async (response) => {
-      if (response.status === 200) {
-        Backend.sendRequest("POST", "get_professor_dni", {
-          dni_professor: values.names,
-        }).then(async (response) => {
-          response.json().then((response) => {
-            let dataSourceProfes = this.state.dataSourceProfes.slice();
-            dataSourceProfes.push({
-              key: response[0].dni_docente,
-              correo: response[0].correo_unal,
-              nombre: response[0].nombres,
-            });
-            dataSourceProfes = dataSourceProfes.sort((a, b) =>
-              a.nombre.localeCompare(b.nombre)
-            );
-            this.setState({ dataSourceProfes: dataSourceProfes });
-          });
-        });
-        message.success({
-          content: "El profesor ha sido vinculado correctamente.",
-          key,
-        });
-      } else {
-        message.error({
-          content: "Ha ocurrido un error creando vinculando al profesor.",
-          key,
-        });
-      }
-    });
-    this.setState({
-      visibleModal: false,
-    });
-  };
-
-  handleDeleteProfe = (dni) => {
-    const key = "updatable";
-    message.loading({ content: "Desvinculando profesor...", key });
-    Backend.sendRequest("POST", "remove_professor_from_program", {
-      cod_programa: this.props.programa,
-      dni_docente: dni,
-    }).then(async (response) => {
-      if (response.status === 200) {
-        let dataSourceProfes = this.state.dataSourceProfes.slice();
-        for (let i = 0; i < dataSourceProfes.length; i++) {
-          if (dataSourceProfes[i].key === dni) {
-            dataSourceProfes.splice(i, 1);
-          }
-        }
-        this.setState({ dataSourceProfes: dataSourceProfes });
-        message.success({
-          content: "El profesor se ha desvinculado correctamente.",
-          key,
-        });
-      } else {
-        message.error({
-          content: "Ha ocurrido un error creando desvinculando al profesor.",
-          key,
-        });
-      }
-    });
-  };
-
   renderForm = (record) => {
     let form = (
       <Form
@@ -319,15 +159,6 @@ class AdminProgramsProfes extends React.Component {
             placeholder="Por favor seleccione programas."
           />
         </Form.Item>
-        <Form.Item>
-          <Button
-            type="primary"
-            htmlType="submit"
-            className="admin-users-btnfinish"
-          >
-            Guardar cambios
-          </Button>
-        </Form.Item>
       </Form>
     );
 
@@ -345,33 +176,7 @@ class AdminProgramsProfes extends React.Component {
         });
       });
     });
-
     return form;
-  };
-
-  onChangeInput = (value) => {
-    Backend.sendRequest("POST", "get_professor_dni", {
-      dni_docente: value.toString(),
-    }).then(async (response) => {
-      let res = await response.json();
-      this.setState({ selectedProfe: res });
-    });
-  };
-
-  handleTypeName = (value) => {
-    if (value.length < 3) {
-      this.setState({ currentOptions: [] });
-    } else {
-      this.setState({ currentOptions: this.state.optionsNames });
-    }
-  };
-
-  handleTypeUser = (value) => {
-    if (value.length < 3) {
-      this.setState({ currentOptions: [] });
-    } else {
-      this.setState({ currentOptions: this.state.optionsUsers });
-    }
   };
 
   render() {
@@ -380,31 +185,15 @@ class AdminProgramsProfes extends React.Component {
         title: "Nombre",
         dataIndex: "nombre",
         key: "name",
-        width: "45%",
+        width: "50%",
         ...this.getColumnSearchProps("nombre"),
       },
       {
         title: "Correo",
         dataIndex: "correo",
         key: "mail",
-        width: "45%",
+        width: "50%",
         ...this.getColumnSearchProps("correo"),
-      },
-      {
-        title: "Eliminar",
-        key: "delete",
-        width: "10%",
-        render: (record) => (
-          <Popconfirm
-            title="¿Está seguro que desea eliminar este profesor?"
-            onConfirm={() => this.handleDeleteProfe(record.key)}
-            okText="Sí"
-            cancelText="No"
-            placement="top"
-          >
-            <Button icon={<DeleteOutlined />} type="link"></Button>
-          </Popconfirm>
-        ),
       },
     ];
 
@@ -412,9 +201,6 @@ class AdminProgramsProfes extends React.Component {
       <div>
         <Row className="admin-programs-subtitle">
           <Title level={2}>Administración de profesores</Title>
-          <Button type="primary" onClick={this.showModal}>
-            <UserAddOutlined /> Añadir docente
-          </Button>
         </Row>
         <Table
           dataSource={this.state.dataSourceProfes}
@@ -431,107 +217,6 @@ class AdminProgramsProfes extends React.Component {
             showTotal: showTotal,
           }}
         />
-        <Modal
-          title="Por favor escriba y seleccione el nombre o usuario del docente a agregar."
-          visible={this.state.visibleModal}
-          onCancel={this.handleCancel}
-          footer={null}
-          width={800}
-        >
-          <Form onFinish={this.addProfe}>
-            <Row gutter={16}>
-              <Col span={12}>
-                <Radio.Group
-                  onChange={this.changeCriteria}
-                  className="admin-programs-new-radio-container"
-                  value={this.state.searchCriteria}
-                >
-                  <Radio.Button
-                    className="admin-programs-new-radio-buttons"
-                    value="nombre"
-                  >
-                    Nombre
-                  </Radio.Button>
-                  <Radio.Button
-                    className="admin-programs-new-radio-buttons"
-                    value="usuario"
-                  >
-                    Usuario
-                  </Radio.Button>
-                </Radio.Group>
-              </Col>
-              <Col span={12}>
-                {this.state.searchCriteria === "nombre" ? (
-                  <Form.Item label="Nombre" name="names">
-                    <Select
-                      className="select-props"
-                      showSearch
-                      placeholder="Escriba el nombre del docente."
-                      onChange={this.onChangeInput}
-                      filterOption={filterSelect}
-                      notFoundContent={null}
-                      onSearch={this.handleTypeName}
-                    >
-                      {this.state.currentOptions}
-                    </Select>
-                  </Form.Item>
-                ) : (
-                  <Form.Item label="Usuario" name="username">
-                    <Select
-                      className="select-props"
-                      showSearch
-                      placeholder="Escriba el nombre de usuario del docente."
-                      onChange={this.onChangeInput}
-                      filterOption={filterSelect}
-                      notFoundContent={null}
-                      onSearch={this.handleTypeUser}
-                    >
-                      {this.state.currentOptions}
-                    </Select>
-                  </Form.Item>
-                )}
-              </Col>
-            </Row>
-            <Row gutter={16}>
-              <Col span={24}>
-                <Form.Item name="periods" label="Periodos">
-                  <TreeSelect
-                    treeData={this.state.periods}
-                    value={this.state.periodsSelected}
-                    onChange={this.onChangePeriods}
-                    treeCheckable={true}
-                    showCheckedStrategy={"SHOW_PARENT"}
-                    placeholder="Por favor seleccione programas."
-                  />
-                </Form.Item>
-              </Col>
-            </Row>
-            <Row gutter={16}>
-              <Col span={24}>
-                {this.state.selectedProfe === undefined ? (
-                  <></>
-                ) : (
-                  <>
-                    <Text>
-                      Profesor seleccionado:{" "}
-                      {this.state.selectedProfe[0].nombre_completo}. Correo
-                      institucional: {this.state.selectedProfe[0].correo_unal}.
-                    </Text>
-                    <Form.Item>
-                      <Button
-                        type="primary"
-                        htmlType="submit"
-                        className="admin-users-add-finish-btn"
-                      >
-                        Añadir profesor
-                      </Button>
-                    </Form.Item>
-                  </>
-                )}
-              </Col>
-            </Row>
-          </Form>
-        </Modal>
       </div>
     );
   }

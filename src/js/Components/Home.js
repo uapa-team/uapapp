@@ -5,7 +5,6 @@ import { Row, Col } from "antd";
 
 import MainMenu from "./MainMenu";
 import AdminPrograms from "./AdminPrograms";
-import AdminUsers from "./AdminUsers";
 import GenerateReport from "./GenerateReport";
 import RecFormat from "./RecFormat";
 import Welcome from "./Welcome";
@@ -13,7 +12,6 @@ import Welcome from "./Welcome";
 //import Backend from "../Basics/Backend";
 
 const componentOf = {
-  au: <AdminUsers />,
   ap: <AdminPrograms />,
   gr: <GenerateReport />,
   fr: <RecFormat />,

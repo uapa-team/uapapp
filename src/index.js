@@ -9,7 +9,6 @@ import LoginForm from "./js/Components/Login";
 import Contact from "./js/Components/Contact";
 import Home from "./js/Components/Home";
 import RecFormat from "./js/Components/RecFormat";
-import AdminUsers from "./js/Components/AdminUsers";
 import AdminPrograms from "./js/Components/AdminPrograms";
 import GenerateReport from "./js/Components/GenerateReport";
 import UnalCanvas from "./js/Basics/UnalCanvas";
@@ -47,7 +46,6 @@ ReactDOM.render(
         <LoginRoute exact path="/" component={LoginForm} />
         <Route exact path="/contact" component={Contact} />
         <PrivateRoute exact path="/home" component={Home} />
-        <PrivateRoute exact path="/admin_users" component={AdminUsers} />
         <PrivateRoute exact path="/admin_programs" component={AdminPrograms} />
         <PrivateRoute
           exact

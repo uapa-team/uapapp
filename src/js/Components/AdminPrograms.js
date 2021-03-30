@@ -23,9 +23,6 @@ class AdminPrograms extends React.Component {
       visibleProfes: false,
       visibleAsigna: false,
       visibleGrupos: false,
-      visibleModalProfes: false,
-      visibleModalAsigna: false,
-      visibleModalGrupos: false,
       recievedProfessors: [],
       recievedSubjects: [],
       recievedGroups: [],
@@ -105,9 +102,9 @@ class AdminPrograms extends React.Component {
       let preProgRec = [];
       let posProgRec = [];
       for (let i = 0; i < res.length; i++) {
+        // TO DO: Replace if(true) with the line below when request is updated.
+        //if (res[i]["cod_nivel"] !== 1) {
         if (true) {
-          // TO DO: Replace with the line below when request is updated.
-          //if (res[i]["cod_nivel"] !== 1) {
           posProgRec.push(
             <TreeNode
               key={res[i]["cod_programa"]}
