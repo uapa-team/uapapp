@@ -1,5 +1,5 @@
 export default class Backend {
-  static backEndUrl = "https://www.ingenieria.bogota.unal.edu.co/uapapp_api/";
+  static backEndUrl = "https://www.ingenieria.unal.edu.co/uapapp_api/";
   //static backEndUrl = "http://localhost:3000/";
 
   static openLink(url) {
