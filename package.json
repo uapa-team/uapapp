@@ -26,7 +26,7 @@
     "test": "react-app-rewired test",
     "eject": "react-app-rewired eject"
   },
-  "homepage": "https://www.ingenieria.bogota.unal.edu.co/uapapp/",
+  "homepage": "https://www.ingenieria.unal.edu.co/uapapp/",
   "eslintConfig": {
     "extends": "react-app"
   },
