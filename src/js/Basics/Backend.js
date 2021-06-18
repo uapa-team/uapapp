@@ -1,12 +1,9 @@
 export default class Backend {
-  // 1) es para despliegue
-  // 2) la segunda y la tercera es para trabajar local
-
   // For deploy
-  static backEndUrl = "https://www.ingenieria.unal.edu.co/uapapp/";
+  static backEndUrl = "https://www.ingenieria.unal.edu.co/uapapp_api/";
 
   //For development
-  //static backEndUrl = "http://localhost:3000/";
+  // static backEndUrl = "http://localhost:3000/";
   // static newBackend = "http://168.176.26.91:8002/uapapp/";
 
   static openLink(url) {
