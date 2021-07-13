@@ -208,10 +208,12 @@ class RecFormat extends React.Component {
     } else {
       programs = values["programs"];
     }
+    //Each subreport has its own "id/code" to look later for a specific report
+    const reportCode = this.state.infoSubreports[this.state.selectedSubformat].code;
 
     Backend.sendRequest(
       "POST",
-      "report/".concat(this.state.infoSubreports[values["report"]].code),
+      `report/${reportCode}`,
       {
         periods: periods,
         programs: programs,
